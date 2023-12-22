@@ -203,6 +203,7 @@ const Login = () => {
                         <div className="d-flex justify-content-center">
                           <GoogleLogin
                             onSuccess={(credentialResponse) => {
+                              console.log(credentialResponse)
                               getGoogleData(credentialResponse.credential);
                             }}
                             onError={() => {

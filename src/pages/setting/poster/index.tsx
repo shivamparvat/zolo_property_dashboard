@@ -1,3 +1,2 @@
-import Dashboard from "@/components/dashboard/Dashboard";
-
-export default Dashboard;
+import Poster from "@/components/Poster/Poster";
+export default Poster;

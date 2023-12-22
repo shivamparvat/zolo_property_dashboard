@@ -38,7 +38,7 @@ const Post = () => {
   // status
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(INIT_FILTER);
-  const [postData, setPostData] = useState({
+  const [fetchData, setFetchData] = useState({
     list: [],
     pagination: { total: 0 },
   });
@@ -49,7 +49,7 @@ const Post = () => {
 
   // useEffects
   useEffect(() => {
-    ActionFeature.get(currentPage, filter, setPostData);
+    ActionFeature.get(currentPage, filter, setFetchData);
     return () => {};
   }, [filter, token, dispatch, currentPage, recallApi]);
 
@@ -175,14 +175,14 @@ const Post = () => {
             <Filter filter={filter} disable={[FILTER]} setFilter={setFilter} />
             <CustomTable
               tableCustomize={TableCustomize}
-              data={postData && postData?.list}
+              data={fetchData && fetchData?.list}
               StartIndex={+filter.limit * (+currentPage - 1) + 1 || 1}
             />
             <Pagination
               currentPage={currentPage || 0}
               limit={filter.limit}
               setCurrentPage={setCurrentPage}
-              total={(postData && postData.pagination?.total) || 0}
+              total={(fetchData && fetchData.pagination?.total) || 0}
             />
           </div>
         </div>

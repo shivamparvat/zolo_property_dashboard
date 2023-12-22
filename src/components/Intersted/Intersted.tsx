@@ -50,7 +50,7 @@ const Interested = () => {
 
   // status
   const [filter, setFilter] = useState(INIT_FILTER);
-  const [interstedData, setUserData] = useState({
+  const [fetchData, setFetchData] = useState({
     list: [],
     pagination: {total: 0},
   });
@@ -60,7 +60,7 @@ const Interested = () => {
 
   // useEffects
   useEffect(() => {
-    ActionFeature.get(currentPage, filter, setUserData);
+    ActionFeature.get(currentPage, filter, setFetchData);
   }, [filter, token, dispatch, currentPage, recallApi]);
 
   // custom table components
@@ -126,7 +126,7 @@ const Interested = () => {
 
           <CustomTable
             tableCustomize={TableCustomize}
-            data={(interstedData && interstedData.list) || []}
+            data={(fetchData && fetchData.list) || []}
             StartIndex={+filter.limit * (+currentPage - 1) + 1 || 1}
           />
 
@@ -134,7 +134,7 @@ const Interested = () => {
             currentPage={currentPage}
             limit={filter.limit}
             setCurrentPage={setCurrentPage}
-            total={interstedData.pagination?.total || 0}
+            total={fetchData.pagination?.total || 0}
           />
         </div>
       </div>
