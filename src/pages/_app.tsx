@@ -36,7 +36,7 @@ function App({ Component, pageProps }: AppProps) {
       router.push("/dashboard");
       setAuth(true);
     } else {
-      // setAuth(false);
+      setAuth(false);
     }
   }, [token, path, router]);
 
@@ -54,9 +54,9 @@ function App({ Component, pageProps }: AppProps) {
     dispatch,
   };
 
-  // if (Auth && Auth) {
-  //   return null;
-  // } else {
+  if (Auth && Auth) {
+    return null;
+  } else {
     return (
       <>
         <Toaster position="top-right" />
@@ -77,7 +77,7 @@ function App({ Component, pageProps }: AppProps) {
         </GoogleOAuthProvider>
       </>
     );
-//   }
+ }
 }
 
 export default wrapper.withRedux(App);
