@@ -16,9 +16,15 @@ import {
   MAX_FILE_SIZE_BYTES,
   PAGE_TYPE_ADD,
   PAGE_TYPE_EDIT,
+  STATE_OPTION,
   USER_ROLE_TYPE_DATA,
   USER_ROLE_TYPE_KEY,
 } from "../Utils/constants";
+import Select from 'react-select';
+import TagsInput from 'react-tagsinput'
+
+import 'react-tagsinput/react-tagsinput.css'
+
 
 const ActionScreen: React.FC<ActionModalType> = (props) => {
   // props
@@ -46,7 +52,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     address: Yup.string()
       .required("Address is required")
       .min(8, "Address must be at least 8 characters"),
-    phone_number: Yup.string()
+    contact_number: Yup.string()
       .required("Phone Number is required")
       .min(10, "Phone Number must be at least 10 digits")
       .max(10, "Phone Number can be at most 10 digits")
@@ -55,6 +61,10 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       .min(8, "Password must be at least 8 characters")
       .max(20, "Password can be at most 20 characters")
       .notRequired(),
+    zip_code: Yup.number().required('Zip Code is required'),
+    local_area: Yup.array().of(Yup.number()),
+    city: Yup.string().required('City is required'),
+    state: Yup.string().required('State is required'),
   };
 
   // states
@@ -66,9 +76,12 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     last_name: type == PAGE_TYPE_ADD ? "" : data.last_name,
     email: type == PAGE_TYPE_ADD ? "" : data.email,
     role: type == PAGE_TYPE_ADD ? "" : data.role,
-    phone_number: type == PAGE_TYPE_ADD ? "" : data.phone_number,
+    contact_number: type == PAGE_TYPE_ADD ? "" : data.contact_number,
     password: type == PAGE_TYPE_ADD ? "" : data.password,
-    company_name: type == PAGE_TYPE_ADD ? "" : data.company_name,
+    zip_code: type == PAGE_TYPE_ADD ? 480001 : data.zip_code,
+    local_area: type == PAGE_TYPE_ADD ? [] : data.local_area,
+    city: type == PAGE_TYPE_ADD ? "" : data.city,
+    state: type == PAGE_TYPE_ADD ? "" : data.state,
     address: type == PAGE_TYPE_ADD ? "" : data.address,
   });
 
@@ -104,10 +117,15 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       formData.append("last_name", value.last_name.trim());
       formData.append("email", value.email.trim());
       formData.append("role", value.role.toString());
-      formData.append("phone_number", value.phone_number);
-      if (value.password) formData.append("password", value.password.trim());
-      formData.append("company_name", value.company_name.trim());
+      formData.append("contact_number", value.contact_number);
+      if (value.password) formData.append("password", value.password.trim());;
       formData.append("address", value.address.trim());
+      formData.append("zip_code", value.zip_code);
+      (value.local_area || []).map((zip: any) => {
+        formData.append("local_area[]", zip);
+      })
+      formData.append("city", value.city.trim());
+      formData.append("state", value.state.trim());
       let res;
       if (type === PAGE_TYPE_ADD) {
         res = await ApiFeature.post(urls, formData, 0, true);
@@ -150,7 +168,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
           initialValues={useInitData}
           validationSchema={Yup.object().shape(validation)}
         >
-          {() => (
+          {({values, handleChange, setValues}) => (
             <Form>
               <div className="d-flex gap-column justify-content-between ">
                 {/* image */}
@@ -241,6 +259,25 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
               </div>
               <div className="d-flex gap-column justify-content-between ">
                 <div className="w-50">
+                  {/* phone */}
+                  <div className="">
+                    <FormStrap.Label className="form-control-label">
+                      <h6>Phone Number</h6>
+                    </FormStrap.Label>
+                    <Field
+                      type="number"
+                      placeholder="phone Number"
+                      name="contact_number"
+                      id="contact_number"
+                      className="form-control-alternative form-control"
+                    />
+                    <ErrorMessage
+                      className="text-danger"
+                      name="contact_number"
+                      component="div"
+                    />
+                  </div>
+                  {/* role */}
                   <div>
                     <FormStrap.Label className="form-control-label">
                       <h6>Role</h6>
@@ -254,14 +291,17 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                       <option value="" selected disabled hidden>
                         select role
                       </option>
+
                       {USER_ROLE_TYPE_KEY.map(
                         (value: string, index: number) => {
                           return (
-                            <option key={index} value={value}>
+                            <option key={index} value={USER_ROLE_TYPE_DATA[
+                              value as unknown as keyof typeof USER_ROLE_TYPE_DATA
+                            ]}>
                               {
                                 USER_ROLE_TYPE_DATA[
-                                value as unknown as keyof typeof USER_ROLE_TYPE_DATA
-                                ]
+                                  value as unknown as keyof typeof USER_ROLE_TYPE_DATA
+                                ].toUpperCase()
                               }
                             </option>
                           );
@@ -273,29 +313,45 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                       name="role"
                       component="div"
                     />
-                  </div>
-                  {/* phone */}
+                  </div>{/* zip */}
+                  {/* {values.role == "broker" ? */}
                   <div className="">
                     <FormStrap.Label className="form-control-label">
-                      <h6>Phone Number</h6>
+                      <h6>Area</h6>
+                    </FormStrap.Label>
+                    <TagsInput
+                      value={values.local_area}
+                      onChange={(zip: number[]) => {setValues({...values, local_area: zip})}}
+                      inputProps={{placeholder: 'Add tags'}}
+                    />
+                    {/* <Field
+                        type="text"
+                        id="local_area"
+                        name="local_area"
+                        placeholder="Enter zip codes separated by (,) commas"
+                        className="form-control-alternative form-control "
+                      /> */}
+                    <ErrorMessage name="local_area" component="div" />
+                  </div>
+                  {/* zip code in add */}
+                  {type == PAGE_TYPE_ADD && <div className="">
+                    <FormStrap.Label className="form-control-label">
+                      <h6>zip codes</h6>
                     </FormStrap.Label>
                     <Field
-                      type="number"
-                      placeholder="phone Number"
-                      name="phone_number"
-                      id="phone_number"
-                      className="form-control-alternative form-control"
+                      type="text"
+                      id="zip_code"
+                      name="zip_code"
+                      placeholder="Enter zip codes"
+                      className="form-control-alternative form-control "
                     />
-                    <ErrorMessage
-                      className="text-danger"
-                      name="phone_number"
-                      component="div"
-                    />
-                  </div>
+                    <ErrorMessage name="zip_code" component="div" />
+                  </div>}
+                  {/* } */}
                 </div>
                 <div className="w-50">
                   {/* password */}
-                  <div className="">
+                  {type == PAGE_TYPE_ADD && <div className="">
                     <FormStrap.Label className="form-control-label">
                       <h6>Password</h6>
                     </FormStrap.Label>
@@ -311,24 +367,59 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                       name="password"
                       component="div"
                     />
+                  </div>}
+
+                  <div className="">
+
+                    <FormStrap.Label className="form-control-label">
+                      <h6>State</h6>
+                    </FormStrap.Label>
+                    <Select id="state" placeholder="State" name="state"
+                      options={STATE_OPTION || {value: "", lable: ""}} className="form-control-alternative form-control "
+                      defaultValue={{value: values.state, label: values.state}}
+                      onChange={(selectedOption) =>
+                        setValues({...values, state: selectedOption ? selectedOption.value : ''})
+                      }
+                    />
+
+                    <ErrorMessage name="state" component="div" />
                   </div>
+
+                  {/* city */}
                   <div className="">
                     <FormStrap.Label className="form-control-label">
-                      <h6>Zip code</h6>
+                      <h6>City</h6>
                     </FormStrap.Label>
                     <Field
-                      type="text"
-                      placeholder="Zip code"
-                      id="company_name"
-                      name="company_name"
+                      type="city"
+                      placeholder="city"
+                      id="city"
+                      name="city"
                       className="form-control-alternative form-control "
                     />
                     <ErrorMessage
                       className="text-danger"
-                      name="company_name"
+                      name="city"
                       component="div"
                     />
                   </div>
+
+                  {/* zip code in edit */}
+                  {
+                    type !== PAGE_TYPE_ADD && <div className="">
+                      <FormStrap.Label className="form-control-label">
+                        <h6>zip codes</h6>
+                      </FormStrap.Label>
+                      <Field
+                        type="text"
+                        id="zip_code"
+                        name="zip_code"
+                        placeholder="Enter zip codes"
+                        className="form-control-alternative form-control "
+                      />
+                      <ErrorMessage name="zip_code" component="div" />
+                    </div>
+                  }
                 </div>
               </div>
               {/* address */}

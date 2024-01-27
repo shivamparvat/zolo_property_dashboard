@@ -1,2 +1,2 @@
-import Brand from "../../components/property/property";
-export default Brand;
+import Property from "../../components/property/property";
+export default Property;

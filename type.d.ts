@@ -87,9 +87,13 @@ interface userType {
   last_name?: string;
   company_name?: string;
   address?: string;
-  phone_number?: number;
+  contact_number?: number;
   email?: string;
-  role?: number;
+  role?: string;
+  zip_code?: number,
+  local_area?: number[],
+  city: string,
+  state: string,
   oldImage?: string;
   image?: string;
   is_active?: number;

@@ -53,7 +53,7 @@ const navigation = [
   {
     id: 1,
     title: "Setting",
-    href: "/setting",
+    href: "/setting/phone",
     icon: <IoSettings style={{fontSize: "1.1rem", color: "#FB6340"}} />,
     subMenu: [
       {

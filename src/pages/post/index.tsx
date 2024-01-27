@@ -1,2 +1,2 @@
-import Post from "@/components/Post/Post";
+import Post from "@/components/property/property";
 export default Post;
