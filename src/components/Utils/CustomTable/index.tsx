@@ -83,7 +83,7 @@ const CustomTable: React.FC<TableComponentCustomProps> = ({
               );
             })
           ) : (
-            <tr  key={Math.random()}>
+            <tr key={Math.random()}>
               <td
                 colSpan={tableCustomize.length || 1}
                 rowSpan={5}
@@ -107,13 +107,12 @@ const CustomTable: React.FC<TableComponentCustomProps> = ({
 };
 
 const ActionSwitch: React.FC<{
-  id: string | number;
-  is_active: number;
+  data: any;
   url?: string;
-}> = ({id, is_active, url}) => (
+}> = ({data, url}) => (
   <Switch
-    onChange={() => ActionFeature.toggle(id, is_active, url)}
-    checked={is_active === 1}
+    onChange={() => ActionFeature.toggle(data?._id || 0, data, url)}
+    checked={data?.is_active || false}
     uncheckedIcon={false}
     checkedIcon={false}
     onColor="#009EFB"

@@ -1,13 +1,13 @@
 import ApiFeature from "@/Api/ApiFeature";
-import Filter, { FILTER } from "../Utils/Filter";
-import { setLoader } from "@/redux/reducer/loader";
-import react, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import CustomTable, { ActionButtons, ActionSwitch } from "../Utils/CustomTable";
-import { DDMMYYYY } from "../Utils/Formeter";
+import Filter, {FILTER} from "../Utils/Filter";
+import {setLoader} from "@/redux/reducer/loader";
+import react, {useState, useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@/redux/store";
+import CustomTable, {ActionButtons, ActionSwitch} from "../Utils/CustomTable";
+import {DDMMYYYY} from "../Utils/Formeter";
 import Pagination from "../Utils/Pagination";
-import { setRecallApi } from "@/redux/reducer/RecallApi";
+import {setRecallApi} from "@/redux/reducer/RecallApi";
 import {
   INIT_FILTER,
   PAGE_TYPE_ADD,
@@ -39,17 +39,17 @@ const Emi = () => {
   const [filter, setFilter] = useState(INIT_FILTER);
   const [fetchData, setFetchData] = useState({
     list: [],
-    pagination: { total: 0 },
+    pagination: {total: 0},
   });
   const [selected, setSelected] = useState<any>({});
   const [actionType, setActionType] = useState<string>("");
   const [imageModal, setImageModal] = useState(false);
-  const [selectedData, setSelectedData] = useState({ post_id: 0 });
+  const [selectedData, setSelectedData] = useState({post_id: 0});
 
   // useEffects
   useEffect(() => {
     ActionFeature.get(currentPage, filter, setFetchData);
-    return () => {};
+    return () => { };
   }, [filter, token, dispatch, currentPage, recallApi]);
 
   // active or deactivate
@@ -62,7 +62,7 @@ const Emi = () => {
 
     {
       value: "Post Image",
-      component: ({ data }) => {
+      component: ({data}) => {
         return (
           <div
             onClick={() => {
@@ -115,17 +115,17 @@ const Emi = () => {
     {
       key: "created_at",
       value: "Created At",
-      component: ({ data }) => <>{DDMMYYYY(data.created_at)}</>,
+      component: ({data}) => <>{DDMMYYYY(data.createdAt)}</>,
     },
     {
       value: "Status",
-      component: ({ data }) => (
-        <ActionSwitch id={data.post_id} is_active={data.is_active} />
+      component: ({data}) => (
+        <ActionSwitch data={data} />
       ),
     },
     {
       value: "Action",
-      component: ({ data }) => (
+      component: ({data}) => (
         <ActionButtons
           data={data}
           setSelected={setSelected}
@@ -159,7 +159,7 @@ const Emi = () => {
           <div className="dataTables_wrapper dt-bootstrap5">
             <TableHeader
               title={`List of ${path.toLocaleUpperCase(
-                
+
               )}`}
               onAddClick={() => setActionType(PAGE_TYPE_ADD)}
               onExportClick={() => {

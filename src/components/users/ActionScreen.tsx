@@ -314,11 +314,11 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                   </div>
                   <div className="">
                     <FormStrap.Label className="form-control-label">
-                      <h6>Company Name</h6>
+                      <h6>Zip code</h6>
                     </FormStrap.Label>
                     <Field
                       type="text"
-                      placeholder="company Name"
+                      placeholder="Zip code"
                       id="company_name"
                       name="company_name"
                       className="form-control-alternative form-control "

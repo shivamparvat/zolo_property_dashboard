@@ -1,30 +1,23 @@
-import Filter, {FILTER} from "../../Utils/Filter";
-import {useState, useEffect} from "react";
+import Filter, {FILTER} from "../Utils/Filter";
+import react, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
-import CustomTable, {
-  ActionButtons,
-  ActionSwitch,
-} from "../../Utils/CustomTable";
-import {DDMMYYYY} from "../../Utils/Formeter";
-import Pagination from "../../Utils/Pagination";
-import {
-  INIT_FILTER,
-  PAGE_TYPE_ADD,
-  PAGE_TYPE_EDIT,
-} from "../../Utils/constants";
-import TableHeader from "../../Utils/CustomTable/TableHeader";
+import CustomTable, {ActionButtons, ActionSwitch} from "../Utils/CustomTable";
+import {DDMMYYYY} from "../Utils/Formeter";
+import Pagination from "../Utils/Pagination";
+import {INIT_FILTER, PAGE_TYPE_ADD, PAGE_TYPE_EDIT} from "../Utils/constants";
+import TableHeader from "../Utils/CustomTable/TableHeader";
 import Image from "next/image";
-import ActionScreen from "./ActionScreen";
 import ActionFeature from "@/Api/ActionFeature";
+import ActionScreen from "./ActionScreen";
 
 // init
 
 const Index = () => {
   // init
-  const path = "modal";
+  const path = "property";
 
-  // configure  
+  // configure
   ActionFeature.path = path;
 
   // hook
@@ -37,7 +30,7 @@ const Index = () => {
   // status
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(INIT_FILTER);
-  const [subCategoryData, setSubCategoryData] = useState({
+  const [brandData, setBrandData] = useState({
     list: [],
     pagination: {total: 0},
   });
@@ -46,7 +39,7 @@ const Index = () => {
 
   // useEffects
   useEffect(() => {
-    ActionFeature.get(currentPage, filter, setSubCategoryData);
+    ActionFeature.get(currentPage, filter, setBrandData);
     return () => { };
   }, [filter, token, dispatch, currentPage, recallApi]);
 
@@ -56,13 +49,13 @@ const Index = () => {
       index: true,
     },
     {
-      value: "Category Image",
+      value: "Brand Image",
       component: ({data}) => {
         return (
           <div>
             <Image
-              src={data.sub_category_image || "/img/profile.png"}
-              alt="sub_category_image"
+              src={data.url || "/img/profile.png"}
+              alt="brand_image"
               width={36}
               height={36}
               className="avatar avatar-sm me-3"
@@ -72,32 +65,32 @@ const Index = () => {
       },
     },
     {
-      key: "sub_category_name",
-      value: "Category Name",
+      key: "brand",
+      value: "Brand Name",
     },
     {
-      key: "sub_category_description",
-      value: "Category Description",
+      key: "description",
+      value: "Brand Description",
     },
     {
-      key: "created_at",
+      key: "createdAt",
       value: "Created At",
-      component: ({data}) => <>{DDMMYYYY(data.created_at)}</>,
+      component: ({data}) => <>{DDMMYYYY(data.createdAt)}</>,
     },
     {
       value: "Status",
       component: ({data}) => (
-        <ActionSwitch id={data.sub_category_id} is_active={data.is_active} />
+        <ActionSwitch data={data} />
       ),
     },
     {
       value: "Action",
       component: ({data}) => (
         <ActionButtons
+          id={data._id}
           data={data}
-          setSelected={setSelected}
           setEdit={setActionType}
-          id={data.sub_category_id}
+          setSelected={setSelected}
         />
       ),
       className: "d-flex ",
@@ -108,12 +101,12 @@ const Index = () => {
     <>
       {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
         <ActionScreen
-          id={selected.user_id || 0}
+          id={selected._id || 0}
           isActive={
             actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT
           }
           onClose={setActionType}
-          data={{...selected, id: selected.sub_category_id}}
+          data={{...selected, id: selected._id}}
           type={actionType == PAGE_TYPE_ADD ? PAGE_TYPE_ADD : PAGE_TYPE_EDIT}
           urls={actionType == PAGE_TYPE_ADD ? `${path}/add` : `${path}/update`}
           path={path}
@@ -130,16 +123,14 @@ const Index = () => {
             <Filter filter={filter} disable={[FILTER]} setFilter={setFilter} />
             <CustomTable
               tableCustomize={TableCustomize}
-              data={subCategoryData && subCategoryData?.list}
+              data={brandData && brandData?.list}
               StartIndex={+filter.limit * (+currentPage - 1) + 1 || 1}
             />
             <Pagination
               currentPage={currentPage || 0}
               limit={filter.limit}
               setCurrentPage={setCurrentPage}
-              total={
-                (subCategoryData && subCategoryData.pagination?.total) || 0
-              }
+              total={(brandData && brandData.pagination?.total) || 0}
             />
           </div>
         </div>

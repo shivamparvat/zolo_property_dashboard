@@ -11,9 +11,9 @@ import {BiCategory} from "react-icons/bi";
 import {IoCall, IoCallOutline, IoSettings} from "react-icons/io5";
 import {HiOutlineReceiptTax} from "react-icons/hi";
 import {ImCross} from "react-icons/im";
-import {MdBikeScooter, MdCategory} from "react-icons/md";
-import { BsFillPostcardHeartFill } from "react-icons/bs";
-import { GiPayMoney } from "react-icons/gi";
+import {MdBikeScooter, MdCategory, MdHomeWork} from "react-icons/md";
+import {BsFillPostcardHeartFill} from "react-icons/bs";
+import {GiPayMoney} from "react-icons/gi";
 
 import Link from "next/link";
 import {usePathname} from "next/navigation";
@@ -34,9 +34,9 @@ const navigation = [
   },
   {
     id: 3,
-    title: "Post",
+    title: "Ads",
     href: "/post",
-    icon: <BsFillPostcardHeartFill style={{fontSize: "1rem", color: "#000100"}} />,
+    icon: <BsFillPostcardHeartFill style={{fontSize: "1rem", color: "#11CDEF"}} />,
   },
   {
     id: 3,
@@ -46,17 +46,9 @@ const navigation = [
   },
   {
     id: 2,
-    title: "Brand",
-    href: "/brand",
-    icon: <MdCategory style={{fontSize: "1rem", color: "#11CDEF"}} />,
-    subMenu: [
-      {
-        ids: 1,
-        title: "Modal",
-        href: "/brand/modal",
-        icon: <MdBikeScooter style={{fontSize: "1rem", color: "FF55BB"}} />,
-      },
-    ],
+    title: "Property",
+    href: "/property",
+    icon: <MdHomeWork style={{fontSize: "1rem", color: "#000100"}} />,
   },
   {
     id: 1,

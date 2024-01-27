@@ -38,7 +38,7 @@ export const UserName: React.FC<any> = ({data}) => (
 
 const Interested = () => {
   // init
-  const path = "intersted";
+  const path = "property";
 
   // configure
   ActionFeature.path = path;
@@ -75,8 +75,8 @@ const Interested = () => {
       component: UserName,
     },
     {
-      key: "phone_number",
-      value: "Phone Number",
+      key: "state",
+      value: "state",
     },
     {
       value: "called",
@@ -91,21 +91,12 @@ const Interested = () => {
     {
       value: "Action",
       component: ({data}) => (
-        <>
-          <button
-            onClick={() => {
-              const link = document.createElement("a");
-              link.href = "tel:+916261282518";
-              document.body.appendChild(link);
-              link.click();
-              link.remove();
-            }}
-            className="btn btn-primary"
-            data-tooltip="Call"
-          >
-            <IoCallOutline size={22} />
-          </button>
-        </>
+        <ActionButtons
+          data={data}
+          setSelected={setSelected}
+          setEdit={setActionType}
+          id={data._id}
+        />
       ),
     },
 

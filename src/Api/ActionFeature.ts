@@ -1,17 +1,17 @@
-import { setLoader } from "@/redux/reducer/loader";
+import {setLoader} from "@/redux/reducer/loader";
 
-import { Dispatch } from "react";
-import { AnyAction } from "redux";
+import {Dispatch} from "react";
+import {AnyAction} from "redux";
 import ApiFeature from "./ApiFeature";
-import { setRecallApi } from "@/redux/reducer/RecallApi";
-import { confirmAlert } from "react-confirm-alert";
-import { downloadURI } from "@/components/Utils/utile";
+import {setRecallApi} from "@/redux/reducer/RecallApi";
+import {confirmAlert} from "react-confirm-alert";
+import {downloadURI} from "@/components/Utils/utile";
 
 interface ActionFeatureType {
-    config: { dispatch: Dispatch<AnyAction> } | null;
+    config: {dispatch: Dispatch<AnyAction>} | null;
     path: string;
     delete: (id: string | number,) => void;
-    toggle: (id: string | number, is_active: number, url?: string) => void;
+    toggle: (id: string | number, data: any, url?: string) => void;
     get: (currentPage: number, filter: FilterDataType, setData: React.Dispatch<any>, data?: object, url?: string) => void
     download: (id?: string | number, path?: string) => void
 }
@@ -51,14 +51,14 @@ const ActionFeature: ActionFeatureType = {
             ],
         });
     },
-    toggle: async (id: string | number, is_active: number, url = "toogle") => {
+    toggle: async (id: string | number, data: any, url = "update") => {
         const context = ActionFeature.config
         try {
             context?.dispatch(setLoader(true));
 
             const res: any = await ApiFeature.put(
                 `${ActionFeature.path}/${url}`,
-                { is_active: is_active ? 0 : 1 },
+                {...data, is_active: data.is_active ? false : true},
                 id
             );
             if (res.status === 200) {
@@ -78,7 +78,7 @@ const ActionFeature: ActionFeatureType = {
             const offset = (currentPage - 1) * filter.limit;
             const res: any = await ApiFeature.post(
                 `${ActionFeature.path}/${url}`,
-                { ...filter, offset, ...data },
+                {...filter, offset, ...data},
             );
             if (res && res.status == 200) {
                 setData(res.data)

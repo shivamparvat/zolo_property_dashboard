@@ -173,7 +173,7 @@ const Login = () => {
 
                             <Field
                               type={passwordHide ? "password" : "text"}
-                              name="email"
+                              name="password"
                               className="border-0 h-100 w-100 form-control"
                             />
                           </div>

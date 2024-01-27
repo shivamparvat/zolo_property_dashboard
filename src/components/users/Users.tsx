@@ -22,7 +22,7 @@ export const UserName: React.FC<any> = ({data}) => (
   <div className="d-flex px-2 py-1">
     <div>
       <Image
-        src={data.image || "/img/profile.png"}
+        src={data.url || "/img/profile.png"}
         alt="user1"
         width={36}
         height={36}
@@ -30,7 +30,7 @@ export const UserName: React.FC<any> = ({data}) => (
       />
     </div>
     <div className="d-flex flex-column justify-content-center">
-      <h6>{`${data.first_name} ${data.last_name}`}</h6>
+      <h6>{`${data.first_name || ""} ${data.last_name || ""}`}</h6>
       <p className="text-xs text-secondary mb-0">{`${data.email}`}</p>
     </div>
   </div>
@@ -75,30 +75,23 @@ const Users = () => {
       component: UserName,
     },
     {
-      key: "company_name",
-      value: "company_name",
-    },
-    {
-      key: "address",
       value: "Address",
+      component: ({data}) => <>{`${data.city || ""} ${data.state || ""} ${data.zip_code || ""}`}</>,
     },
     {
-      key: "phone_number",
+      key: "contact_number",
       value: "Phone Number",
     },
     {
-      key: "created_at",
       value: "Created At",
-      component: ({data}) => <>{DDMMYYYY(data.created_at)}</>,
+      component: ({data}) => <>{DDMMYYYY(data.createdAt)}</>,
     },
     {
       value: "Role",
       component: ({data}) => {
         return (
-          <>{`${USER_ROLE_TYPE_DATA[
-            data.role as unknown as keyof typeof USER_ROLE_TYPE_DATA
-          ]
-            }`}</>
+          <>
+            {data.role} </>
         );
       },
     },
@@ -107,9 +100,7 @@ const Users = () => {
       combine: ["is_active"],
       component: ({data}) => (
         <ActionSwitch
-          id={data.user_id}
-          is_active={data.is_active}
-          url="toogleUser"
+          data={data}
         />
       ),
     },

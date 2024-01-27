@@ -46,7 +46,7 @@ export const INIT_FILTER = {
     limit: 5,
     startDate: "",
     endDate: "",
-    searchParam: "",
+    search: "",
     orderBy: "",
     order: "",
 };
@@ -60,9 +60,9 @@ export {FORGOT_PASSWORD_PAGE, OTP_PAGE, CONFIRM_PASSWORD_PAGE}
 // #########################____USER____#################################
 
 export const USER_ROLE_TYPE_DATA = {
-    "1": "Admin",
-    "2": "Customer",
-    "3": "Supplier",
+    "1": "admin",
+    "2": "user",
+    "3": "editor",
 };
 
 export const USER_ROLE_TYPE_KEY = Object.keys(USER_ROLE_TYPE_DATA)

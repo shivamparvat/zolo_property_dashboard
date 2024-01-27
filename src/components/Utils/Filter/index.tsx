@@ -35,7 +35,7 @@ const Index = (props: filter) => {
       () => {
         setFilter((pre: object) => ({
           ...pre,
-          searchParam: value,
+          search: value,
         }));
       },
       DEBOUNCE_THRESHOLD,

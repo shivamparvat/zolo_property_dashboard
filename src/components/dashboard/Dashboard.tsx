@@ -51,7 +51,7 @@ const Dashboard = () => {
                 <div className="col-8">
                   <div className="numbers">
                     <p className="text-sm mb-0 text-uppercase font-weight-bold">
-                      Total Sales
+                      Total Property
                     </p>
                     <h5 className="font-weight-bolder">2,300</h5>
                     <p className="mb-0">

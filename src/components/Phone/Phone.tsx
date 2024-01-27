@@ -1,13 +1,13 @@
 import ApiFeature from "@/Api/ApiFeature";
-import Filter, { FILTER } from "../Utils/Filter";
-import { setLoader } from "@/redux/reducer/loader";
-import react, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import CustomTable, { ActionButtons, ActionSwitch } from "../Utils/CustomTable";
-import { DDMMYYYY } from "../Utils/Formeter";
+import Filter, {FILTER} from "../Utils/Filter";
+import {setLoader} from "@/redux/reducer/loader";
+import react, {useState, useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@/redux/store";
+import CustomTable, {ActionButtons, ActionSwitch} from "../Utils/CustomTable";
+import {DDMMYYYY} from "../Utils/Formeter";
 import Pagination from "../Utils/Pagination";
-import { setRecallApi } from "@/redux/reducer/RecallApi";
+import {setRecallApi} from "@/redux/reducer/RecallApi";
 import {
   INIT_FILTER,
   PAGE_TYPE_ADD,
@@ -23,7 +23,7 @@ import ActionFeature from "@/Api/ActionFeature";
 
 const Phone = () => {
   // init
-  const path = "phone";
+  const path = "contact";
 
   // configure
   ActionFeature.path = path;
@@ -39,17 +39,17 @@ const Phone = () => {
   const [filter, setFilter] = useState(INIT_FILTER);
   const [fetchData, setFetchData] = useState({
     list: [],
-    pagination: { total: 0 },
+    pagination: {total: 0},
   });
   const [selected, setSelected] = useState<any>({});
   const [actionType, setActionType] = useState<string>("");
   const [imageModal, setImageModal] = useState(false);
-  const [selectedData, setSelectedData] = useState({ post_id: 0 });
+  const [selectedData, setSelectedData] = useState({post_id: 0});
 
   // useEffects
   useEffect(() => {
     ActionFeature.get(currentPage, filter, setFetchData);
-    return () => {};
+    return () => { };
   }, [filter, token, dispatch, currentPage, recallApi]);
 
   // active or deactivate
@@ -61,8 +61,8 @@ const Phone = () => {
     },
 
     {
-      value: "Post Image",
-      component: ({ data }) => {
+      value: "Image",
+      component: ({data}) => {
         return (
           <div
             onClick={() => {
@@ -70,7 +70,7 @@ const Phone = () => {
               setImageModal(true);
             }}
           >
-            {data.post_image.length > 0 ? (
+            {data?.post_image?.length > 0 ? (
               data.post_image.map((img: any, index: number) => {
                 if (index < 3) {
                   return (
@@ -102,30 +102,30 @@ const Phone = () => {
     },
     {
       key: "post_name",
-      value: "Post Name",
+      value: "Email ",
     },
     {
       key: "post_description",
-      value: "Post Description",
+      value: "Number",
     },
     {
       key: "price",
-      value: "price",
+      value: "Zip",
     },
     {
       key: "created_at",
       value: "Created At",
-      component: ({ data }) => <>{DDMMYYYY(data.created_at)}</>,
+      component: ({data}) => <>{DDMMYYYY(data.created_at)}</>,
     },
     {
       value: "Status",
-      component: ({ data }) => (
-        <ActionSwitch id={data.post_id} is_active={data.is_active} />
+      component: ({data}) => (
+        <ActionSwitch data={data} />
       ),
     },
     {
       value: "Action",
-      component: ({ data }) => (
+      component: ({data}) => (
         <ActionButtons
           data={data}
           setSelected={setSelected}

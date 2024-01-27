@@ -120,7 +120,7 @@ const Poster = () => {
     {
       value: "Status",
       component: ({ data }) => (
-        <ActionSwitch id={data.post_id} is_active={data.is_active} />
+        <ActionSwitch data={data} />
       ),
     },
     {

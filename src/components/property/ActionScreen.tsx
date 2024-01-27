@@ -18,13 +18,13 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
 
   // validation logic
   const validation = {
-    category_name: Yup.string()
-      .required("Category  Name is required")
-      .min(2, "Category  Name must be at least 2 characters")
-      .max(50, "Category  Name can be at most 50 characters"),
-    category_description: Yup.string()
-      .required("Category Description is required")
-      .min(8, "Category Description must be at least 8 characters"),
+    brand: Yup.string()
+      .required("Brand  Name is required")
+      .min(2, "Brand  Name must be at least 2 characters")
+      .max(50, "Brand  Name can be at most 50 characters"),
+    description: Yup.string()
+      .required("Brand Description is required")
+      .min(8, "Brand Description must be at least 8 characters"),
   };
 
   // states
@@ -32,9 +32,9 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
   const [base64File, setBase64File] = useState("");
   const [formDataImg, setFormDataImg] = useState<File | null>();
   const [useInitData] = useState<any>({
-    category_name: type == PAGE_TYPE_ADD ? "" : data.category_name,
-    category_description:
-      type == PAGE_TYPE_ADD ? "" : data.category_description,
+    brand: type == PAGE_TYPE_ADD ? "" : data.brand,
+    description:
+      type == PAGE_TYPE_ADD ? "" : data.description,
   });
 
   //   Hooks
@@ -60,29 +60,29 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     let res;
     try {
       const formData = new FormData();
+
+      formData.append("brand", value.brand.trim());
+      formData.append(
+        "description",
+        value.description.trim()
+      );
       if (formDataImg) {
-        formData.append("category_image", formDataImg);
+        formData.append("image", formDataImg);
         if (type === PAGE_TYPE_EDIT) {
-          formData.append("oldImage", data.category_image);
+          formData.append("oldImage", data.image);
         }
       }
-
-      formData.append("category_name", value.category_name.trim());
-      formData.append(
-        "category_description",
-        value.category_description.trim()
-      );
       if (type === PAGE_TYPE_ADD) {
-        res = await ApiFeature.post(urls, formData, 0, true);
+        res = await ApiFeature.post(urls, formData, data.id, true);
       } else {
         res = await ApiFeature.put(urls, formData, data.id, true);
       }
       if (res.status == 200) {
-        dispatch(setLoader(false));
-        dispatch(setRecallApi(true));
-        setFormDataImg(null);
-        setBase64File("");
-        onClose(false);
+      dispatch(setLoader(false));
+      dispatch(setRecallApi(true));
+      setFormDataImg(null);
+      setBase64File("");
+      onClose(false);
       }
     } catch (error) {
       dispatch(setLoader(false));
@@ -109,13 +109,14 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
           enableReinitialize={true}
           onSubmit={onsubmit}
           initialValues={useInitData}
-          validationSchema={Yup.object().shape(validation)}
+        // validationSchema={Yup.object().shape(validation)}
+
         >
           {() => (
             <Form>
               <div className="row">
                 <div className="col-md-6 col-sm-12">
-                  {/* category_image */}
+                  {/* brand_image */}
                   <label className="d-flex flex-column align-items-center">
                     <h5 style={{marginBottom: "10px", fontWeight: "bold"}}>
                       Upload image
@@ -140,13 +141,13 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                           type == PAGE_TYPE_ADD
                             ? base64File || "/assets/img/profile.png"
                             : base64File ||
-                            data.category_image ||
+                            data.url ||
                             "/assets/img/profile.png"
                         }
                         alt="profile Image"
                         width={200}
                         height={200}
-                        className="rounded-circle object-fit-cover"
+                        className=" object-fit-cover"
                       />
                     </div>
                   </div>
@@ -156,37 +157,37 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                   {/* first name */}
                   <div className="w-100">
                     <FormStrap.Label className="form-control-label">
-                      <h6>Category Name</h6>
+                      <h6>Brand Name</h6>
                     </FormStrap.Label>
                     <Field
                       type="text"
-                      id="category_name"
-                      placeholder="Category  Name"
-                      name="category_name"
+                      id="brand"
+                      placeholder="Brand  Name"
+                      name="brand"
                       className="form-control-alternative form-control w-100"
                     />
                     <ErrorMessage
                       className="text-danger"
-                      name="category_name"
+                      name="brand"
                       component="div"
                     />
                   </div>
                   <div className="">
                     <FormStrap.Label className="form-control-label">
-                      <h6>Category Description</h6>
+                      <h6>Brand Description</h6>
                     </FormStrap.Label>
                     <Field
                       as="textarea"
                       rows={4}
                       type="textarea"
-                      placeholder="Category Description"
-                      id="category_description"
-                      name="category_description"
+                      placeholder="Brand Description"
+                      id="description"
+                      name="description"
                       className="form-control-alternative form-control"
                     />
                     <ErrorMessage
                       className="text-danger"
-                      name="category_description"
+                      name="description"
                       component="div"
                     />
                   </div>

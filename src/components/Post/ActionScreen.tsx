@@ -19,15 +19,15 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
   // validation logic
   const validation = {
     product_name: Yup.string()
-      .required("Product Name is required")
+      .required("Name is required")
       .min(2, "Product Name must be at least 2 characters")
       .max(50, "Product Name can be at most 50 characters"),
     product_description: Yup.string()
       .required("Product Description is required")
       .min(8, "Product Description must be at least 8 characters"),
     price: Yup.string().required("Price is required"),
-    category_id: Yup.string().required("Category is required"),
-    sub_category_id: Yup.string().required("sub Category is required"),
+    brand: Yup.string().required("Category is required"),
+    Modal: Yup.string().required("sub Category is required"),
   };
 
   // states
@@ -36,11 +36,11 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     product_name: type == PAGE_TYPE_ADD ? "" : data.product_name,
     product_description: type == PAGE_TYPE_ADD ? "" : data.product_description,
     price: type == PAGE_TYPE_ADD ? "" : data.price,
-    category_id: type == PAGE_TYPE_ADD ? "" : data.category_id,
-    sub_category_id: type == PAGE_TYPE_ADD ? "" : data.sub_category_id,
+    brand: type == PAGE_TYPE_ADD ? "" : data.brand,
+    modal: type == PAGE_TYPE_ADD ? "" : data.modal,
   });
 
-  const [categoryData, setCategoryData] = useState<any>([]);
+  const [brandData, setCategoryData] = useState<any>([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState([]);
   const [selectedFile, setSelectedFile] = useState(
     type === PAGE_TYPE_ADD ? [] : data.product_image
@@ -57,7 +57,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
   useEffect(() => {
     dispatch(setLoader(true));
     async function getCategoryData() {
-      const data: any = await ApiFeature.get("category/getCategoryWithSubCat");
+      const data: any = await ApiFeature.get("brand/getCategoryWithSubCat");
       if (data && data.status == 200) {
         setCategoryData(data.data);
         dispatch(setLoader(false));
@@ -76,9 +76,9 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
 
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSubCategory(
-      categoryData.find(
-        (category: categoryDataType) => category.category_id == +e.target.value
-      )?.sub_category || []
+      brandData.find(
+        (brand: categoryDataType) => brand.category_id == +e.target.value
+      )?.modal || []
     );
   };
 
@@ -133,12 +133,12 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
 
   useEffect(() => {
     setSelectedSubCategory(
-      categoryData.find(
+      brandData.find(
         (category: categoryDataType) =>
           category.category_id == +data.category_id
-      )?.sub_category || []
+      )?.modal || []
     );
-  }, [categoryData, data]);
+  }, [brandData, data]);
 
   return (
     <Modal
@@ -166,7 +166,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                 <div className="col-md-6 col-sm-12">
                   <div className="w-100">
                     <FormStrap.Label className="form-control-label">
-                      <h6>Product Name</h6>
+                      <h6>Name</h6>
                     </FormStrap.Label>
                     <Field
                       type="text"
@@ -183,7 +183,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                   </div>
                   <div className="w-100">
                     <FormStrap.Label className="form-control-label">
-                      <h6>Product Price</h6>
+                      <h6>Price</h6>
                     </FormStrap.Label>
                     <Field
                       type="text"
@@ -201,34 +201,34 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                   <div className="w-100">
                     <div>
                       <FormStrap.Label className="form-control-label">
-                        <h6>Category</h6>
+                        <h6>barnd</h6>
                       </FormStrap.Label>
                       <Field
                         as="select"
-                        name="category_id"
-                        id="category_id"
+                        name="_id"
+                        id="_id"
                         className="form-control-alternative form-control"
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                           onChangeCategory(e);
-                          setFieldValue("category_id", e.target.value);
+                          setFieldValue("_id", e.target.value);
                         }}
                       >
                         <option value="" selected disabled hidden>
-                          select category
+                          select Brand
                         </option>
-                        {categoryData &&
-                          categoryData.length > 0 &&
-                          categoryData?.map((value: any, index: number) => {
+                        {brandData &&
+                          brandData.length > 0 &&
+                          brandData?.map((value: any, index: number) => {
                             return (
-                              <option key={index} value={value.category_id}>
-                                {value.category_name}
+                              <option key={index} value={value._id}>
+                                {value.Brand}
                               </option>
                             );
                           })}
                       </Field>
                       <ErrorMessage
                         className="text-danger"
-                        name="category_id"
+                        name="_id"
                         component="div"
                       />
                     </div>
@@ -237,13 +237,13 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                 <div className="w-50">
                   <div className="">
                     <FormStrap.Label className="form-control-label">
-                      <h6>Product Description</h6>
+                      <h6>Description</h6>
                     </FormStrap.Label>
                     <Field
                       as="textarea"
                       rows={4}
                       type="textarea"
-                      placeholder="Category Description"
+                      placeholder="Description"
                       id="product_description"
                       name="product_description"
                       className="form-control-alternative form-control"
@@ -257,7 +257,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                   <div className="w-100">
                     <div>
                       <FormStrap.Label className="form-control-label">
-                        <h6>Sub Category</h6>
+                        <h6>modal</h6>
                       </FormStrap.Label>
                       <Field
                         as="select"
@@ -266,7 +266,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                         className="form-control-alternative form-control"
                       >
                         <option value="" selected disabled hidden>
-                          select category
+                          select modal
                         </option>
                         {selectedSubCategory &&
                           selectedSubCategory.length > 0 &&
@@ -277,7 +277,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                                   key={index}
                                   value={value.sub_category_id}
                                 >
-                                  {value.sub_category_name}
+                                  {value.sub_brand}
                                 </option>
                               );
                             }
@@ -285,7 +285,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                       </Field>
                       <ErrorMessage
                         className="text-danger"
-                        name="sub_category_id"
+                        name="sub__id"
                         component="div"
                       />
                     </div>
