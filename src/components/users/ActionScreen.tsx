@@ -23,8 +23,6 @@ import {
 import Select from 'react-select';
 import TagsInput from 'react-tagsinput'
 
-import 'react-tagsinput/react-tagsinput.css'
-
 
 const ActionScreen: React.FC<ActionModalType> = (props) => {
   // props
@@ -171,7 +169,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
           initialValues={useInitData}
           validationSchema={Yup.object().shape(validation)}
         >
-          {({values, handleChange, setValues}) => (
+          {({values, setValues}) => (
             <Form>
               <div className="d-flex gap-column justify-content-between ">
                 {/* image */}
@@ -317,25 +315,18 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                       component="div"
                     />
                   </div>{/* zip */}
-                  {/* {values.role == "broker" ? */}
-                  <div className="">
-                    <FormStrap.Label className="form-control-label">
-                      <h6>Area</h6>
-                    </FormStrap.Label>
-                    <TagsInput
-                      value={values.local_area}
-                      onChange={(zip: number[]) => {setValues({...values, local_area: zip})}}
-                      inputProps={{placeholder: 'Add tags'}}
-                    />
-                    {/* <Field
-                        type="text"
-                        id="local_area"
-                        name="local_area"
-                        placeholder="Enter zip codes separated by (,) commas"
-                        className="form-control-alternative form-control "
-                      /> */}
-                    <ErrorMessage name="local_area" component="div" />
-                  </div>
+                  {values.role == "broker" &&
+                    <div className="">
+                      <FormStrap.Label className="form-control-label">
+                        <h6>Area (press Enter to add zip)</h6>
+                      </FormStrap.Label>
+                      <TagsInput
+                        value={values.local_area}
+                        onChange={(zip: number[]) => {setValues({...values, local_area: zip})}}
+                        inputProps={{placeholder: 'zip codes'}}
+                      />
+                      <ErrorMessage name="local_area" component="div" />
+                    </div>}
                   {/* zip code in add */}
                   {type == PAGE_TYPE_ADD && <div className="">
                     <FormStrap.Label className="form-control-label">
@@ -350,7 +341,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                     />
                     <ErrorMessage name="zip_code" component="div" />
                   </div>}
-                  {/* } */}
+
                 </div>
                 <div className="w-50">
                   {/* password */}

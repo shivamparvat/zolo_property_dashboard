@@ -172,7 +172,7 @@ const Post = () => {
                 ActionFeature.download();
               }}
             />
-            <Filter filter={filter} disable={[FILTER]} setFilter={setFilter} />
+            <Filter filter={filter} disable={[]} setFilter={setFilter} />
             <CustomTable
               tableCustomize={TableCustomize}
               data={fetchData && fetchData?.list}

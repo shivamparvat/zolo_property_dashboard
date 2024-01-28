@@ -20,10 +20,8 @@ export const TABLE_ITEM_OPTION = [5, 10, 25, 50, 75, 100];
 
 //  list order data 
 export const LIST_ORDER_TYPE_DATA = {
-    Recent: "recent",
-    Older: "older",
-    "A-Z": "ASC",
-    "Z-A": "DESC",
+    "ASC": "ASC",
+    "DESC": "DESC",
 };
 export const LIST_ORDER_TYPE_KEYS = Object.keys(LIST_ORDER_TYPE_DATA)
 
@@ -36,6 +34,7 @@ export const FILTER_OPTION_TYPE_DATA = {
     address: "address",
     phone: "phone_number",
     email: "email",
+    time: "createdAt",
 }
 
 export const FILTER_OPTION_TYPE_KEY = Object.keys(FILTER_OPTION_TYPE_DATA)
