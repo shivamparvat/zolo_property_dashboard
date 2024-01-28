@@ -48,6 +48,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       .required("Email is required")
       .email("Invalid email format")
       .max(100, "Email can be at most 100 characters"),
+    password: Yup.string().optional(),
     role: Yup.string().required("Role is required"),
     address: Yup.string()
       .required("Address is required")
@@ -57,16 +58,18 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       .min(10, "Phone Number must be at least 10 digits")
       .max(10, "Phone Number can be at most 10 digits")
       .matches(/^[0-9]+$/, "Phone Number must contain only digits"),
-    password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
-      .max(20, "Password can be at most 20 characters")
-      .notRequired(),
     zip_code: Yup.number().required('Zip Code is required'),
     local_area: Yup.array().of(Yup.number()),
     city: Yup.string().required('City is required'),
     state: Yup.string().required('State is required'),
   };
 
+  if (type == PAGE_TYPE_ADD) {
+    validation.password = Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .max(20, "Password can be at most 20 characters")
+      .notRequired()
+  }
   // states
 
   const [base64File, setBase64File] = useState("");
@@ -130,7 +133,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       if (type === PAGE_TYPE_ADD) {
         res = await ApiFeature.post(urls, formData, 0, true);
       } else {
-        res = await ApiFeature.put(urls, formData, data.id, true);
+        res = await ApiFeature.put(urls, formData, data._id, true);
       }
 
       if (res.status == 200) {

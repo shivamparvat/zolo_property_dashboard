@@ -92,8 +92,8 @@ interface userType {
   role?: string;
   zip_code?: number,
   local_area?: number[],
-  city: string,
-  state: string,
+  city?: string,
+  state?: string,
   oldImage?: string;
   image?: string;
   is_active?: number;
