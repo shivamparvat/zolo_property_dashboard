@@ -1,72 +1,82 @@
-import react, {useEffect, useState} from "react";
-import FullLayout from "@/components/layouts/FullLayout";
-import "@/styles/globals.css";
-import "@/styles/style.scss";
-import type {AppProps} from "next/app";
-import {usePathname} from "next/navigation";
-import {GoogleOAuthProvider} from "@react-oauth/google";
-import {PersistGate} from "redux-persist/integration/react";
-import {RootState, persistore, wrapper} from "@/redux/store";
-import {useDispatch, useSelector} from "react-redux";
-import {useRouter} from "next/router";
-import {Toaster} from "react-hot-toast";
+import { RootState, persistore, wrapper } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
 import ApiFeature from "@/Api/ApiFeature";
-import "react-confirm-alert/src/react-confirm-alert.css";
 import ActionFeature from "@/Api/ActionFeature";
+import { useEffect, useState } from "react";
+import type { AppProps } from "next/app";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import FullLayout from "../components/layouts/FullLayout";
+import { PersistGate } from "redux-persist/integration/react";
+import { Toaster } from "react-hot-toast";
+import "../styles/globals.css";
+import "../styles/style.scss";
+import { useRouter } from "next/router";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
-function App({Component, pageProps}: AppProps) {
-  const router = useRouter();
+function App({ Component, pageProps }: AppProps) {
   const dispatch = useDispatch();
-  const path = usePathname();
-  const [pageLoading, setPageLoading] = useState(false);
-  const [Auth, setAuth] = useState(false);
+  const router = useRouter();
+  const [mount, setMount] = useState(false);
+  const [disable, setDisable] = useState(true);
   const token = useSelector(
     (state: RootState) => state?.login?.userToken?.token
   );
+  const routeChange = () => {
+    router.events.on("routeChangeComplete", () => setDisable(false));
+  };
 
   useEffect(() => {
-    //   setPageLoading(true);
-    // setAuth(true);
-    if (token && path !== "/login" && path !== "/register" && path !== "/") {
-      //     router.push("/login");
+    setMount(true);
+
+    if (
+      !token &&
+      router.pathname !== "/login" &&
+      router.pathname !== "/register" &&
+      router.pathname !== "/"
+    ) {
+      // Redirect users who are not authenticated to the login page
+      setDisable(true);
+      router.push("/login");
     } else if (
       token &&
-      (path === "/login" || path === "/register" || path === "/")
+      (router.pathname === "/login" ||
+        router.pathname === "/register" ||
+        router.pathname === "/")
     ) {
+      // Redirect authenticated users away from the "login" and "register" routes
+      setDisable(true);
       router.push("/dashboard");
-      //     setAuth(true);
     } else {
-      //     setAuth(false);
+      setDisable(false);
     }
-  }, [token, path, router]);
+  }, [token, router.pathname]);
 
-  // useEffect(() => {
-  //   setPageLoading(true);
-  // }, []);
-
+  const clientId: any = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   // configure ApiFeature and ActionFeature
   ApiFeature.config = {
     router: router,
     dispatch: dispatch,
     token: token || "",
   };
+
   ActionFeature.config = {
     dispatch,
   };
+  useEffect(() => {
+    setMount(true);
+  }, []);
 
-  if (Auth && Auth) {
+  if (disable) {
     return null;
   } else {
     return (
       <>
         <Toaster position="top-right" />
-        <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_KEY || ""}
-        >
+        <GoogleOAuthProvider clientId={clientId}>
           <PersistGate loading={null} persistor={persistore}>
-            {(pageLoading && pageLoading && path === "/login") ||
-              path === "/registration" ||
-              path === "/" ? (
+            {(mount && router.pathname === "/login") ||
+            router.pathname === "/register" ||
+            router.pathname === "/" ? (
               <Component {...pageProps} />
             ) : (
               <FullLayout>
@@ -79,5 +89,4 @@ function App({Component, pageProps}: AppProps) {
     );
   }
 }
-
 export default wrapper.withRedux(App);
