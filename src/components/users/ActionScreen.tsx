@@ -22,12 +22,15 @@ import {
 } from "../Utils/constants";
 import Select from 'react-select';
 import TagsInput from 'react-tagsinput'
+import MapComponent, {Coordinates} from "../Utils/map";
+import {editUserType} from "../../../type";
 
 
 const ActionScreen: React.FC<ActionModalType> = (props) => {
   // props
   const {id, onClose, isActive, data, type, urls, path} = props;
 
+  const [Coordinates, setCoordinates] = useState<Coordinates>(type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78})
   // profile max size
 
   // user role
@@ -62,12 +65,12 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     state: Yup.string().required('State is required'),
   };
 
-  if (type == PAGE_TYPE_ADD) {
-    validation.password = Yup.string()
-      .min(8, "Password must be at least 8 characters")
-      .max(20, "Password can be at most 20 characters")
-      .notRequired()
-  }
+  // if (type == PAGE_TYPE_ADD) {
+  //   validation.password = (Yup.string()
+  //     .min(8, "Password must be at least 8 characters")
+  //     .max(20, "Password can be at most 20 characters")
+  //     .notRequired())
+  // }
   // states
 
   const [base64File, setBase64File] = useState("");
@@ -84,6 +87,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     city: type == PAGE_TYPE_ADD ? "" : data.city,
     state: type == PAGE_TYPE_ADD ? "" : data.state,
     address: type == PAGE_TYPE_ADD ? "" : data.address,
+    coordinates: type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78}
   });
 
   //   Hooks
@@ -124,6 +128,9 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       formData.append("zip_code", value.zip_code);
       (value.local_area || []).map((zip: any) => {
         formData.append("local_area[]", zip);
+      })
+      Object.values(Coordinates).map((latlng: string) => {
+        formData.append("coordinates[]", latlng);
       })
       formData.append("city", value.city.trim());
       formData.append("state", value.state.trim());
@@ -321,7 +328,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                         <h6>Area (press Enter to add zip)</h6>
                       </FormStrap.Label>
                       <TagsInput
-                        value={values.local_area}
+                        value={values.local_area || []}
                         onChange={(zip: number[]) => {setValues({...values, local_area: zip})}}
                         inputProps={{placeholder: 'zip codes'}}
                       />
@@ -418,7 +425,8 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
               </div>
               {/* address */}
               <div className="">
-                <FormStrap.Label className="form-control-label">
+                <MapComponent setCoordinates={setCoordinates} Coordinates={Coordinates} />
+                {/* <FormStrap.Label className="form-control-label">
                   <h6>Address</h6>
                 </FormStrap.Label>
                 <Field
@@ -434,7 +442,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                   className="text-danger"
                   name="address"
                   component="div"
-                />
+                /> */}
               </div>
               {/* submit */}
               <div className="w-100 d-flex justify-content-center">

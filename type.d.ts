@@ -94,6 +94,7 @@ interface userType {
   local_area?: number[],
   city?: string,
   state?: string,
+  coordinates: {lat: number, lng: number}
   oldImage?: string;
   image?: string;
   is_active?: number;
@@ -132,4 +133,16 @@ interface actionButtons {
   setSelected: React.Dispatch<any>
   setEdit: React.Dispatch<string>
   id: string | number
+}
+
+
+interface LatLng {
+  latLng: {
+    equals(other: google.maps.LatLng | null): boolean;
+    lat(): number;
+    lng(): number;
+    toJSON(): google.maps.LatLngLiteral;
+    toString(): string;
+    toUrlValue(precision?: number): string;
+  }
 }

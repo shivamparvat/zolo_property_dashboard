@@ -16,7 +16,7 @@ import {
 } from "../Utils/constants";
 import TableHeader from "../Utils/CustomTable/TableHeader";
 import Image from "next/image";
-// import ActionScreen from "./ActionScreen";
+import ActionScreen from "./ActionScreen";
 import ActionFeature from "@/Api/ActionFeature";
 
 // init
@@ -139,19 +139,19 @@ const Phone = () => {
 
   return (
     <>
-      {/* {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
+      {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
         <ActionScreen
           id={selected.post_id || 0}
           isActive={
             actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT
           }
           onClose={setActionType}
-          data={{ ...selected, id: selected.post_id }}
+          data={{...selected, id: selected.post_id}}
           type={actionType == PAGE_TYPE_ADD ? PAGE_TYPE_ADD : PAGE_TYPE_EDIT}
           urls={actionType == PAGE_TYPE_ADD ? "post/add" : "post/update"}
           path={path}
         />
-      )} */}
+      )}
       <div className="card bg-white">
         <div className="card-datatable">
           <div className="dataTables_wrapper dt-bootstrap5">

@@ -1,13 +1,13 @@
 import ApiFeature from "@/Api/ApiFeature";
-import Filter, { FILTER } from "../Utils/Filter";
-import { setLoader } from "@/redux/reducer/loader";
-import react, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import CustomTable, { ActionButtons, ActionSwitch } from "../Utils/CustomTable";
-import { DDMMYYYY } from "../Utils/Formeter";
+import Filter, {FILTER} from "../Utils/Filter";
+import {setLoader} from "@/redux/reducer/loader";
+import react, {useState, useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@/redux/store";
+import CustomTable, {ActionButtons, ActionSwitch} from "../Utils/CustomTable";
+import {DDMMYYYY} from "../Utils/Formeter";
 import Pagination from "../Utils/Pagination";
-import { setRecallApi } from "@/redux/reducer/RecallApi";
+import {setRecallApi} from "@/redux/reducer/RecallApi";
 import {
   INIT_FILTER,
   PAGE_TYPE_ADD,
@@ -16,7 +16,7 @@ import {
 } from "../Utils/constants";
 import TableHeader from "../Utils/CustomTable/TableHeader";
 import Image from "next/image";
-// import ActionScreen from "./ActionScreen";
+import ActionScreen from "./ActionScreen";
 import ActionFeature from "@/Api/ActionFeature";
 
 // init
@@ -39,17 +39,17 @@ const Poster = () => {
   const [filter, setFilter] = useState(INIT_FILTER);
   const [fetchData, setFetchData] = useState({
     list: [],
-    pagination: { total: 0 },
+    pagination: {total: 0},
   });
   const [selected, setSelected] = useState<any>({});
   const [actionType, setActionType] = useState<string>("");
   const [imageModal, setImageModal] = useState(false);
-  const [selectedData, setSelectedData] = useState({ post_id: 0 });
+  const [selectedData, setSelectedData] = useState({post_id: 0});
 
   // useEffects
   useEffect(() => {
     ActionFeature.get(currentPage, filter, setFetchData);
-    return () => {};
+    return () => { };
   }, [filter, token, dispatch, currentPage, recallApi]);
 
   // active or deactivate
@@ -62,7 +62,7 @@ const Poster = () => {
 
     {
       value: "Post Image",
-      component: ({ data }) => {
+      component: ({data}) => {
         return (
           <div
             onClick={() => {
@@ -115,17 +115,17 @@ const Poster = () => {
     {
       key: "created_at",
       value: "Created At",
-      component: ({ data }) => <>{DDMMYYYY(data.created_at)}</>,
+      component: ({data}) => <>{DDMMYYYY(data.created_at)}</>,
     },
     {
       value: "Status",
-      component: ({ data }) => (
+      component: ({data}) => (
         <ActionSwitch data={data} />
       ),
     },
     {
       value: "Action",
-      component: ({ data }) => (
+      component: ({data}) => (
         <ActionButtons
           data={data}
           setSelected={setSelected}
@@ -139,19 +139,19 @@ const Poster = () => {
 
   return (
     <>
-      {/* {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
+      {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
         <ActionScreen
           id={selected.post_id || 0}
           isActive={
             actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT
           }
           onClose={setActionType}
-          data={{ ...selected, id: selected.post_id }}
+          data={{...selected, id: selected.post_id}}
           type={actionType == PAGE_TYPE_ADD ? PAGE_TYPE_ADD : PAGE_TYPE_EDIT}
           urls={actionType == PAGE_TYPE_ADD ? "post/add" : "post/update"}
           path={path}
         />
-      )} */}
+      )}
 
 
       <div className="card bg-white">
