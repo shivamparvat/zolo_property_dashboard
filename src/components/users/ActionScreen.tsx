@@ -23,7 +23,6 @@ import {
 import Select from 'react-select';
 import TagsInput from 'react-tagsinput'
 import MapComponent, {Coordinates} from "../Utils/map";
-import {editUserType} from "../../../type";
 
 
 const ActionScreen: React.FC<ActionModalType> = (props) => {
@@ -51,16 +50,13 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       .max(100, "Email can be at most 100 characters"),
     password: Yup.string().optional(),
     role: Yup.string().required("Role is required"),
-    address: Yup.string()
-      .required("Address is required")
-      .min(8, "Address must be at least 8 characters"),
     contact_number: Yup.string()
       .required("Phone Number is required")
       .min(10, "Phone Number must be at least 10 digits")
       .max(10, "Phone Number can be at most 10 digits")
       .matches(/^[0-9]+$/, "Phone Number must contain only digits"),
     zip_code: Yup.number().required('Zip Code is required'),
-    local_area: Yup.array().of(Yup.number()),
+    local_area: Yup.array().of(Yup.number()).optional(),
     city: Yup.string().required('City is required'),
     state: Yup.string().required('State is required'),
   };
@@ -123,8 +119,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       formData.append("email", value.email.trim());
       formData.append("role", value.role.toString());
       formData.append("contact_number", value.contact_number);
-      if (value.password) formData.append("password", value.password.trim());;
-      formData.append("address", value.address.trim());
+      if (value.password) formData.append("password", value.password.trim())
       formData.append("zip_code", value.zip_code);
       (value.local_area || []).map((zip: any) => {
         formData.append("local_area[]", zip);

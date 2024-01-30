@@ -1,7 +1,7 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { MAX_FILE_SIZE_BYTES } from "../Utils/constants";
-import ShowToast, { error } from "../Utils/ShowToast";
+import React, {useEffect, useState} from "react";
+import {MAX_FILE_SIZE_BYTES} from "../Utils/constants";
+import ShowToast, {error} from "../Utils/ShowToast";
 
 interface MultiFileUploadType {
   selectedFile: any[];
@@ -126,9 +126,8 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                     // console.log("file", data);
                     return (
                       <div
-                        className={`file-atc-box ${
-                          data.overSize ? "alert lightDanger" : ""
-                        }`}
+                        className={`file-atc-box ${data.overSize ? "alert lightDanger" : ""
+                          }`}
                         id={data.overSize ? "removeImg" : ""}
                         key={data.id ? data.id : data.product_image_id}
                       >
@@ -174,6 +173,10 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                             >
                               Delete
                             </button>
+                            <input
+                              type="checkbox"
+                              className="file-action-btn ms-3"
+                            />Banner
                           </div>
                           <span className="text-danger">
                             {data.overSize

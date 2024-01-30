@@ -35,7 +35,7 @@ const navigation = [
   {
     id: 3,
     title: "Ads",
-    href: "/post",
+    href: "/ads",
     icon: <BsFillPostcardHeartFill style={{fontSize: "1rem", color: "#11CDEF"}} />,
   },
   {

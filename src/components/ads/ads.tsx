@@ -21,9 +21,9 @@ import ActionFeature from "@/Api/ActionFeature";
 
 // init
 
-const Poster = () => {
+const Ads = () => {
   // init
-  const path = "poster";
+  const path = "ads";
 
   // configure
   ActionFeature.path = path;
@@ -183,4 +183,4 @@ const Poster = () => {
   );
 };
 
-export default Poster;
+export default Ads;

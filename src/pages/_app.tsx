@@ -1,19 +1,19 @@
-import { RootState, persistore, wrapper } from "@/redux/store";
-import { useDispatch, useSelector } from "react-redux";
+import {RootState, persistore, wrapper} from "@/redux/store";
+import {useDispatch, useSelector} from "react-redux";
 import ApiFeature from "@/Api/ApiFeature";
 import ActionFeature from "@/Api/ActionFeature";
-import { useEffect, useState } from "react";
-import type { AppProps } from "next/app";
+import {useEffect, useState} from "react";
+import type {AppProps} from "next/app";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import FullLayout from "../components/layouts/FullLayout";
-import { PersistGate } from "redux-persist/integration/react";
-import { Toaster } from "react-hot-toast";
+import {PersistGate} from "redux-persist/integration/react";
+import {Toaster} from "react-hot-toast";
 import "../styles/globals.css";
 import "../styles/style.scss";
-import { useRouter } from "next/router";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import {useRouter} from "next/router";
+import {GoogleOAuthProvider} from "@react-oauth/google";
 
-function App({ Component, pageProps }: AppProps) {
+function App({Component, pageProps}: AppProps) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [mount, setMount] = useState(false);
@@ -60,7 +60,7 @@ function App({ Component, pageProps }: AppProps) {
   };
 
   ActionFeature.config = {
-    dispatch,
+    dispatch: dispatch,
   };
   useEffect(() => {
     setMount(true);
@@ -75,8 +75,8 @@ function App({ Component, pageProps }: AppProps) {
         <GoogleOAuthProvider clientId={clientId}>
           <PersistGate loading={null} persistor={persistore}>
             {(mount && router.pathname === "/login") ||
-            router.pathname === "/register" ||
-            router.pathname === "/" ? (
+              router.pathname === "/register" ||
+              router.pathname === "/" ? (
               <Component {...pageProps} />
             ) : (
               <FullLayout>

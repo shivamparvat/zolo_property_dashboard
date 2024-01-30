@@ -11,12 +11,15 @@ import {setRecallApi} from "@/redux/reducer/RecallApi";
 import FileUpload, {fileSizes} from "../property/FileUpload";
 import {MAX_FILE_SIZE_BYTES, PAGE_TYPE_ADD, PAGE_TYPE_EDIT} from "../Utils/constants";
 import ShowToast, {error} from "../Utils/ShowToast";
-import MapComponent from "../Utils/map";
+import MapComponent, {Coordinates} from "../Utils/map";
+import Switch from "react-switch";
 
 const ActionScreen: React.FC<ActionModalType> = (props) => {
   // props
   const {id, onClose, isActive, data, type, urls, path} = props;
-
+  const [coordinates, setCoordinates] = useState<Coordinates>(type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78})
+  const [show_map, setShow_map] = useState(true)
+  const [show_number, setShow_number] = useState(true)
   // validation logic
   const validation = {
     product_name: Yup.string()
@@ -39,6 +42,8 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     price: type == PAGE_TYPE_ADD ? "" : data.price,
     brand: type == PAGE_TYPE_ADD ? "" : data.brand,
     modal: type == PAGE_TYPE_ADD ? "" : data.modal,
+    coordinates: type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78}
+
   });
 
   const [brandData, setCategoryData] = useState<any>([]);
@@ -167,75 +172,78 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                 <div className="col-md-6 col-sm-12">
                   <div className="w-100">
                     <FormStrap.Label className="form-control-label">
-                      <h6>Name</h6>
+                      <h6>Ad name</h6>
                     </FormStrap.Label>
                     <Field
                       type="text"
-                      id="product_name"
+                      id="ads_name"
                       placeholder="Product Name"
-                      name="product_name"
+                      name="ads_name"
                       className="form-control-alternative form-control w-100"
                     />
                     <ErrorMessage
                       className="text-danger"
-                      name="product_name"
+                      name="ads_name"
                       component="div"
                     />
                   </div>
                   <div className="w-100">
                     <FormStrap.Label className="form-control-label">
-                      <h6>Price</h6>
+                      <h6>title</h6>
                     </FormStrap.Label>
                     <Field
                       type="text"
-                      id="price"
-                      placeholder="Product Price"
-                      name="price"
+                      id="title"
+                      placeholder="Title"
+                      name="title"
                       className="form-control-alternative form-control w-100"
                     />
                     <ErrorMessage
                       className="text-danger"
-                      name="price"
+                      name="title"
                       component="div"
                     />
                   </div>
                   <div className="w-100">
-                    <div>
+                    <div className="w-100">
                       <FormStrap.Label className="form-control-label">
-                        <h6>barnd</h6>
+                        <h6>number</h6>
                       </FormStrap.Label>
                       <Field
-                        as="select"
-                        name="_id"
-                        id="_id"
-                        className="form-control-alternative form-control"
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                          onChangeCategory(e);
-                          setFieldValue("_id", e.target.value);
-                        }}
-                      >
-                        <option value="" selected disabled hidden>
-                          select Brand
-                        </option>
-                        {brandData &&
-                          brandData.length > 0 &&
-                          brandData?.map((value: any, index: number) => {
-                            return (
-                              <option key={index} value={value._id}>
-                                {value.Brand}
-                              </option>
-                            );
-                          })}
-                      </Field>
+                        type="text"
+                        id="number"
+                        placeholder="Number"
+                        name="number"
+                        className="form-control-alternative form-control w-100"
+                      />
                       <ErrorMessage
                         className="text-danger"
-                        name="_id"
+                        name="number"
+                        component="div"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-100">
+                    <div className="w-100">
+                      <FormStrap.Label className="form-control-label">
+                        <h6>Zip code</h6>
+                      </FormStrap.Label>
+                      <Field
+                        type="text"
+                        id="zip_code"
+                        placeholder="zip code"
+                        name="zip_code"
+                        className="form-control-alternative form-control w-100"
+                      />
+                      <ErrorMessage
+                        className="text-danger"
+                        name="zip_code"
                         component="div"
                       />
                     </div>
                   </div>
                 </div>
-                {/* <div className="w-50">
+                <div className="w-50">
                   <div className="">
                     <FormStrap.Label className="form-control-label">
                       <h6>Description</h6>
@@ -256,50 +264,87 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                     />
                   </div>
                   <div className="w-100">
-                    <div>
+                    <div className="w-100">
                       <FormStrap.Label className="form-control-label">
-                        <h6>modal</h6>
+                        <h6>city</h6>
                       </FormStrap.Label>
                       <Field
-                        as="select"
-                        name="sub_category_id"
-                        id="sub_category_id"
-                        className="form-control-alternative form-control"
-                      >
-                        <option value="" selected disabled hidden>
-                          select modal
-                        </option>
-                        {selectedSubCategory &&
-                          selectedSubCategory.length > 0 &&
-                          selectedSubCategory?.map(
-                            (value: any, index: number) => {
-                              return (
-                                <option
-                                  key={index}
-                                  value={value.sub_category_id}
-                                >
-                                  {value.sub_brand}
-                                </option>
-                              );
-                            }
-                          )}
-                      </Field>
+                        type="text"
+                        id="city"
+                        placeholder="city"
+                        name="city"
+                        className="form-control-alternative form-control w-100"
+                      />
                       <ErrorMessage
                         className="text-danger"
-                        name="sub__id"
+                        name="city"
                         component="div"
                       />
                     </div>
                   </div>
-                </div> */}
+                  <div className="w-100">
+                    <div className="w-100">
+                      <FormStrap.Label className="form-control-label">
+                        <h6>expiry date</h6>
+                      </FormStrap.Label>
+                      <Field
+                        type="date"
+                        id="expiry_date"
+                        placeholder="expiry date"
+                        name="expiry_date"
+                        className="form-control-alternative form-control w-100"
+                      />
+                      <ErrorMessage
+                        className="text-danger"
+                        name="expiry_date"
+                        component="div"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-              {/* <MapComponent /> */}
-              {/* <FileUpload
+              <div className="d-flex mt-3">
+                <div className="mt-2 me-5">
+                  <FormStrap.Label className="form-control-label">
+                    <h6>show number in Ad</h6>
+                  </FormStrap.Label>
+                  <div>
+                    <Switch
+                      onChange={() => setShow_number((pre: boolean) => !pre)}
+                      checked={show_number}
+                      // uncheckedIcon={false}
+                      checkedIcon={false}
+                      onColor="#009EFB"
+                      offColor="#dcdcdc"
+                      className="status-switch"
+                    /></div>
+                </div>
+
+                <div className="mt-2">
+                  <FormStrap.Label className="form-control-label">
+                    <h6>show map in Ad</h6>
+                  </FormStrap.Label>
+                  <div>
+                    <Switch
+                      onChange={() => setShow_map((pre: boolean) => !pre)}
+                      checked={show_map}
+                      // uncheckedIcon={false}
+                      checkedIcon={false}
+                      onColor="#009EFB"
+                      offColor="#dcdcdc"
+                      className="status-switch"
+                    /></div>
+                </div>
+
+              </div>
+              <hr />
+              <MapComponent Coordinates={coordinates} setCoordinates={setCoordinates} />
+              <FileUpload
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
                 setFiles={setFiles}
                 setDeletedFile={setDeletedFile}
-              /> */}
+              />
               {/* submit */}
               <div className="w-100 d-flex justify-content-center">
                 <button

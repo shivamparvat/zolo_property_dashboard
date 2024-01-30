@@ -23,7 +23,7 @@ import ActionFeature from "@/Api/ActionFeature";
 
 const Phone = () => {
   // init
-  const path = "contact";
+  const path = "phone";
 
   // configure
   ActionFeature.path = path;
@@ -59,63 +59,65 @@ const Phone = () => {
       value: "S.No",
       index: true,
     },
-
     {
-      value: "Image",
-      component: ({data}) => {
-        return (
-          <div
-            onClick={() => {
-              setSelectedData(data);
-              setImageModal(true);
-            }}
-          >
-            {data?.post_image?.length > 0 ? (
-              data.post_image.map((img: any, index: number) => {
-                if (index < 3) {
-                  return (
-                    <Image
-                      key={index}
-                      src={img.url || "/img/profile.png"}
-                      alt="category_image"
-                      width={36}
-                      height={36}
-                      className="avatar avatar-sm"
-                    />
-                  );
-                } else if (index === 4) {
-                  return <span key={index}>...</span>;
-                }
-              })
-            ) : (
-              <Image
-                src={"/img/profile.png"}
-                alt="category_image"
-                width={36}
-                height={36}
-                className="avatar avatar-sm"
-              />
-            )}
-          </div>
-        );
-      },
+      key: "name",
+      value: "name",
     },
+    // {
+    //   value: "Image",
+    //   component: ({data}) => {
+    //     return (
+    //       <div
+    //         onClick={() => {
+    //           setSelectedData(data);
+    //           setImageModal(true);
+    //         }}
+    //       >
+    //         {data?.post_image?.length > 0 ? (
+    //           data.post_image.map((img: any, index: number) => {
+    //             if (index < 3) {
+    //               return (
+    //                 <Image
+    //                   key={index}
+    //                   src={img.url || "/img/profile.png"}
+    //                   alt="category_image"
+    //                   width={36}
+    //                   height={36}
+    //                   className="avatar avatar-sm"
+    //                 />
+    //               );
+    //             } else if (index === 4) {
+    //               return <span key={index}>...</span>;
+    //             }
+    //           })
+    //         ) : (
+    //           <Image
+    //             src={"/img/profile.png"}
+    //             alt="category_image"
+    //             width={36}
+    //             height={36}
+    //             className="avatar avatar-sm"
+    //           />
+    //         )}
+    //       </div>
+    //     );
+    //   },
+    // },
     {
-      key: "post_name",
-      value: "Email ",
-    },
-    {
-      key: "post_description",
+      key: "contact_number",
       value: "Number",
     },
     {
-      key: "price",
+      key: "city",
+      value: "city",
+    },
+    {
+      key: "zip_code",
       value: "Zip",
     },
     {
-      key: "created_at",
       value: "Created At",
-      component: ({data}) => <>{DDMMYYYY(data.created_at)}</>,
+      component: ({data}) => <>{DDMMYYYY(data.createdAt)}</>,
     },
     {
       value: "Status",
@@ -130,7 +132,7 @@ const Phone = () => {
           data={data}
           setSelected={setSelected}
           setEdit={setActionType}
-          id={data.post_id}
+          id={data._id}
         />
       ),
       className: "d-flex ",
@@ -141,14 +143,14 @@ const Phone = () => {
     <>
       {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
         <ActionScreen
-          id={selected.post_id || 0}
+          id={selected._id || 0}
           isActive={
             actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT
           }
           onClose={setActionType}
           data={{...selected, id: selected.post_id}}
           type={actionType == PAGE_TYPE_ADD ? PAGE_TYPE_ADD : PAGE_TYPE_EDIT}
-          urls={actionType == PAGE_TYPE_ADD ? "post/add" : "post/update"}
+          urls={actionType == PAGE_TYPE_ADD ? `${path}/add` : `${path}/update`}
           path={path}
         />
       )}

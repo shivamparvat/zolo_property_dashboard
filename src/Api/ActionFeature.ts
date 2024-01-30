@@ -39,6 +39,8 @@ const ActionFeature: ActionFeatureType = {
                                 context?.dispatch(setRecallApi(true));
                             }
                         } catch (e) {
+                            context?.dispatch(setRecallApi(true));
+                            context?.dispatch(setRecallApi(true));
                             context?.dispatch(setLoader(false));
                         } finally {
                             context?.dispatch(setLoader(false));
