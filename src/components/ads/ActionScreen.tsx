@@ -37,11 +37,20 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
   // states
 
   const [formInitData] = useState<any>({
-    product_name: type == PAGE_TYPE_ADD ? "" : data.product_name,
-    product_description: type == PAGE_TYPE_ADD ? "" : data.product_description,
-    price: type == PAGE_TYPE_ADD ? "" : data.price,
-    brand: type == PAGE_TYPE_ADD ? "" : data.brand,
-    modal: type == PAGE_TYPE_ADD ? "" : data.modal,
+    ads_name: type == PAGE_TYPE_ADD ? "" : data.ads_name,
+    title: type == PAGE_TYPE_ADD ? "" : data.title,
+    description: type == PAGE_TYPE_ADD ? "" : data.description,
+    show_number: type == PAGE_TYPE_ADD ? false : data.show_number,
+    show_map: type == PAGE_TYPE_ADD ? false : data.show_map,
+    number: type == PAGE_TYPE_ADD ? "" : data.number,
+    city: type == PAGE_TYPE_ADD ? "" : data.city,
+    zip_code: type == PAGE_TYPE_ADD ? "" : data.zip_code,
+    expiry_date: type == PAGE_TYPE_ADD ? (() => {
+      const currentDate = new Date();
+      const next30Days = new Date(currentDate);
+      next30Days.setDate(currentDate.getDate() + 30);
+      return next30Days;
+    }) : data.expiry_date,
     coordinates: type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78}
 
   });

@@ -1,6 +1,5 @@
 import ApiFeature from "@/Api/ApiFeature";
-import Filter, {FILTER} from "../Utils/Filter";
-import {setLoader} from "@/redux/reducer/loader";
+import Filter from "../Utils/Filter";
 import react, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
@@ -12,13 +11,13 @@ import {
   INIT_FILTER,
   PAGE_TYPE_ADD,
   PAGE_TYPE_EDIT,
-  TAX_TYPE_DATA,
 } from "../Utils/constants";
-import TableHeader from "../Utils/CustomTable/TableHeader";
+import TableHeader, {FIRST_BUTTON} from "../Utils/CustomTable/TableHeader";
 import Image from "next/image";
 import ActionScreen from "./ActionScreen";
 import ImagePreview from "./ImageModule";
 import ActionFeature from "@/Api/ActionFeature";
+import StatusChange from "./StatusChange";
 
 // init
 
@@ -47,11 +46,15 @@ const Post = () => {
   const [imageModal, setImageModal] = useState(false);
   const [selectedData, setSelectedData] = useState({post_id: 0});
 
+
   // useEffects
   useEffect(() => {
     ActionFeature.get(currentPage, filter, setFetchData);
     return () => { };
   }, [filter, token, dispatch, currentPage, recallApi]);
+
+
+
 
   // active or deactivate
 
@@ -60,63 +63,75 @@ const Post = () => {
       value: "S.No",
       index: true,
     },
-
     {
-      value: "Post Image",
-      component: ({data}) => {
-        return (
-          <div
-            onClick={() => {
-              setSelectedData(data);
-              setImageModal(true);
-            }}
-          >
-            {(data?.post_image || []).length > 0 ? (
-              data.post_image.map((img: any, index: number) => {
-                if (index < 3) {
-                  return (
-                    <Image
-                      key={index}
-                      src={img.url || "/img/profile.png"}
-                      alt="category_image"
-                      width={36}
-                      height={36}
-                      className="avatar avatar-sm"
-                    />
-                  );
-                } else if (index === 4) {
-                  return <span key={index}>...</span>;
-                }
-              })
-            ) : (
-              <Image
-                src={"/img/profile.png"}
-                alt="category_image"
-                width={36}
-                height={36}
-                className="avatar avatar-sm"
-              />
-            )}
-          </div>
-        );
-      },
+      value: "user",
+      key: "name",
+    },
+    // {
+    //   value: "Post Image",
+    //   component: ({data}) => {
+    //     return (
+    //       <div
+    //         onClick={() => {
+    //           setSelectedData(data);
+    //           setImageModal(true);
+    //         }}
+    //       >
+    //         {(data?.images || []).length > 0 ? (
+    //           data.images.map((img: any, index: number) => {
+    //             if (index < 3) {
+    //               return (
+    //                 <Image
+    //                   key={index}
+    //                   src={img.url || "/img/profile.png"}
+    //                   alt="category_image"
+    //                   width={36}
+    //                   height={36}
+    //                   className="avatar avatar-sm"
+    //                 />
+    //               );
+    //             } else if (index === 4) {
+    //               return <span key={index}>...</span>;
+    //             }
+    //           })
+    //         ) : (
+    //           <Image
+    //             src={"/img/profile.png"}
+    //             alt="category_image"
+    //             width={36}
+    //             height={36}
+    //             className="avatar avatar-sm"
+    //           />
+    //         )}
+    //       </div>
+    //     );
+    //   },
+    // },
+    {
+      value: "Address",
+      component: ({data}) => <>{`${data.city || ""} ${data.state || ""} ${data.zip_code || ""}`}</>,
     },
     {
-      key: "city",
-      value: "city",
+      value: "property for",
+      key: "property_for",
     },
     {
-      key: "post_description",
-      value: "Post Description",
+      value: "property type",
+      key: "property_type",
     },
     {
-      key: "price",
-      value: "price",
+      value: "user Type",
+      key: "added_by_type",
+    },
+    {
+      value: "status",
+      component: StatusChange
+      // key: "admin_status",
     },
     {
       key: "created_at",
       value: "Created At",
-      component: ({data}) => <>{DDMMYYYY(data.created_at)}</>,
+      component: ({data}) => <>{DDMMYYYY(data.createdAt)}</>,
     },
     {
       value: "Status",
@@ -149,7 +164,7 @@ const Post = () => {
           onClose={setActionType}
           data={{...selected, id: selected.post_id}}
           type={actionType == PAGE_TYPE_ADD ? PAGE_TYPE_ADD : PAGE_TYPE_EDIT}
-          urls={actionType == PAGE_TYPE_ADD ? "post/add" : "post/update"}
+          urls={actionType == PAGE_TYPE_ADD ? `${path}/add` : `${path}/update`}
           path={path}
         />
       )}
@@ -170,7 +185,9 @@ const Post = () => {
               onAddClick={() => setActionType(PAGE_TYPE_ADD)}
               onExportClick={() => {
                 ActionFeature.download();
+                
               }}
+              disable={[FIRST_BUTTON]}
             />
             <Filter filter={filter} disable={[]} setFilter={setFilter} />
             <CustomTable

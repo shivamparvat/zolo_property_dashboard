@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
-import { FaSort, FaSearch, FaFilter } from "react-icons/fa";
-import { debounce } from "../Throttle";
+import {useEffect, useState} from "react";
+import {FaSort, FaSearch, FaFilter} from "react-icons/fa";
+import {debounce} from "../Throttle";
 import {
   DEBOUNCE_THRESHOLD,
   FILTER_OPTION_TYPE_DATA,
   FILTER_OPTION_TYPE_KEY,
   LIST_ORDER_TYPE_DATA,
   LIST_ORDER_TYPE_KEYS,
+  LIST_PROPERTY_FOR_DATA,
+  LIST_PROPERTY_FOR_KEYS,
+  LIST_PROPERTY_TYPE_DATA,
+  LIST_PROPERTY_TYPE_KEYS,
   TABLE_ITEM_OPTION,
 } from "../constants";
 
@@ -16,19 +20,24 @@ let SHOW_ENTRIES = "SHOW_ENTRIES",
   END_DATE = "END_DATE",
   SEARCH = "SEARCH",
   FILTER = "FILTER",
-  SHORT_BY = "SHORT_BY";
+  SHORT_BY = "SHORT_BY",
+  PROPERTY_TYPE = "PROPERTY_TYPE",
+  PROPERTY_FOR = "PROPERTY_FOR";
 
 // all des
-export { SHOW_ENTRIES, START_DATE, END_DATE, SEARCH, FILTER, SHORT_BY };
+export {
+  SHOW_ENTRIES, START_DATE, END_DATE, SEARCH, FILTER, SHORT_BY, PROPERTY_TYPE
+  , PROPERTY_FOR
+};
 
 const Index = (props: filter) => {
-  const { filter, setFilter, disable = [] } = props;
+  const {filter, setFilter, disable = []} = props;
   const [search, setSearch] = useState("");
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
 
   // Handler for the input change event
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
+    const {value} = event.target;
     setSearch(value);
     // Debounced version of handleInputChange
     debounce(
@@ -116,7 +125,7 @@ const Index = (props: filter) => {
         {disable.indexOf(SEARCH) == -1 ? (
           <div className="dataTables_filter mb-1 ">
             <label>
-              <FaSearch style={{ marginRight: "5px" }} />
+              <FaSearch style={{marginRight: "5px"}} />
               Search
               <input
                 type="search"
@@ -128,10 +137,84 @@ const Index = (props: filter) => {
             </label>
           </div>
         ) : null}
+        {disable.indexOf(PROPERTY_FOR) == -1 ? (
+          <div className="dataTables_filter mb-1">
+            <label>
+              <FaSort style={{marginRight: "5px"}} />
+              property for
+              <select
+                className="form-select "
+                onChange={(e) =>
+                  setFilter((pre: object) => ({
+                    ...pre,
+                    property_for: e.target.value,
+                  }))
+                }
+                aria-label="Default select example"
+              >
+                {LIST_PROPERTY_FOR_KEYS.map((value: string, index) => (
+                  <option
+                    value={
+                      LIST_PROPERTY_FOR_DATA[
+                      value as unknown as keyof typeof LIST_PROPERTY_FOR_DATA
+                      ]
+                    }
+                    selected={
+                      filter.property_for ===
+                      LIST_PROPERTY_FOR_DATA[
+                      value as keyof typeof LIST_PROPERTY_FOR_DATA
+                      ]
+                    }
+                    key={index}
+                  >
+                    {value}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        ) : null}
+        {disable.indexOf(PROPERTY_TYPE) == -1 ? (
+          <div className="dataTables_filter mb-1">
+            <label>
+              <FaSort style={{marginRight: "5px"}} />
+              property type
+              <select
+                className="form-select "
+                onChange={(e) =>
+                  setFilter((pre: object) => ({
+                    ...pre,
+                    property_type: e.target.value,
+                  }))
+                }
+                aria-label="Default select example"
+              >
+                {LIST_PROPERTY_TYPE_KEYS.map((value: string, index) => (
+                  <option
+                    value={
+                      LIST_PROPERTY_TYPE_DATA[
+                      value as unknown as keyof typeof LIST_PROPERTY_TYPE_DATA
+                      ]
+                    }
+                    selected={
+                      filter.property_type ===
+                      LIST_PROPERTY_TYPE_DATA[
+                      value as keyof typeof LIST_PROPERTY_TYPE_DATA
+                      ]
+                    }
+                    key={index}
+                  >
+                    {value}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        ) : null}
         {disable.indexOf(FILTER) == -1 ? (
           <div className="dataTables_filter mb-1">
             <label>
-              <FaFilter style={{ marginRight: "5px" }} /> Filter
+              <FaFilter style={{marginRight: "5px"}} /> Filter
               <select
                 className="form-select "
                 onChange={(e) =>
@@ -146,13 +229,13 @@ const Index = (props: filter) => {
                   <option
                     value={
                       FILTER_OPTION_TYPE_DATA[
-                        value as keyof typeof FILTER_OPTION_TYPE_DATA
+                      value as keyof typeof FILTER_OPTION_TYPE_DATA
                       ]
                     }
                     selected={
                       filter.orderBy ===
                       FILTER_OPTION_TYPE_DATA[
-                        value as keyof typeof FILTER_OPTION_TYPE_DATA
+                      value as keyof typeof FILTER_OPTION_TYPE_DATA
                       ]
                     }
                     key={index}
@@ -167,7 +250,7 @@ const Index = (props: filter) => {
         {disable.indexOf(SHORT_BY) == -1 ? (
           <div className="dataTables_filter mb-1">
             <label>
-              <FaSort style={{ marginRight: "5px" }} />
+              <FaSort style={{marginRight: "5px"}} />
               Sort by
               <select
                 className="form-select "
@@ -183,13 +266,13 @@ const Index = (props: filter) => {
                   <option
                     value={
                       LIST_ORDER_TYPE_DATA[
-                        value as unknown as keyof typeof LIST_ORDER_TYPE_DATA
+                      value as unknown as keyof typeof LIST_ORDER_TYPE_DATA
                       ]
                     }
                     selected={
                       filter.order ===
                       LIST_ORDER_TYPE_DATA[
-                        value as keyof typeof LIST_ORDER_TYPE_DATA
+                      value as keyof typeof LIST_ORDER_TYPE_DATA
                       ]
                     }
                     key={index}

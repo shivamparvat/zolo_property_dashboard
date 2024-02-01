@@ -1,5 +1,5 @@
 import ApiFeature from "@/Api/ApiFeature";
-import Filter, {FILTER} from "../Utils/Filter";
+import Filter, {FILTER, PROPERTY_FOR, PROPERTY_TYPE} from "../Utils/Filter";
 import {setLoader} from "@/redux/reducer/loader";
 import react, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,7 +14,7 @@ import {
   PAGE_TYPE_EDIT,
   TAX_TYPE_DATA,
 } from "../Utils/constants";
-import TableHeader from "../Utils/CustomTable/TableHeader";
+import TableHeader, {FIRST_BUTTON} from "../Utils/CustomTable/TableHeader";
 import Image from "next/image";
 import ActionScreen from "./ActionScreen";
 import ActionFeature from "@/Api/ActionFeature";
@@ -59,7 +59,10 @@ const Ads = () => {
       value: "S.No",
       index: true,
     },
-
+    {
+      key: "ads_name",
+      value: "Ad",
+    },
     {
       value: "Post Image",
       component: ({data}) => {
@@ -70,8 +73,8 @@ const Ads = () => {
               setImageModal(true);
             }}
           >
-            {data.post_image.length > 0 ? (
-              data.post_image.map((img: any, index: number) => {
+            {data?.gallery?.length > 0 ? (
+              data.gallery.map((img: any, index: number) => {
                 if (index < 3) {
                   return (
                     <Image
@@ -101,21 +104,25 @@ const Ads = () => {
       },
     },
     {
-      key: "post_name",
-      value: "Post Name",
+      key: "title",
+      value: "title",
     },
     {
-      key: "post_description",
-      value: "Post Description",
+      key: "description",
+      value: "Description",
     },
     {
-      key: "price",
-      value: "price",
+      value: "Address",
+      component: ({data}) => <>{`${data.city || ""} ${data.zip_code || ""}`}</>,
+    },
+    {
+      value: "expiry date",
+      component: ({data}) => <>{DDMMYYYY(data.expiry_date)}</>,
     },
     {
       key: "created_at",
       value: "Created At",
-      component: ({data}) => <>{DDMMYYYY(data.created_at)}</>,
+      component: ({data}) => <>{DDMMYYYY(data.createdAt)}</>,
     },
     {
       value: "Status",
@@ -148,7 +155,7 @@ const Ads = () => {
           onClose={setActionType}
           data={{...selected, id: selected.post_id}}
           type={actionType == PAGE_TYPE_ADD ? PAGE_TYPE_ADD : PAGE_TYPE_EDIT}
-          urls={actionType == PAGE_TYPE_ADD ? "post/add" : "post/update"}
+          urls={actionType == PAGE_TYPE_ADD ? `${path}/add` : `${path}/update`}
           path={path}
         />
       )}
@@ -163,8 +170,9 @@ const Ads = () => {
               onExportClick={() => {
                 ActionFeature.download();
               }}
+              disable={[FIRST_BUTTON]}
             />
-            <Filter filter={filter} disable={[FILTER]} setFilter={setFilter} />
+            <Filter filter={filter} disable={[FILTER, PROPERTY_FOR, PROPERTY_TYPE]} setFilter={setFilter} />
             <CustomTable
               tableCustomize={TableCustomize}
               data={fetchData && fetchData?.list}

@@ -73,6 +73,8 @@ interface FilterDataType {
   search: string;
   orderBy: string | undefined;
   order: string | undefined;
+  property_type?: string | undefined;
+  property_for?: string | undefined;
 }
 
 interface filter {
@@ -94,7 +96,7 @@ interface userType {
   local_area?: number[],
   city?: string,
   state?: string,
-  coordinates: {lat: number, lng: number}
+  coordinates?: {lat: number, lng: number}
   oldImage?: string;
   image?: string;
   is_active?: number;

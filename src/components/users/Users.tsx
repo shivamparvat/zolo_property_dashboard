@@ -1,7 +1,7 @@
 import react, {useEffect, useState} from "react";
 import {RootState} from "@/redux/store";
 import {useDispatch, useSelector} from "react-redux";
-import Filter from "../Utils/Filter";
+import Filter, {PROPERTY_FOR, PROPERTY_TYPE} from "../Utils/Filter";
 import {DDMMYYYY} from "../Utils/Formeter";
 import CustomTable, {ActionButtons, ActionSwitch} from "../Utils/CustomTable";
 import Image from "next/image";
@@ -13,7 +13,7 @@ import {
   PAGE_TYPE_ADD,
   PAGE_TYPE_EDIT,
 } from "../Utils/constants";
-import TableHeader from "../Utils/CustomTable/TableHeader";
+import TableHeader, {FIRST_BUTTON, SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
 import ActionFeature from "@/Api/ActionFeature";
 import ActionScreen from "./ActionScreen";
 
@@ -145,8 +145,9 @@ const Users = () => {
               onExportClick={() => {
                 ActionFeature.download();
               }}
+              disable={[FIRST_BUTTON]}
             />
-            <Filter filter={filter} setFilter={setFilter} />
+            <Filter filter={filter} setFilter={setFilter} disable={[PROPERTY_TYPE,PROPERTY_FOR]}/>
 
             <CustomTable
               tableCustomize={TableCustomize}

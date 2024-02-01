@@ -25,6 +25,26 @@ export const LIST_ORDER_TYPE_DATA = {
 };
 export const LIST_ORDER_TYPE_KEYS = Object.keys(LIST_ORDER_TYPE_DATA)
 
+//  list order data 
+export const LIST_PROPERTY_TYPE_DATA = {
+    "Shop": "Shop",
+    "Plot": "Plot",
+    "Office": "Office",
+    "Apartments": "Apartments",
+    "House": "House",
+    "Villa": "Villa",
+    "Hostel": "Hostel",
+    "Pg": "Pg",
+    "Farm": "Farm",
+};
+export const LIST_PROPERTY_TYPE_KEYS = Object.keys(LIST_PROPERTY_TYPE_DATA)
+export const LIST_PROPERTY_FOR_DATA = {
+    "sell": "sell",
+    "rent": "rent",
+    "sold": "sold"
+};
+export const LIST_PROPERTY_FOR_KEYS = Object.keys(LIST_PROPERTY_FOR_DATA)
+
 
 // list filter type
 
@@ -88,8 +108,15 @@ export const PURCHASE_STATUS_TYPE_DATA = {
 };
 export const PURCHASE_STATUS_TYPE_KEY = Object.keys(PURCHASE_STATUS_TYPE_DATA)
 
+// ##########################______PROPRTY_STATUS_______##################################
 
 
+export const PROPERTY_STATUS_TYPE_DATA = {
+    "Pending": "Pending",
+    "Reject": "Reject",
+    "Approved": "Approved"
+};
+export const PROPERTY_STATUS_TYPE_KEY = Object.keys(PROPERTY_STATUS_TYPE_DATA)
 
 
 // ##########################______state_______##################################
@@ -137,3 +164,5 @@ export const STATE_NAME = {
 }
 
 export const STATE_OPTION = Object.keys(STATE_NAME).map((state: string) => ({value: STATE_NAME[state as unknown as keyof typeof STATE_NAME], label: STATE_NAME[state as unknown as keyof typeof STATE_NAME]}))
+
+

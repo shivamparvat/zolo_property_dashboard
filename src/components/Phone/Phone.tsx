@@ -1,5 +1,5 @@
 import ApiFeature from "@/Api/ApiFeature";
-import Filter, {FILTER} from "../Utils/Filter";
+import Filter, {FILTER, PROPERTY_FOR, PROPERTY_TYPE} from "../Utils/Filter";
 import {setLoader} from "@/redux/reducer/loader";
 import react, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -164,7 +164,7 @@ const Phone = () => {
                 ActionFeature.download();
               }}
             />
-            <Filter filter={filter} disable={[FILTER]} setFilter={setFilter} />
+            <Filter filter={filter} disable={[FILTER, PROPERTY_FOR, PROPERTY_TYPE]} setFilter={setFilter} />
             <CustomTable
               tableCustomize={TableCustomize}
               data={fetchData && fetchData?.list}
