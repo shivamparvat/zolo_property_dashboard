@@ -148,12 +148,12 @@ const Ads = () => {
     <>
       {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
         <ActionScreen
-          id={selected.post_id || 0}
+          id={selected._id || 0}
           isActive={
             actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT
           }
           onClose={setActionType}
-          data={{...selected, id: selected.post_id}}
+          data={{...selected, id: selected._id}}
           type={actionType == PAGE_TYPE_ADD ? PAGE_TYPE_ADD : PAGE_TYPE_EDIT}
           urls={actionType == PAGE_TYPE_ADD ? `${path}/add` : `${path}/update`}
           path={path}

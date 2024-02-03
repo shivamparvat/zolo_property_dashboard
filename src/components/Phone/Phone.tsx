@@ -14,7 +14,7 @@ import {
   PAGE_TYPE_EDIT,
   TAX_TYPE_DATA,
 } from "../Utils/constants";
-import TableHeader from "../Utils/CustomTable/TableHeader";
+import TableHeader, {FIRST_BUTTON} from "../Utils/CustomTable/TableHeader";
 import Image from "next/image";
 import ActionScreen from "./ActionScreen";
 import ActionFeature from "@/Api/ActionFeature";
@@ -163,6 +163,7 @@ const Phone = () => {
               onExportClick={() => {
                 ActionFeature.download();
               }}
+              disable={[FIRST_BUTTON]}
             />
             <Filter filter={filter} disable={[FILTER, PROPERTY_FOR, PROPERTY_TYPE]} setFilter={setFilter} />
             <CustomTable

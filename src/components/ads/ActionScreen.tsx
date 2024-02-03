@@ -8,7 +8,7 @@ import {Modal} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import * as Yup from "yup";
 import {setRecallApi} from "@/redux/reducer/RecallApi";
-import FileUpload, {fileSizes} from "../property/FileUpload";
+import FileUpload, {fileSizes} from "./FileUpload";
 import {MAX_FILE_SIZE_BYTES, PAGE_TYPE_ADD, PAGE_TYPE_EDIT} from "../Utils/constants";
 import ShowToast, {error} from "../Utils/ShowToast";
 import MapComponent, {Coordinates} from "../Utils/map";
@@ -18,20 +18,23 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
   // props
   const {id, onClose, isActive, data, type, urls, path} = props;
   const [coordinates, setCoordinates] = useState<Coordinates>(type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78})
-  const [show_map, setShow_map] = useState(true)
-  const [show_number, setShow_number] = useState(true)
+
+  const [banner, setBanner] = useState("")
+
+
   // validation logic
   const validation = {
-    product_name: Yup.string()
-      .required("Name is required")
-      .min(2, "Product Name must be at least 2 characters")
-      .max(50, "Product Name can be at most 50 characters"),
-    product_description: Yup.string()
-      .required("Product Description is required")
-      .min(8, "Product Description must be at least 8 characters"),
-    price: Yup.string().required("Price is required"),
-    brand: Yup.string().required("Category is required"),
-    Modal: Yup.string().required("sub Category is required"),
+    ads_name: Yup.string().required('Name is required'),
+    title: Yup.string().required('Title is required'),
+    description: Yup.string().required('Description is required'),
+    // // banner: Yup.string().required('Ads main Image is required'),
+    // // gallery: Yup.array().of(Yup.string().nullable()),
+    show_number: Yup.boolean().default(true),
+    show_map: Yup.boolean().default(true),
+    number: Yup.string().required('Number is required'),
+    city: Yup.string().required('City is required'),
+    zip_code: Yup.number().required('Zip code is required'),
+    expiry_date: Yup.date(),
   };
 
   // states
@@ -50,15 +53,13 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       const next30Days = new Date(currentDate);
       next30Days.setDate(currentDate.getDate() + 30);
       return next30Days;
-    }) : data.expiry_date,
+    })() : data.expiry_date,
     coordinates: type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78}
 
   });
 
-  const [brandData, setCategoryData] = useState<any>([]);
-  const [selectedSubCategory, setSelectedSubCategory] = useState([]);
   const [selectedFile, setSelectedFile] = useState(
-    type === PAGE_TYPE_ADD ? [] : data.product_image
+    type === PAGE_TYPE_ADD ? [] : data.gallery
   );
   const [Files, setFiles] = useState<File[]>([]);
   const [deletedFile, setDeletedFile] = useState<any[]>([]);
@@ -69,33 +70,8 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     (state: RootState) => state.recallApi.recallApi
   );
 
-  useEffect(() => {
-    dispatch(setLoader(true));
-    async function getCategoryData() {
-      const data: any = await ApiFeature.get("brand/getCategoryWithSubCat");
-      if (data && data.status == 200) {
-        setCategoryData(data.data);
-        dispatch(setLoader(false));
-        dispatch(setRecallApi(false));
-      }
-    }
-    try {
-      getCategoryData();
-    } catch (error) {
-      dispatch(setLoader(false));
-    } finally {
-      dispatch(setLoader(false));
-    }
-    return () => { };
-  }, [token, dispatch, recallApi]);
 
-  const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSubCategory(
-      brandData.find(
-        (brand: categoryDataType) => brand.category_id == +e.target.value
-      )?.modal || []
-    );
-  };
+
 
   //   from submit
   const onsubmit = async (value: any) => {
@@ -103,11 +79,28 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     let res;
     try {
       const formData = new FormData();
-      formData.append("product_name", value.product_name.trim());
-      formData.append("product_description", value.product_description.trim());
-      formData.append("price", value.price);
-      formData.append("category_id", value.category_id);
-      formData.append("sub_category_id", value.sub_category_id);
+      formData.append("ads_name", value.ads_name.trim());
+      formData.append("title", value.title.trim());
+      formData.append("description", value.description.trim());
+      formData.append("number", value.number);
+      formData.append("city", value.city);
+      formData.append("zip_code", value.zip_code);
+      formData.append("expiry_date", value.expiry_date);
+      formData.append("show_number", value.show_number);
+      formData.append("show_map", value.show_map);
+      if (coordinates.lat && coordinates.lng) {
+        Object.values(coordinates || {}).map((latlng: string) => {
+          formData.append("coordinates[]", latlng);
+        })
+      } else {
+        ShowToast(
+          error,
+          `coordinates is required`
+        );
+        throw new Error(
+          `coordinates is required`
+        );
+      }
       Files.forEach((image: any) => {
         if (image.size > MAX_FILE_SIZE_BYTES) {
           ShowToast(
@@ -120,7 +113,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
             "please make sure Image size should not exceed 1 MB."
           );
         }
-        formData.append("product_image", image);
+        formData.append("images", image);
       });
       deletedFile.forEach((image: any) => {
         if (type === PAGE_TYPE_EDIT) {
@@ -131,6 +124,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       if (type === PAGE_TYPE_ADD) {
         res = await ApiFeature.post(urls, formData, 0, true);
       } else {
+        console.log("dskghfdkj", id)
         res = await ApiFeature.put(urls, formData, id, true);
       }
 
@@ -140,20 +134,14 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
         onClose("");
       }
     } catch (error) {
+      console.log()
       dispatch(setLoader(false));
     } finally {
       dispatch(setLoader(false));
     }
   };
 
-  useEffect(() => {
-    setSelectedSubCategory(
-      brandData.find(
-        (category: categoryDataType) =>
-          category.category_id == +data.category_id
-      )?.modal || []
-    );
-  }, [brandData, data]);
+
 
   return (
     <Modal
@@ -175,7 +163,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
           initialValues={formInitData}
           validationSchema={Yup.object().shape(validation)}
         >
-          {({setFieldValue}) => (
+          {({values, setValues}) => (
             <Form>
               <div className="row">
                 <div className="col-md-6 col-sm-12">
@@ -186,30 +174,13 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                     <Field
                       type="text"
                       id="ads_name"
-                      placeholder="Product Name"
+                      placeholder="Ad Name"
                       name="ads_name"
                       className="form-control-alternative form-control w-100"
                     />
                     <ErrorMessage
                       className="text-danger"
                       name="ads_name"
-                      component="div"
-                    />
-                  </div>
-                  <div className="w-100">
-                    <FormStrap.Label className="form-control-label">
-                      <h6>title</h6>
-                    </FormStrap.Label>
-                    <Field
-                      type="text"
-                      id="title"
-                      placeholder="Title"
-                      name="title"
-                      className="form-control-alternative form-control w-100"
-                    />
-                    <ErrorMessage
-                      className="text-danger"
-                      name="title"
                       component="div"
                     />
                   </div>
@@ -221,7 +192,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                       <Field
                         type="text"
                         id="number"
-                        placeholder="Number"
+                        placeholder="number"
                         name="number"
                         className="form-control-alternative form-control w-100"
                       />
@@ -251,8 +222,70 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                       />
                     </div>
                   </div>
+                  <div className="d-flex mt-3">
+                    <div className="mt-2 me-5">
+                      <FormStrap.Label className="form-control-label">
+                        <h6>show number in Ad</h6>
+                      </FormStrap.Label>
+                      <div>
+                        <Switch
+                          name="show_number"
+                          onChange={() => setValues({...values, show_number: !values?.show_number})}
+                          checked={values?.show_number || false}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          onColor="#009EFB"
+                          offColor="#dcdcdc"
+                          className="status-switch"
+                        /></div>
+                      <ErrorMessage
+                        className="text-danger"
+                        name="show_number"
+                        component="div"
+                      />
+                    </div>
+
+                    <div className="mt-2">
+                      <FormStrap.Label className="form-control-label">
+                        <h6>show map in Ad</h6>
+                      </FormStrap.Label>
+                      <div>
+                        <Switch
+                          onChange={() => setValues({...values, show_map: !values?.show_map})}
+                          checked={values?.show_map || false}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          onColor="#009EFB"
+                          offColor="#dcdcdc"
+                          className="status-switch"
+                        /></div>
+                      <ErrorMessage
+                        className="text-danger"
+                        name="show_map"
+                        component="div"
+                      />
+                    </div>
+
+                  </div>
                 </div>
                 <div className="w-50">
+                  <div className="w-100">
+                    <FormStrap.Label className="form-control-label">
+                      <h6>title</h6>
+                    </FormStrap.Label>
+                    <Field
+                      type="text"
+                      id="title"
+                      placeholder="Title"
+                      name="title"
+                      className="form-control-alternative form-control w-100"
+                    />
+                    <ErrorMessage
+                      className="text-danger"
+                      name="title"
+                      component="div"
+                    />
+                  </div>
                   <div className="">
                     <FormStrap.Label className="form-control-label">
                       <h6>Description</h6>
@@ -262,13 +295,13 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                       rows={4}
                       type="textarea"
                       placeholder="Description"
-                      id="product_description"
-                      name="product_description"
+                      id="description"
+                      name="description"
                       className="form-control-alternative form-control"
                     />
                     <ErrorMessage
                       className="text-danger"
-                      name="product_description"
+                      name="description"
                       component="div"
                     />
                   </div>
@@ -312,40 +345,6 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                   </div>
                 </div>
               </div>
-              <div className="d-flex mt-3">
-                <div className="mt-2 me-5">
-                  <FormStrap.Label className="form-control-label">
-                    <h6>show number in Ad</h6>
-                  </FormStrap.Label>
-                  <div>
-                    <Switch
-                      onChange={() => setShow_number((pre: boolean) => !pre)}
-                      checked={show_number}
-                      // uncheckedIcon={false}
-                      checkedIcon={false}
-                      onColor="#009EFB"
-                      offColor="#dcdcdc"
-                      className="status-switch"
-                    /></div>
-                </div>
-
-                <div className="mt-2">
-                  <FormStrap.Label className="form-control-label">
-                    <h6>show map in Ad</h6>
-                  </FormStrap.Label>
-                  <div>
-                    <Switch
-                      onChange={() => setShow_map((pre: boolean) => !pre)}
-                      checked={show_map}
-                      // uncheckedIcon={false}
-                      checkedIcon={false}
-                      onColor="#009EFB"
-                      offColor="#dcdcdc"
-                      className="status-switch"
-                    /></div>
-                </div>
-
-              </div>
               <hr />
               <MapComponent Coordinates={coordinates} setCoordinates={setCoordinates} />
               <FileUpload
@@ -353,6 +352,8 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                 setSelectedFile={setSelectedFile}
                 setFiles={setFiles}
                 setDeletedFile={setDeletedFile}
+                setBanner={setBanner}
+                banner={banner}
               />
               {/* submit */}
               <div className="w-100 d-flex justify-content-center">
