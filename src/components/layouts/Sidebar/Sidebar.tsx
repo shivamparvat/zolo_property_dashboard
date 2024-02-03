@@ -11,7 +11,7 @@ import {BiCategory} from "react-icons/bi";
 import {IoCall, IoCallOutline, IoSettings} from "react-icons/io5";
 import {HiOutlineReceiptTax} from "react-icons/hi";
 import {ImCross} from "react-icons/im";
-import {MdBikeScooter, MdCategory, MdHomeWork} from "react-icons/md";
+import {MdBikeScooter, MdCategory, MdHomeWork, MdTouchApp} from "react-icons/md";
 import {BsFillPostcardHeartFill} from "react-icons/bs";
 import {GiPayMoney} from "react-icons/gi";
 
@@ -45,6 +45,12 @@ const navigation = [
     icon: <FaHeart style={{fontSize: "1rem", color: "#f5464e"}} />,
   },
   {
+    id: 3,
+    title: "Interaction",
+    href: "/interaction",
+    icon: <MdTouchApp style={{fontSize: "1.5rem", color: "#d48869"}} />,
+  },
+  {
     id: 2,
     title: "Property",
     href: "/property",
@@ -62,18 +68,18 @@ const navigation = [
         href: "/setting/phone",
         icon: <IoCall style={{fontSize: "1rem", color: "FF55BB"}} />,
       },
-      {
-        ids: 1,
-        title: "Poster",
-        href: "/setting/poster",
-        icon: <FaImage style={{fontSize: "1rem", color: "5F0F40"}} />,
-      },
-      {
-        ids: 1,
-        title: "EMI",
-        href: "/setting/emi",
-        icon: <GiPayMoney style={{fontSize: "1rem", color: "#E48F45"}} />,
-      },
+      // {
+      //   ids: 1,
+      //   title: "Poster",
+      //   href: "/setting/poster",
+      //   icon: <FaImage style={{fontSize: "1rem", color: "5F0F40"}} />,
+      // },
+      // {
+      //   ids: 1,
+      //   title: "EMI",
+      //   href: "/setting/emi",
+      //   icon: <GiPayMoney style={{fontSize: "1rem", color: "#E48F45"}} />,
+      // },
     ],
   },
   {

@@ -108,7 +108,7 @@ export const PURCHASE_STATUS_TYPE_DATA = {
 };
 export const PURCHASE_STATUS_TYPE_KEY = Object.keys(PURCHASE_STATUS_TYPE_DATA)
 
-// ##########################______PROPRTY_STATUS_______##################################
+// ##########################______PROPERTY_STATUS_______##################################
 
 
 export const PROPERTY_STATUS_TYPE_DATA = {
@@ -117,6 +117,16 @@ export const PROPERTY_STATUS_TYPE_DATA = {
     "Approved": "Approved"
 };
 export const PROPERTY_STATUS_TYPE_KEY = Object.keys(PROPERTY_STATUS_TYPE_DATA)
+
+
+
+// ##########################_______INTERESTED_STATUS_______##################################
+
+
+export const INTERESTED_STATUS_TYPE_DATA = {
+    "contacted": "contacted", "interested": "interested", "follow-up": "follow-up", "not-interested": "not-interested"
+};
+export const INTERESTED_STATUS_TYPE_KEY = Object.keys(INTERESTED_STATUS_TYPE_DATA)
 
 
 // ##########################______state_______##################################

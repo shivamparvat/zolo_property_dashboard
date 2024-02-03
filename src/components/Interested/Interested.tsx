@@ -13,9 +13,10 @@ import {
   PAGE_TYPE_ADD,
   PAGE_TYPE_EDIT,
 } from "../Utils/constants";
-import TableHeader from "../Utils/CustomTable/TableHeader";
+import TableHeader, {SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
 import ActionFeature from "@/Api/ActionFeature";
 import {IoCallOutline} from "react-icons/io5";
+import StatusChange from "./StatusChange";
 
 
 export const UserName: React.FC<any> = ({data}) => (
@@ -38,7 +39,7 @@ export const UserName: React.FC<any> = ({data}) => (
 
 const Interested = () => {
   // init
-  const path = "property";
+  const path = "interested";
 
   // configure
   ActionFeature.path = path;
@@ -71,22 +72,53 @@ const Interested = () => {
       index: true,
     },
     {
-      value: "Intersted",
-      component: UserName,
+      key: "name",
+      value: "name",
     },
     {
-      key: "state",
-      value: "state",
+      key: "number",
+      value: "number",
+    },
+    {
+      key: "city",
+      value: "city",
+    },
+    {
+      key: "type",
+      value: "type",
+    },
+
+    {
+      value: "email_sent",
+      component: ({data}) => (
+        <ActionSwitch
+          data={data}
+          url="called"
+        />
+      ),
+    },
+    {
+      value: "is_fake",
+      component: ({data}) => (
+        <ActionSwitch
+          data={data}
+          url="called"
+        />
+      ),
     },
     {
       value: "called",
       component: ({data}) => (
         <ActionSwitch
-          id={data.intersted_id}
-          is_active={data.is_active}
+          data={data}
           url="called"
         />
       ),
+    },
+    {
+      value: "status",
+      component: StatusChange
+      // key: "admin_status",
     },
     {
       value: "Action",
@@ -112,6 +144,7 @@ const Interested = () => {
             onExportClick={() => {
               ActionFeature.download();
             }}
+            disable={[SECOND_BUTTON]}
           />
           <Filter filter={filter} setFilter={setFilter} />
 
