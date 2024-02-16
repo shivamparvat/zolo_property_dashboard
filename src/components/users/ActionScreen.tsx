@@ -25,7 +25,10 @@ import TagsInput from 'react-tagsinput'
 import MapComponent, {Coordinates} from "../Utils/map";
 
 
+
 const ActionScreen: React.FC<ActionModalType> = (props) => {
+  const role = useSelector((state: RootState) => state.login.userToken?.role);
+
   // props
   const {id, onClose, isActive, data, type, urls, path} = props;
 
@@ -421,23 +424,6 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
               {/* address */}
               <div className="">
                 <MapComponent setCoordinates={setCoordinates} Coordinates={Coordinates} />
-                {/* <FormStrap.Label className="form-control-label">
-                  <h6>Address</h6>
-                </FormStrap.Label>
-                <Field
-                  as="textarea"
-                  rows={4}
-                  type="textarea"
-                  placeholder="Address"
-                  id="address"
-                  name="address"
-                  className="form-control-alternative form-control"
-                />
-                <ErrorMessage
-                  className="text-danger"
-                  name="address"
-                  component="div"
-                /> */}
               </div>
               {/* submit */}
               <div className="w-100 d-flex justify-content-center">

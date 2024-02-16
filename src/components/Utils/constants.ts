@@ -176,3 +176,8 @@ export const STATE_NAME = {
 export const STATE_OPTION = Object.keys(STATE_NAME).map((state: string) => ({value: STATE_NAME[state as unknown as keyof typeof STATE_NAME], label: STATE_NAME[state as unknown as keyof typeof STATE_NAME]}))
 
 
+
+
+//  property area_size_in
+
+export const AREA_SIZE_IN = ["Feet", "Meters", "Yards", "Bigha", "Acres", "Hectares"]

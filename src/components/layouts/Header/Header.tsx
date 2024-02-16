@@ -61,7 +61,7 @@ const Header = () => {
                 Pages
               </a>
             </li>
-            {path.split("/").map((path, index) => {
+            {path?.split("/").map((path, index) => {
               if (path) {
                 return (
                   <li
@@ -76,7 +76,7 @@ const Header = () => {
             })}
           </ol>
           <h6 className="font-weight-bolder text-white mb-0 text-capitalize">
-            {path.split("/").pop()}
+            {path?.split("/").pop()}
           </h6>
         </nav>
         <div

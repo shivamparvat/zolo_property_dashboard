@@ -167,7 +167,7 @@ const Sidebar = () => {
                     >
                       {nav.title}
                     </span>
-                    {path.split("/")[1] === nav.href.split("/")[1] ? (
+                    {path?.split("/")[1] === nav.href.split("/")[1] ? (
                       <BsChevronUp
                         className="bi bi-chevron-up ms-auto md-auto"
                         size={15}
@@ -179,7 +179,7 @@ const Sidebar = () => {
                       />
                     )}
                   </Link>
-                  {path.split("/")[1] === nav.href.split("/")[1] ? (
+                  {path?.split("/")[1] === nav.href.split("/")[1] ? (
                     <>
                       {nav.subMenu.map(
                         (

@@ -112,7 +112,7 @@ const Users = () => {
           data={data}
           setSelected={setSelected}
           setEdit={setActionType}
-          id={data.user_id}
+          id={data._id}
         />
       ),
       className: "d-flex ",
@@ -136,7 +136,7 @@ const Users = () => {
           path={path}
         />
       )}
-      <div className="card bg-glass">
+      <div className="card bg-glass" style={{overflowX: "hidden"}}>
         <div className="card-datatable ">
           <div className="dataTables_wrapper dt-bootstrap5">
             <TableHeader

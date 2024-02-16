@@ -5,6 +5,7 @@ import ActionFeature from "@/Api/ActionFeature";
 import {useEffect, useState} from "react";
 import type {AppProps} from "next/app";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import FullLayout from "../components/layouts/FullLayout";
 import {PersistGate} from "redux-persist/integration/react";
 import {Toaster} from "react-hot-toast";
