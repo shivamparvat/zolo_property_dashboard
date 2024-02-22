@@ -1,22 +1,11 @@
 import {PAGE_TYPE_ADD} from "@/components/Utils/constants";
-import MapComponent, {Coordinates} from "@/components/Utils/map";
+import {Coordinates} from "@/components/Utils/map";
 import {useState} from "react";
 import {MultipleSection, RadioButton} from "./Utils/Utils";
 import {Form as FormStrap} from "react-bootstrap";
-import {ErrorMessage, Field, Formik, Form} from "formik";
+import {Formik, Form} from "formik";
 
 
-const propertyForConfig = [
-    {
-        key: "sell",
-        value: "sell"
-    },
-    {
-        key: "rent",
-        value: "rent"
-    },
-
-]
 export const saleable_area_size_in = ["Feet", "Meters", "Yards", "Bigha", "Acres", "Hectares"]
 export const carpet_area_size_in = ["Feet", "Meters", "Yards"]
 
@@ -66,6 +55,16 @@ export const additional_facility = [
     },
 ]
 
+const propertyStatus = [
+    {
+        key: "Ready_to_shift",
+        value: "Ready To Shift"
+    },
+    {
+        key: "Underconstruction",
+        value: "Under Construction"
+    },
+]
 
 
 const Page2: React.FC<page> = ({type, data, setData}) => {
@@ -267,45 +266,47 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                     }} />
                             })}
                         </div>
-                        <div>
+                        <div >
                             <FormStrap.Label className="form-control-label">
                                 <h6>What is the expected price</h6>
                             </FormStrap.Label>
-                            <div>
-                                <FormStrap.Label className="form-control-label">
-                                    <h6>Price(per sq feet)</h6>
-                                </FormStrap.Label>
-                                <div>
-                                    <input type="number" placeholder="Price(per sq feet)" value={data.expected_price_in_sqft} onChange={(e) => {
-                                        setData((pre: any) => ({
-                                            ...pre, expected_price_in_sqft: e.target.value
-                                        }))
-                                    }} />
-                                </div>
+                            <div className="row">
+                                <div className="col-md-3">
+                                    <FormStrap.Label className="form-control-label">
+                                        <h6>Price(per sq feet)</h6>
+                                    </FormStrap.Label>
+                                    <div>
+                                        <input type="number" placeholder="Price(per sq feet)" value={data.expected_price_in_sqft} onChange={(e) => {
+                                            setData((pre: any) => ({
+                                                ...pre, expected_price_in_sqft: e.target.value
+                                            }))
+                                        }} />
+                                    </div>
 
-                            </div>
-                            <div>
-                                <FormStrap.Label className="form-control-label">
-                                    <h6>Total Price</h6>
-                                </FormStrap.Label>
-                                <div>
-                                    <input type="number" placeholder="expected_price" value={data.expected_price} onChange={(e) => {
-                                        setData((pre: any) => ({
-                                            ...pre, expected_price: e.target.value
-                                        }))
-                                    }} />
                                 </div>
+                                <div className="col-md-3">
+                                    <FormStrap.Label className="form-control-label">
+                                        <h6>Total Price</h6>
+                                    </FormStrap.Label>
+                                    <div>
+                                        <input type="number" placeholder="expected_price" value={data.expected_price} onChange={(e) => {
+                                            setData((pre: any) => ({
+                                                ...pre, expected_price: e.target.value
+                                            }))
+                                        }} />
+                                    </div>
 
+                                </div>
                             </div>
-                            <div>
-                                <input type="checkbox" name="negotiable" id="negotiable" checked={data.negotiable} onChange={e => {
-                                    setData((pre: any) => ({
-                                        ...pre,
-                                        negotiable: !data.negotiable
-                                    }))
-                                }} />
-                                <label htmlFor="negotiable">negotiable</label>
-                            </div>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="negotiable" id="negotiable" checked={data.negotiable} onChange={e => {
+                                setData((pre: any) => ({
+                                    ...pre,
+                                    negotiable: !data.negotiable
+                                }))
+                            }} />
+                            <label htmlFor="negotiable">negotiable</label>
                         </div>
 
                         <div>
@@ -317,11 +318,11 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                     return <MultipleSection
                                         text={type.value || ""}
                                         key={index}
-                                        checked={(data?.additional_room || []).includes(type.value)}
+                                        checked={(data?.additional_facility || []).includes(type.value)}
                                         image={type.image || ''}
                                         onChange={() => {
                                             setData((pre: any) => {
-                                                const additionalRoomArray = pre.additional_room || [];
+                                                const additionalRoomArray = pre.additional_facility || [];
 
                                                 if (!Array.isArray(additionalRoomArray)) {
                                                     return pre;
@@ -333,12 +334,95 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
 
                                                 return {
                                                     ...pre,
-                                                    additional_room: updatedAdditionalRoom
+                                                    additional_facility: updatedAdditionalRoom
                                                 };
                                             });
                                         }} />
                                 })}
                             </div>
+                        </div>
+
+                        {/* rent */}
+                        {/* <div>
+                            <FormStrap.Label className="form-control-label">
+                                <h6>Booking Amount</h6>
+                            </FormStrap.Label>
+                            <div>
+                                <input type="number" placeholder="Booking Amount" value={data.expected_price_in_sqft} onChange={(e) => {
+                                    setData((pre: any) => ({
+                                        ...pre, booking_price: e.target.value
+                                    }))
+                                }} />
+                            </div>
+                        </div> */}
+
+                        <div>
+                            <FormStrap.Label className="form-control-label">
+                                <h6>Property Status</h6>
+                            </FormStrap.Label>
+                            <div>
+                                {propertyStatus.map((type: any, index: number) => <RadioButton
+                                    text={type.value || ""}
+                                    key={index}
+                                    checked={data?.property_status == (type.key || "")}
+                                    image={type.image}
+                                    onChange={() => {setData((pre: any) => ({...pre, property_status: (type.key || "")}))}} />)}
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="row">
+                        <div className="col-md-3">
+                            <FormStrap.Label className="form-control-label">
+                                <h6>Property Age</h6>
+                            </FormStrap.Label>
+                            <div>
+                                <div>
+                                    <select name="" id="" value={data.saleable_area_size_in} onChange={(e) => {
+                                        setData((pre: any) => ({...pre, saleable_area_size_in: e.target.value}))
+                                    }}>
+                                        <option value="" selected disabled hidden>
+                                            Property Age
+                                        </option>
+
+                                        {new Array(30).fill(0).map(
+                                            (value: string, index: number) => {
+                                                return (
+                                                    <option key={index} value={index + 1}>
+                                                        {index + 1} Year
+                                                    </option>
+                                                );
+                                            }
+                                        )}
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <FormStrap.Label className="form-control-label">
+                                <h6>Possession Date</h6>
+                            </FormStrap.Label>
+                            <div>
+                                <div>
+                                    <input type="date" name="possession_date" id="possession_date" value={data.possession_date}
+                                        onChange={(e) => {
+                                            setData((pre: any) => ({...pre, possession_date: e.target.value}))
+                                        }} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <FormStrap.Label className="form-control-label">
+                            <h6>Description</h6>
+                        </FormStrap.Label>
+                        <div>
+                            <textarea className="form-control" name="description" rows={4} value={data.description}
+                                onChange={(e) => {
+                                    setData((pre: any) => ({...pre, description: e.target.value}))
+                                }} placeholder="tell us more about the property..." ></textarea>
                         </div>
                     </div>
                 </Form>)}

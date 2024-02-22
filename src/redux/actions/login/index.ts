@@ -6,9 +6,6 @@ import { Dispatch } from "redux"
 const NEXT_PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 
-
-
-
 export const googleLogin = (token: string | undefined) => async (dispatch: Dispatch) => {
 
     try {

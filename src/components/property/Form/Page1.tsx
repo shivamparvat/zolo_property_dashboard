@@ -93,7 +93,7 @@ const Page1: React.FC<page> = ({type, data, setData}) => {
                             </div>
                         </div>
                         <FormStrap.Label className="form-control-label">
-                            <h6>I want to</h6>
+                            <h6>Your property type</h6>
                         </FormStrap.Label>
                         <div>
                             <div>

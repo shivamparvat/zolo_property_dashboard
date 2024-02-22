@@ -1,0 +1,300 @@
+
+import {MultipleSection, RadioButton} from "./Utils/Utils";
+import {Form as FormStrap} from "react-bootstrap";
+
+
+const furnishingStatus = [
+    {
+        key: "Unfurnished",
+        value: "Unfurnished"
+    },
+    {
+        key: "Semi_furnished",
+        value: "Semi furnished"
+    },
+    {
+        key: "Fully_furnished",
+        value: "Fully furnished"
+    },
+
+]
+const additional_furnishing = [
+    {
+        image: 'https://gpropertypay.com/public/assets/sofa.png',
+        key: "Sofa",
+        value: "Sofa"
+    },
+    {
+        image: 'https://gpropertypay.com/public/assets/refrigerator.png',
+        key: "Refrigerator",
+        value: "Refrigerator"
+    },
+    {
+        image: 'https://gpropertypay.com/public/assets/dining_table.png',
+        key: "Dining Table",
+        value: "Dining Table"
+    },
+    {
+        image: 'https://gpropertypay.com/public/assets/gas_connection.png',
+        key: "Gas Connection",
+        value: "Gas Connection"
+    },
+    {
+        image: 'https://gpropertypay.com/public/assets/water_connection.png',
+        key: "Water Connection",
+        value: "Water Connection"
+
+    },
+    {
+        image: 'https://gpropertypay.com/public/assets/washing_machine.png',
+        key: "Washing Machine",
+        value: "Washing Machine"
+    },
+    {
+        image: 'https://gpropertypay.com/public/assets/wifi_connection.png',
+        key: "Wifi Connection",
+        value: "Wifi Connection"
+    },
+    {
+        image: 'https://gpropertypay.com/public/assets/microwave.png',
+        key: "Microwave",
+        value: "Microwave"
+    }
+]
+
+
+
+
+const page3: React.FC<page> = ({type, data, setData}) => {
+    return (
+        <div>
+            <div>
+                <div>
+                    <FormStrap.Label className="form-control-label">
+                        <h6>Choose furnishing status</h6>
+                    </FormStrap.Label>
+                    <div>
+                        {furnishingStatus.map((type: any, index: number) => <RadioButton
+                            text={type.value || ""}
+                            key={index}
+                            checked={data?.furnishing_status == (type.key || "")}
+                            image={type.image}
+                            onChange={() => {setData((pre: any) => ({...pre, furnishing_status: (type.key || "")}))}} />)}
+                    </div>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-md-3">
+                    <FormStrap.Label className="form-control-label">
+                        <h6>Wardrobe</h6>
+                    </FormStrap.Label>
+                    <div className="">
+                        <div>
+                            <select name="" id="" value={data.wardrobe} onChange={(e) => {
+                                setData((pre: any) => ({...pre, wardrobe: e.target.value}))
+                            }}>
+                                <option value="" selected disabled hidden>
+                                    select
+                                </option>
+
+                                {new Array(15).fill(0).map(
+                                    (value: string, index: number) => {
+                                        return (
+                                            <option key={index} value={index + 1}>
+                                                {index + 1}
+                                            </option>
+                                        );
+                                    }
+                                )}
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col-md-3">
+                    <FormStrap.Label className="form-control-label">
+                        <h6>Beds</h6>
+                    </FormStrap.Label>
+                    <div>
+                        <div>
+                            <select name="" id="" value={data.beds} onChange={(e) => {
+                                setData((pre: any) => ({...pre, beds: e.target.value}))
+                            }}>
+                                <option value="" selected disabled hidden>
+                                    select
+                                </option>
+
+                                {new Array(15).fill(0).map(
+                                    (value: string, index: number) => {
+                                        return (
+                                            <option key={index} value={index + 1}>
+                                                {index + 1}
+                                            </option>
+                                        );
+                                    }
+                                )}
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-3">
+                    <FormStrap.Label className="form-control-label">
+                        <h6>Ac</h6>
+                    </FormStrap.Label>
+                    <div className="">
+                        <div>
+                            <select name="" id="" value={data.ac} onChange={(e) => {
+                                setData((pre: any) => ({...pre, ac: e.target.value}))
+                            }}>
+                                <option value="" selected disabled hidden>
+                                    select
+                                </option>
+
+                                {new Array(15).fill(0).map(
+                                    (value: string, index: number) => {
+                                        return (
+                                            <option key={index} value={index + 1}>
+                                                {index + 1}
+                                            </option>
+                                        );
+                                    }
+                                )}
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col-md-3">
+                    <FormStrap.Label className="form-control-label">
+                        <h6>tv</h6>
+                    </FormStrap.Label>
+                    <div>
+                        <div>
+                            <select name="" id="" value={data.tv} onChange={(e) => {
+                                setData((pre: any) => ({...pre, tv: e.target.value}))
+                            }}>
+                                <option value="" selected disabled hidden>
+                                    select
+                                </option>
+
+                                {new Array(15).fill(0).map(
+                                    (value: string, index: number) => {
+                                        return (
+                                            <option key={index} value={index + 1}>
+                                                {index + 1}
+                                            </option>
+                                        );
+                                    }
+                                )}
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <FormStrap.Label className="form-control-label">
+                    <h6>Additional Furnishing</h6>
+                </FormStrap.Label>
+                <div>
+                    {additional_furnishing.map((type: any, index: number) => {
+                        return <MultipleSection
+                            text={type.value || ""}
+                            key={index}
+                            checked={(data?.additional_furnishing || []).includes(type.value)}
+                            image={type.image || ''}
+                            onChange={() => {
+                                setData((pre: any) => {
+                                    const additionalRoomArray = pre.additional_furnishing || [];
+
+                                    if (!Array.isArray(additionalRoomArray)) {
+                                        return pre;
+                                    }
+
+                                    const updatedAdditionalRoom = additionalRoomArray.includes(type.value)
+                                        ? additionalRoomArray.filter((value: any) => value !== type.value)
+                                        : [...additionalRoomArray, type.value];
+
+                                    return {
+                                        ...pre,
+                                        additional_furnishing: updatedAdditionalRoom
+                                    };
+                                });
+                            }} />
+                    })}
+                </div>
+            </div>
+            <div >
+                <div >
+                    <FormStrap.Label className="form-control-label">
+                        <h6>Car Parking</h6>
+                    </FormStrap.Label>
+                    <div className="row">
+                        <div className="col-md-3">
+                            <FormStrap.Label className="form-control-label">
+                                <h6>Open</h6>
+                            </FormStrap.Label>
+                            <div>
+                                <select name="" id="" value={data.car_parking_open} onChange={(e) => {
+                                    setData((pre: any) => ({...pre, car_parking_open: e.target.value}))
+                                }}>
+                                    <option value="" selected disabled hidden>
+                                        select
+                                    </option>
+
+                                    {new Array(15).fill(0).map(
+                                        (value: string, index: number) => {
+                                            return (
+                                                <option key={index} value={index + 1}>
+                                                    {index + 1} space
+                                                </option>
+                                            );
+                                        }
+                                    )}
+
+                                </select>
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <FormStrap.Label className="form-control-label">
+                                <h6>Close</h6>
+                            </FormStrap.Label>
+                            <div>
+                                <select name="" id="" value={data.ac} onChange={(e) => {
+                                    setData((pre: any) => ({...pre, ac: e.target.value}))
+                                }}>
+                                    <option value="" selected disabled hidden>
+                                        select
+                                    </option>
+
+                                    {new Array(15).fill(0).map(
+                                        (value: string, index: number) => {
+                                            return (
+                                                <option key={index} value={index + 1}>
+                                                    {index + 1} space
+                                                </option>
+                                            );
+                                        }
+                                    )}
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+
+export default page3;
+
+
