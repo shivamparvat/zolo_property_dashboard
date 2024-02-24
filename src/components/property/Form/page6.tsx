@@ -1,8 +1,8 @@
 
-import {MultipleSection, RadioButton} from "./Utils/Utils";
+import {FormError, MultipleSection, RadioButton} from "./Utils/Utils";
 import {Accordion, Form as FormStrap} from "react-bootstrap";
 
-const page6: React.FC<page> = ({type, data, setData}) => {
+const page6: React.FC<page> = ({type, data, setData, errors}) => {
     return (
         <Accordion defaultActiveKey="1" className="mt-3">
             <Accordion.Item eventKey="0">
@@ -39,6 +39,7 @@ const page6: React.FC<page> = ({type, data, setData}) => {
                                     </label>
                                 </div>
                             </div>
+                            <FormError errorKey="preferred_tenants" errors={errors} />
                         </div>
                         <div>
                             <FormStrap.Label className="form-control-label">
@@ -70,6 +71,7 @@ const page6: React.FC<page> = ({type, data, setData}) => {
                                     </label>
                                 </div>
                             </div>
+                            <FormError errorKey="gender_preference" errors={errors} />
                         </div>
                         <div>
                             <FormStrap.Label className="form-control-label">
@@ -101,6 +103,7 @@ const page6: React.FC<page> = ({type, data, setData}) => {
                                     </label>
                                 </div>
                             </div>
+                            <FormError errorKey="maximum_tentants_allowed" errors={errors} />
                         </div>
                         <div>
                             <FormStrap.Label className="form-control-label">
@@ -140,6 +143,7 @@ const page6: React.FC<page> = ({type, data, setData}) => {
                                     </label>
                                 </div>
                             </div>
+                            <FormError errorKey="work_preference" errors={errors} />
                         </div>
                         <div>
                             <FormStrap.Label className="form-control-label">
@@ -171,6 +175,7 @@ const page6: React.FC<page> = ({type, data, setData}) => {
                                     </label>
                                 </div>
                             </div>
+                            <FormError errorKey="food_preference" errors={errors} />
                         </div>
                         <div>
                             <FormStrap.Label className="form-control-label">
@@ -210,6 +215,7 @@ const page6: React.FC<page> = ({type, data, setData}) => {
                                     </label>
                                 </div>
                             </div>
+                            <FormError errorKey="expected_duration_of_stay" errors={errors} />
                         </div>
                         <div>
                             <FormStrap.Label className="form-control-label">
@@ -220,6 +226,7 @@ const page6: React.FC<page> = ({type, data, setData}) => {
                                     onChange={(e) => {
                                         setData((pre: any) => ({...pre, special_requirement: e.target.value}))
                                     }} placeholder="tell us more about the property..." ></textarea>
+                                    <FormError errorKey="special_requirement" errors={errors} />
                             </div>
                         </div>
                     </div>

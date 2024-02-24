@@ -36,6 +36,7 @@ const validationSchema = yup.object().shape({
   special_requirement: yup.string().required('Special requirement is required'),
   total_floor: yup.string().required('Total floor is required'),
   tv: yup.string().required('TV availability is required'),
+  ac: yup.string().required('AC availability is required'),
   wardrobe: yup.string().required('Wardrobe availability is required'),
   work_preference: yup.string().required('Work preference is required'),
   monthly_rent: yup.string().required('Monthly rent is required'),

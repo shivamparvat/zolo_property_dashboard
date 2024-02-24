@@ -1,5 +1,5 @@
 
-import {MultipleSection, RadioButton} from "./Utils/Utils";
+import {FormError, MultipleSection, RadioButton} from "./Utils/Utils";
 import {Accordion, Form as FormStrap} from "react-bootstrap";
 
 
@@ -65,7 +65,7 @@ const additional_furnishing = [
 
 
 
-const page3: React.FC<page> = ({type, data, setData}) => {
+const page3: React.FC<page> = ({type, data, setData, errors}) => {
     return (
         <Accordion defaultActiveKey="1" className="mt-3">
             <Accordion.Item eventKey="0">
@@ -84,6 +84,7 @@ const page3: React.FC<page> = ({type, data, setData}) => {
                                         checked={data?.furnishing_status == (type.key || "")}
                                         image={type.image}
                                         onChange={() => {setData((pre: any) => ({...pre, furnishing_status: (type.key || "")}))}} />)}
+                                    <FormError errorKey="furnishing_status" errors={errors} />
                                 </div>
                             </div>
                         </div>
@@ -113,6 +114,7 @@ const page3: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="wardrobe" errors={errors} />
                                     </div>
                                 </div>
                             </div>
@@ -141,6 +143,7 @@ const page3: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="beds" errors={errors} />
                                     </div>
                                 </div>
                             </div>
@@ -170,6 +173,7 @@ const page3: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="ac" errors={errors} />
                                     </div>
                                 </div>
                             </div>
@@ -198,6 +202,7 @@ const page3: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="tv" errors={errors} />
                                     </div>
                                 </div>
                             </div>
@@ -232,6 +237,7 @@ const page3: React.FC<page> = ({type, data, setData}) => {
                                             });
                                         }} />
                                 })}
+                                <FormError errorKey="additional_furnishing" errors={errors} />
                             </div>
                         </div>
                         <div >
@@ -263,6 +269,7 @@ const page3: React.FC<page> = ({type, data, setData}) => {
                                                 )}
 
                                             </select>
+                                            <FormError errorKey="car_parking_open" errors={errors} />
                                         </div>
                                     </div>
                                     <div className="col-md-3">
@@ -270,8 +277,8 @@ const page3: React.FC<page> = ({type, data, setData}) => {
                                             <h6>Close</h6>
                                         </FormStrap.Label>
                                         <div>
-                                            <select className="form-control" name="" id="" value={data.ac} onChange={(e) => {
-                                                setData((pre: any) => ({...pre, ac: e.target.value}))
+                                            <select className="form-control" name="" id="" value={data.car_parking_close} onChange={(e) => {
+                                                setData((pre: any) => ({...pre, car_parking_close: e.target.value}))
                                             }}>
                                                 <option value="" selected disabled hidden>
                                                     select
@@ -288,6 +295,7 @@ const page3: React.FC<page> = ({type, data, setData}) => {
                                                 )}
 
                                             </select>
+                                            <FormError errorKey="car_parking_close" errors={errors} />
                                         </div>
                                     </div>
                                 </div>

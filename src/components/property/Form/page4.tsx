@@ -1,5 +1,5 @@
 
-import {MultipleSection, RadioButton} from "./Utils/Utils";
+import {FormError, MultipleSection, RadioButton} from "./Utils/Utils";
 import {Accordion, Form as FormStrap} from "react-bootstrap";
 
 
@@ -16,7 +16,7 @@ const FacingSide = [
 
 const facing_road_width_in = ["Feet", "Meters"]
 
-const page4: React.FC<page> = ({type, data, setData}) => {
+const page4: React.FC<page> = ({type, data, setData, errors}) => {
     return (
         <Accordion defaultActiveKey="1" className="mt-3">
             <Accordion.Item eventKey="0">
@@ -48,6 +48,7 @@ const page4: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="floor" errors={errors} />
                                     </div>
                                 </div>
                             </div>
@@ -76,6 +77,7 @@ const page4: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="total_floor" errors={errors} />
                                     </div>
                                 </div>
                             </div>
@@ -105,6 +107,7 @@ const page4: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="open_side" errors={errors} />
                                     </div>
                                 </div>
                             </div>
@@ -133,6 +136,7 @@ const page4: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="open_side" errors={errors} />
                                     </div>
                                 </div>
                             </div>
@@ -150,6 +154,7 @@ const page4: React.FC<page> = ({type, data, setData}) => {
                                                     ...pre, facing_road_width: e.target.value
                                                 }))
                                             }} />
+                                            <FormError errorKey="facing_road_width" errors={errors} />
                                         </div>
                                     </div>
                                 </div>
@@ -179,6 +184,7 @@ const page4: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="facing_road_width_in" errors={errors} />
                                     </div>
                                 </div>
                             </div>

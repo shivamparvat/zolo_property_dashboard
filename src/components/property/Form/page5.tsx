@@ -1,5 +1,5 @@
 
-import {MultipleSection, RadioButton} from "./Utils/Utils";
+import {FormError, MultipleSection, RadioButton} from "./Utils/Utils";
 import {Accordion, Form as FormStrap} from "react-bootstrap";
 
 
@@ -47,7 +47,7 @@ const ownership_type = [
 
 ]
 
-const page4: React.FC<page> = ({type, data, setData}) => {
+const page4: React.FC<page> = ({type, data, setData, errors}) => {
     return (<Accordion defaultActiveKey="1" className="mt-3">
         <Accordion.Item eventKey="0">
             <Accordion.Header>Overlooking</Accordion.Header>
@@ -85,6 +85,7 @@ const page4: React.FC<page> = ({type, data, setData}) => {
                                                 });
                                             }} />
                                     })}
+                                    <FormError errorKey="overlooking" errors={errors} />
                                 </div>
                             </div>
                         </div>
@@ -103,6 +104,7 @@ const page4: React.FC<page> = ({type, data, setData}) => {
                                         checked={data?.ownership_type == (type.key || "")}
                                         image={type.image}
                                         onChange={() => {setData((pre: any) => ({...pre, ownership_type: (type.key || "")}))}} />)}
+                                    <FormError errorKey="ownership_type" errors={errors} />
                                 </div>
                             </div>
                         </div>
