@@ -1,6 +1,6 @@
 
 import {MultipleSection, RadioButton} from "./Utils/Utils";
-import {Form as FormStrap} from "react-bootstrap";
+import {Accordion, Form as FormStrap} from "react-bootstrap";
 
 
 const overlooking = [
@@ -48,64 +48,69 @@ const ownership_type = [
 ]
 
 const page4: React.FC<page> = ({type, data, setData}) => {
-    return (
-        <div>
-            <div className="row">
+    return (<Accordion defaultActiveKey="1" className="mt-3">
+        <Accordion.Item eventKey="0">
+            <Accordion.Header>Overlooking</Accordion.Header>
+            <Accordion.Body>
                 <div>
-                    <FormStrap.Label className="form-control-label">
-                        <h6>Overlooking</h6>
-                    </FormStrap.Label>
-                    <div className="">
+                    <div className="row">
                         <div>
-                            {overlooking.map((type: any, index: number) => {
-                                return <MultipleSection
-                                    text={type.value || ""}
-                                    key={index}
-                                    checked={(data?.overlooking || []).includes(type.value)}
-                                    image={type.image || ''}
-                                    onChange={() => {
-                                        setData((pre: any) => {
-                                            const additionalRoomArray = pre.overlooking || [];
+                            <FormStrap.Label className="form-control-label">
+                                <h6>Overlooking</h6>
+                            </FormStrap.Label>
+                            <div className="">
+                                <div>
+                                    {overlooking.map((type: any, index: number) => {
+                                        return <MultipleSection
+                                            text={type.value || ""}
+                                            key={index}
+                                            checked={(data?.overlooking || []).includes(type.value)}
+                                            image={type.image || ''}
+                                            onChange={() => {
+                                                setData((pre: any) => {
+                                                    const additionalRoomArray = pre.overlooking || [];
 
-                                            if (!Array.isArray(additionalRoomArray)) {
-                                                return pre;
-                                            }
+                                                    if (!Array.isArray(additionalRoomArray)) {
+                                                        return pre;
+                                                    }
 
-                                            const updatedAdditionalRoom = additionalRoomArray.includes(type.value)
-                                                ? additionalRoomArray.filter((value: any) => value !== type.value)
-                                                : [...additionalRoomArray, type.value];
+                                                    const updatedAdditionalRoom = additionalRoomArray.includes(type.value)
+                                                        ? additionalRoomArray.filter((value: any) => value !== type.value)
+                                                        : [...additionalRoomArray, type.value];
 
-                                            return {
-                                                ...pre,
-                                                overlooking: updatedAdditionalRoom
-                                            };
-                                        });
-                                    }} />
-                            })}
+                                                    return {
+                                                        ...pre,
+                                                        overlooking: updatedAdditionalRoom
+                                                    };
+                                                });
+                                            }} />
+                                    })}
+                                </div>
+                            </div>
                         </div>
+
+                    </div>
+                    <div className="row">
+                        <div>
+                            <FormStrap.Label className="form-control-label">
+                                <h6>Ownership Type</h6>
+                            </FormStrap.Label>
+                            <div className="">
+                                <div>
+                                    {ownership_type.map((type: any, index: number) => <RadioButton
+                                        text={type.value || ""}
+                                        key={index}
+                                        checked={data?.ownership_type == (type.key || "")}
+                                        image={type.image}
+                                        onChange={() => {setData((pre: any) => ({...pre, ownership_type: (type.key || "")}))}} />)}
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
-            </div>
-            <div className="row">
-                <div>
-                    <FormStrap.Label className="form-control-label">
-                        <h6>Ownership Type</h6>
-                    </FormStrap.Label>
-                    <div className="">
-                        <div>
-                            {ownership_type.map((type: any, index: number) => <RadioButton
-                                text={type.value || ""}
-                                key={index}
-                                checked={data?.ownership_type == (type.key || "")}
-                                image={type.image}
-                                onChange={() => {setData((pre: any) => ({...pre, ownership_type: (type.key || "")}))}} />)}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+            </Accordion.Body>
+        </Accordion.Item></Accordion>
     );
 }
 

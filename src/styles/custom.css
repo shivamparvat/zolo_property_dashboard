@@ -439,6 +439,7 @@ p {
 
 .radio.selected {
   box-shadow: 0px 8px 16px 0px #eeeeee;
+  border: 1px solid var(--bs-primary);
   -webkit-filter: grayscale(0%);
   -moz-filter: grayscale(0%);
   -o-filter: grayscale(0%);
@@ -447,5 +448,6 @@ p {
 }
 
 .selected {
-  background-color: #e0f2f1;
+  border: 1px solid var(--bs-primary);
+  background-color: #e0e8f2c2;
 }

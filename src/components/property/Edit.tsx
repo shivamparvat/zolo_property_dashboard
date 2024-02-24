@@ -9,17 +9,29 @@ import Page6 from "./Form/page6";
 import {useState} from "react";
 import {PAGE_TYPE_EDIT} from "../Utils/constants";
 import FileUpload from "./FileUpload";
+import VideoUpload from "./VideoUpload";
+
+
+
+import {ErrorMessage, Field, Formik, Form} from "formik";
+import validationSchema from "./Form/Utils/validation";
+
+
+
 
 const Edit = () => {
     const router = useRouter()
-    const [formData, setFormData] = useState({})
+    const [formData, setFormData] = useState<any>({})
     const [selectedFile, setSelectedFile] = useState(
         []
     );
     const [Files, setFiles] = useState<File[]>([]);
     const [deletedFile, setDeletedFile] = useState<any[]>([]);
+    const [video, setVideo] = useState<File | null>(null)
 
+    const formInitData: any = {
 
+    }
 
     return <div className="card bg-white">
         <div className="card-datatable">
@@ -32,18 +44,48 @@ const Edit = () => {
                     }}
                     disable={[FIRST_BUTTON, SECOND_BUTTON]}
                 />
-                <Page1 type={PAGE_TYPE_EDIT} setData={setFormData} data={formData} />
-                <Page2 type={PAGE_TYPE_EDIT} setData={setFormData} data={formData} />
-                <Page3 type={PAGE_TYPE_EDIT} setData={setFormData} data={formData} />
-                <Page4 type={PAGE_TYPE_EDIT} setData={setFormData} data={formData} />
-                <Page5 type={PAGE_TYPE_EDIT} setData={setFormData} data={formData} />
-                <Page6 type={PAGE_TYPE_EDIT} setData={setFormData} data={formData} />
-                <FileUpload
-                    selectedFile={selectedFile}
-                    setSelectedFile={setSelectedFile}
-                    setFiles={setFiles}
-                    setDeletedFile={setDeletedFile}
-                />
+                <Formik
+                    enableReinitialize={true}
+                    onSubmit={(value) => {
+                        console.log(value)
+                    }}
+                    initialValues={formInitData}
+                    validationSchema={validationSchema}
+                >
+                    {({values, setValues}) => (
+                        <Form>
+                            <>
+                                <div className="px-5 py-5">
+
+                                    <Page1 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />
+                                    <Page2 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />
+                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page3 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />}
+                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page4 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />}
+                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page5 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />}
+                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page6 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />}
+
+
+                                </div>
+                                <VideoUpload video={video} setVideo={setVideo} />
+                                <FileUpload
+                                    selectedFile={selectedFile}
+                                    setSelectedFile={setSelectedFile}
+                                    setFiles={setFiles}
+                                    setDeletedFile={setDeletedFile}
+                                />
+                                <div className="d-flex h-98 justify-content-center">
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary mt-5 d-block text-uppercase"
+                                    >
+                                        Update  {/* {type === PAGE_TYPE_ADD ? "Add" : "Update"} {path} */}
+                                    </button>
+                                </div>
+                            </>
+                        </Form>
+                    )}
+                </Formik>
+
                 <div className="mt-5">
                     <pre>
                         {JSON.stringify({...formData, images: selectedFile}, null, 1)}

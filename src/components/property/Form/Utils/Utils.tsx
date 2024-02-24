@@ -4,8 +4,8 @@ type RadioButton = {text?: string, image?: string, checked: boolean, onChange: (
 export const RadioButton: React.FC<RadioButton> = ({checked, onChange, text, image}) => {
 
     return <>
-        <div onClick={onChange} className={`radio col-auto mr-sm-2 mx-1 card-block py-1 text-center radio ${checked ? "selected" : ""}`}>
-            <div className="flex-row align-items-center">
+        <div onClick={onChange} className={`radio col-auto mr-sm-2 mx-1 card-block text-center radio ${checked ? "selected" : ""}`}>
+            <div className="flex-row align-items-center px-3 py-1">
                 <div className="col">
                     {image && (
                         <div className="pic">
@@ -14,7 +14,7 @@ export const RadioButton: React.FC<RadioButton> = ({checked, onChange, text, ima
                                 alt="user1"
                                 width={40}
                                 height={40}
-                                className="avatar avatar-sm me-3"
+                                className="avatar-sm me-3"
                             />
                         </div>
                     )}
@@ -31,16 +31,16 @@ export const MultipleSection: React.FC<MultipleSection> = ({text, image, checked
     return <>
 
         <div onClick={onChange} className={`radio col-auto mr-sm-2 mx-1 card-block py-1 text-center radio ${checked ? "selected" : ""}`}>
-            <div className="flex-row align-items-center">
+            <div className="flex-row align-items-center px-3 py-1">
                 <div className="col">
                     {image && (
                         <div className="pic">
                             <Image
                                 src={image}
                                 alt="user1"
-                                width={40}
-                                height={40}
-                                className="avatar avatar-sm me-3"
+                                width={50}
+                                height={50}
+                                className="avatar-sm "
                             />
                         </div>
                     )}

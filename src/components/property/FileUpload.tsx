@@ -114,10 +114,11 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                       className="file-upload-input"
                       onChange={InputChange}
                       multiple
+                      accept="image/*"
                     />
                     <span>
                       Drag and drop or{" "}
-                      <span className="file-link">Choose your files</span>
+                      <span className="file-link">Choose Property Image</span>
                     </span>
                   </div>
                 </div>
