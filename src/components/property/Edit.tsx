@@ -21,7 +21,6 @@ import validationSchema from "./Form/Utils/validation";
 
 const Edit = () => {
     const router = useRouter()
-    const [formData, setFormData] = useState<any>({})
     const [selectedFile, setSelectedFile] = useState(
         []
     );
@@ -52,18 +51,17 @@ const Edit = () => {
                     initialValues={formInitData}
                     validationSchema={validationSchema}
                 >
-                    {({values, setValues}) => (
+                    {({values, setValues, errors}) => (
                         <Form>
                             <>
                                 <div className="px-5 py-5">
 
-                                    <Page1 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />
-                                    <Page2 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />
-                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page3 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />}
-                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page4 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />}
-                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page5 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />}
-                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page6 type={PAGE_TYPE_EDIT} setData={setValues} data={values} />}
-
+                                    <Page1 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />
+                                    <Page2 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />
+                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page3 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
+                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page4 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
+                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page5 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
+                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page6 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
 
                                 </div>
                                 <VideoUpload video={video} setVideo={setVideo} />
@@ -81,16 +79,16 @@ const Edit = () => {
                                         Update  {/* {type === PAGE_TYPE_ADD ? "Add" : "Update"} {path} */}
                                     </button>
                                 </div>
+                                <div className="mt-5">
+                                    <pre>
+                                        {JSON.stringify(errors, null, 1)}
+                                    </pre>
+                                </div>
                             </>
                         </Form>
                     )}
                 </Formik>
 
-                <div className="mt-5">
-                    <pre>
-                        {JSON.stringify({...formData, images: selectedFile}, null, 1)}
-                    </pre>
-                </div>
             </div>
         </div>
     </div>

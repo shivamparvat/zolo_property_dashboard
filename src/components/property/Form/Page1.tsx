@@ -1,7 +1,7 @@
 import {PAGE_TYPE_ADD} from "@/components/Utils/constants";
 import MapComponent, {Coordinates} from "@/components/Utils/map";
 import {useState} from "react";
-import {RadioButton} from "./Utils/Utils";
+import {FormError, RadioButton} from "./Utils/Utils";
 import {Form as FormStrap} from "react-bootstrap";
 import {ErrorMessage} from "formik";
 
@@ -71,7 +71,7 @@ const propertyTypeConfigSell = [
     }
 ]
 
-const Page1: React.FC<page> = ({type, data, setData}) => {
+const Page1: React.FC<page> = ({type, data, setData, errors}) => {
     const [coordinates, setCoordinates] = useState<Coordinates>(type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78})
     return (
         <div>
@@ -86,14 +86,8 @@ const Page1: React.FC<page> = ({type, data, setData}) => {
                         checked={data?.property_for == (type.key || "")}
                         image={type.image}
                         onChange={() => {setData((pre: any) => ({...pre, property_for: (type.key || "")}))}} />)}
-
-
+                    <FormError errors={errors} errorKey="property_for" />
                 </div>
-                <ErrorMessage
-                      className="text-danger"
-                      name="property_for"
-                      component="div"
-                    />
             </div>
             <FormStrap.Label className="form-control-label">
                 <h6>Your property type</h6>
@@ -120,11 +114,8 @@ const Page1: React.FC<page> = ({type, data, setData}) => {
                         onChange={() => {setData((pre: any) => ({...pre, property_type: (type.key || "")}))}} />)}
 
                 </div>
-                <ErrorMessage
-                      className="text-danger"
-                      name="property_type"
-                      component="div"
-                    />
+                <FormError  errorKey="property_type" errors={errors}/>
+
             </div>
             <div>
                 <div>

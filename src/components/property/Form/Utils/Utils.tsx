@@ -1,10 +1,11 @@
 import Image from "next/image"
+import React from "react"
 
 type RadioButton = {text?: string, image?: string, checked: boolean, onChange: () => void}
 export const RadioButton: React.FC<RadioButton> = ({checked, onChange, text, image}) => {
 
     return <>
-        <div onClick={onChange} className={`radio col-auto mr-sm-2 mx-1 card-block text-center radio ${checked ? "selected" : ""}`}>
+        <div onClick={onChange} id={text || ""} className={`radio col-auto mr-sm-2 mx-1 card-block text-center radio ${checked ? "selected" : ""}`}>
             <div className="flex-row align-items-center px-3 py-1">
                 <div className="col">
                     {image && (
@@ -48,4 +49,13 @@ export const MultipleSection: React.FC<MultipleSection> = ({text, image, checked
                 <div className="">{text && text}</div>
             </div>
         </div></>
+}
+
+
+
+export const FormError: React.FC<ErrorForm> = ({errors, errorKey, className, text}) => {
+    console.log(errors, errorKey, "djk")
+    if (errors[errorKey]) {
+        return <div className={`text-danger ${className || ""}`}>{text || errors[errorKey] || "something went wrong"}</div>
+    }
 }

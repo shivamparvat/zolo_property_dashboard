@@ -1,7 +1,7 @@
 import {PAGE_TYPE_ADD} from "@/components/Utils/constants";
 import {Coordinates} from "@/components/Utils/map";
 import {useState} from "react";
-import {MultipleSection, RadioButton} from "./Utils/Utils";
+import {FormError, MultipleSection, RadioButton} from "./Utils/Utils";
 import {Accordion, Form as FormStrap} from "react-bootstrap";
 
 
@@ -66,7 +66,7 @@ const propertyStatus = [
 ]
 
 
-const Page2: React.FC<page> = ({type, data, setData}) => {
+const Page2: React.FC<page> = ({type, data, setData, errors}) => {
     const [coordinates, setCoordinates] = useState<Coordinates>(type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78})
     return (
         <>
@@ -89,6 +89,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                 text={`1RK` || ""}
                                 checked={data?.bedrooms == (`1RK` || "")}
                                 onChange={() => {setData((pre: any) => ({...pre, bedrooms: (`1RK` || "")}))}} />
+                            <FormError errorKey="bedrooms" errors={errors} />
                         </div>}
                     </div>
 
@@ -106,6 +107,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                         <input className="form-control" placeholder="Saleable area" value={data.saleable_area} type="number" onChange={(e) => {
                                             setData((pre: any) => ({...pre, saleable_area: e.target.value}))
                                         }} />
+                                        <FormError errorKey="saleable_area" errors={errors} />
                                     </div>
                                 </div>
                                 <div className="col-md-3">
@@ -131,6 +133,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                                     }
                                                 )}
                                             </select>
+                                            <FormError errorKey="saleable_area_size_in" errors={errors} />
                                         </div>
                                     </div>
                                 </div>
@@ -142,6 +145,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                         <input className="form-control" placeholder="Saleable area" value={data.carpet_area} type="number" onChange={(e) => {
                                             setData((pre: any) => ({...pre, carpet_area: e.target.value}))
                                         }} />
+                                        <FormError errorKey="carpet_area" errors={errors} />
                                     </div>
                                 </div>}
                                 {data?.property_type !== "Plot" && data?.property_type !== "Farm" && <div className="col-md-3">
@@ -169,6 +173,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="carpet_area_size_in" errors={errors} />
                                     </div>
                                 </div>}
                             </div>
@@ -206,6 +211,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                                     )}
 
                                                 </select>
+                                                <FormError errorKey="saleable_area_size_in" errors={errors} />
                                             </div>
                                         </div>
                                     </div>
@@ -233,6 +239,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                                     )}
 
                                                 </select>
+                                                <FormError errorKey="balconies" errors={errors} />
                                             </div>
                                         </div>
                                     </div>
@@ -266,6 +273,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                 });
                             }} />
                     })}
+                    <FormError errorKey="additional_room" errors={errors} />
                 </div>}
                 <div className="pt-3">
                     <FormStrap.Label className="form-control-label">
@@ -282,6 +290,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                         ...pre, expected_price_in_sqft: e.target.value
                                     }))
                                 }} />
+                                <FormError errorKey="expected_price_in_sqft" errors={errors} />
                             </div>
 
                         </div>
@@ -295,6 +304,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                         ...pre, expected_price: e.target.value
                                     }))
                                 }} />
+                                <FormError errorKey="expected_price" errors={errors} />
                             </div>
 
                         </div>
@@ -310,6 +320,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                         ...pre, booking_price: e.target.value
                                     }))
                                 }} />
+                                <FormError errorKey="booking_price" errors={errors} />
                             </div>
                         </div>
 
@@ -328,6 +339,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                     ...pre, monthly_rent: e.target.value
                                 }))
                             }} />
+                            <FormError errorKey="monthly_rent" errors={errors} />
                         </div>
 
                     </div>
@@ -341,6 +353,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                     ...pre, security_deposit: e.target.value
                                 }))
                             }} />
+                            <FormError errorKey="security_deposit" errors={errors} />
                         </div>
 
                     </div>
@@ -357,6 +370,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                     ...pre, maintance_charge: e.target.value
                                 }))
                             }} />
+                            <FormError errorKey="maintance_charge" errors={errors} />
                         </div>
                     </div>
                     <div className="col-md-3">
@@ -370,7 +384,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                 }))
                             }} />
                         </div>
-
+                        <FormError errorKey="available_from" errors={errors} />
                     </div>
                 </div>}
 
@@ -383,7 +397,9 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                         }))
                     }} />
                     <label htmlFor="negotiable ps-1 d-inline-block">negotiable</label>
+
                 </div>
+                <FormError errorKey="negotiable" errors={errors} />
             </div>
             <Accordion defaultActiveKey="1" className="mt-3">
                 <Accordion.Item eventKey="0">
@@ -419,6 +435,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                             });
                                         }} />
                                 })}
+                                <FormError errorKey="additional_facility" errors={errors} />
                             </div>
                         </div>}
 
@@ -435,6 +452,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                     onChange={() => {setData((pre: any) => ({...pre, property_status: (type.key || "")}))}} />)}
 
                             </div>
+                            <FormError errorKey="property_status" errors={errors} />
                         </div>}
 
 
@@ -463,6 +481,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                             )}
 
                                         </select>
+                                        <FormError errorKey="saleable_area_size_in" errors={errors} />
                                     </div>
                                 </div>
                             </div>
@@ -476,6 +495,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                             onChange={(e) => {
                                                 setData((pre: any) => ({...pre, possession_date: e.target.value}))
                                             }} />
+                                        <FormError errorKey="possession_date" errors={errors} />
                                     </div>
                                 </div>
                             </div>
@@ -489,6 +509,7 @@ const Page2: React.FC<page> = ({type, data, setData}) => {
                                     onChange={(e) => {
                                         setData((pre: any) => ({...pre, description: e.target.value}))
                                     }} placeholder="tell us more about the property..." ></textarea>
+                                <FormError errorKey="description" errors={errors} />
                             </div>
                         </div>
                     </Accordion.Body>
