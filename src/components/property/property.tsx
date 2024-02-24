@@ -18,6 +18,8 @@ import ActionScreen from "./ActionScreen";
 import ImagePreview from "./ImageModule";
 import ActionFeature from "@/Api/ActionFeature";
 import StatusChange from "./StatusChange";
+import {Router} from "next/router";
+import {useRouter} from "next/navigation";
 
 // init
 
@@ -29,6 +31,7 @@ const Post = () => {
   ActionFeature.path = path;
   // hook
   const dispatch = useDispatch();
+  const router = useRouter()
   const token = useSelector((state: RootState) => state.login.userToken?.token);
   const recallApi = useSelector(
     (state: RootState) => state.recallApi.recallApi
@@ -182,10 +185,10 @@ const Post = () => {
           <div className="dataTables_wrapper dt-bootstrap5">
             <TableHeader
               title={`List of ${path}`}
-              onAddClick={() => setActionType(PAGE_TYPE_ADD)}
+              onAddClick={() => router.push("/property/edit/10")}
               onExportClick={() => {
                 ActionFeature.download();
-                
+
               }}
               disable={[FIRST_BUTTON]}
             />
