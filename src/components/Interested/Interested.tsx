@@ -2,21 +2,20 @@ import react, {useEffect, useState} from "react";
 import {RootState} from "@/redux/store";
 import {useDispatch, useSelector} from "react-redux";
 import Filter from "../Utils/Filter";
-import {DDMMYYYY} from "../Utils/Formeter";
-import CustomTable, {ActionButtons, ActionSwitch} from "../Utils/CustomTable";
+import CustomTable, {ActionSwitch} from "../Utils/CustomTable";
 import Image from "next/image";
 import Pagination from "../Utils/Pagination";
 import React from "react";
 import {
-  USER_ROLE_TYPE_DATA,
   INIT_FILTER,
   PAGE_TYPE_ADD,
   PAGE_TYPE_EDIT,
 } from "../Utils/constants";
 import TableHeader, {SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
 import ActionFeature from "@/Api/ActionFeature";
-import {IoCallOutline} from "react-icons/io5";
 import StatusChange from "./StatusChange";
+import {TfiWrite} from "react-icons/tfi";
+import ActionScreen from "./ActionScreen";
 
 
 export const UserName: React.FC<any> = ({data}) => (
@@ -56,7 +55,7 @@ const Interested = () => {
     pagination: {total: 0},
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [selected, setSelected] = useState({});
+  const [selected, setSelected] = useState<any>({});
   const [actionType, setActionType] = useState<string>("");
 
   // useEffects
@@ -70,6 +69,11 @@ const Interested = () => {
     {
       value: "S.No",
       index: true,
+    },
+    {
+      key: "Id",
+      value: "Id",
+      component: ({data}) => <>{data?._id?.slice(-6)?.toUpperCase()}</>
     },
     {
       key: "name",
@@ -123,46 +127,67 @@ const Interested = () => {
     {
       value: "Action",
       component: ({data}) => (
-        <ActionButtons
-          data={data}
-          setSelected={setSelected}
-          setEdit={setActionType}
-          id={data._id}
-        />
+        <>
+
+          <button
+            onClick={() => {
+              setActionType(PAGE_TYPE_EDIT)
+            }}
+            className="btn btn-success"
+            data-tooltip="Edit"
+          >
+            <TfiWrite size={20} />
+          </button>
+          &nbsp;
+        </>
       ),
     },
 
   ]
 
   return (
-    <div className="card bg-glass">
-      <div className="card-datatable ">
-        <div className="dataTables_wrapper dt-bootstrap5">
-          <TableHeader
-            title={`List of ${path}`}
-            onAddClick={() => setActionType(PAGE_TYPE_ADD)}
-            onExportClick={() => {
-              ActionFeature.download();
-            }}
-            disable={[SECOND_BUTTON]}
-          />
-          <Filter filter={filter} setFilter={setFilter} />
+    <>
+      {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
+        <ActionScreen
+          id={selected._id || 0}
+          isActive={
+            actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT
+          }
+          onClose={setActionType}
+          data={{...selected, id: selected._id}}
+          type={actionType == PAGE_TYPE_ADD ? PAGE_TYPE_ADD : PAGE_TYPE_EDIT}
+          urls={actionType == PAGE_TYPE_ADD ? `${path}/add` : `${path}/update`}
+          path={path}
+        />
+      )}
+      <div className="card bg-glass">
+        <div className="card-datatable ">
+          <div className="dataTables_wrapper dt-bootstrap5">
+            <TableHeader
+              title={`List of ${path}`}
+              onAddClick={() => setActionType(PAGE_TYPE_ADD)}
+              onExportClick={() => {
+                ActionFeature.download();
+              }}
+              disable={[SECOND_BUTTON]}
+            />
+            <Filter filter={filter} setFilter={setFilter} />
 
-          <CustomTable
-            tableCustomize={TableCustomize}
-            data={(fetchData && fetchData.list) || []}
-            StartIndex={+filter.limit * (+currentPage - 1) + 1 || 1}
-          />
+            <CustomTable
+              tableCustomize={TableCustomize}
+              data={(fetchData && fetchData.list) || []}
+              StartIndex={+filter.limit * (+currentPage - 1) + 1 || 1}
+            />
 
-          <Pagination
-            currentPage={currentPage}
-            limit={filter.limit}
-            setCurrentPage={setCurrentPage}
-            total={fetchData.pagination?.total || 0}
-          />
+            <Pagination
+              currentPage={currentPage}
+              limit={filter.limit}
+              setCurrentPage={setCurrentPage}
+              total={fetchData.pagination?.total || 0}
+            />
+          </div>
         </div>
-      </div>
-    </div>
+      </div></>
   );
 };
 

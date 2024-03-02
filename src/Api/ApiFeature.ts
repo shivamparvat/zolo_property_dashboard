@@ -4,15 +4,16 @@ import ShowToast, {
   error,
   success,
 } from "../components/Utils/ShowToast";
-import { Dispatch } from "react";
-import { AnyAction } from "redux";
-import { NextRouter } from "next/router";
-import { removeToken } from "@/redux/reducer/login";
+import {Dispatch} from "react";
+import {AnyAction} from "redux";
+import {NextRouter} from "next/router";
+import {removeToken} from "@/redux/reducer/login";
+import RecallApi, {setRecallApi} from "@/redux/reducer/RecallApi";
 
 const Base_url = process.env.NEXT_PUBLIC_BASE_URL || "";
 
 interface ApiFeatureType {
-  config?: { dispatch: Dispatch<AnyAction>; router: NextRouter; token: string } | null;
+  config?: {dispatch: Dispatch<AnyAction>; router: NextRouter; token: string} | null;
   get?: any;
   post?: any;
   put?: any;
@@ -26,8 +27,8 @@ const ApiFeature: ApiFeatureType = {
     id: number | null = null,
     toast = false
   ) => {
+    const context = ApiFeature.config;
     try {
-      const context = ApiFeature.config;
       const FullPath = id ? `${Base_url}/${path}/${id}` : `${Base_url}/${path}`;
       const res = await axios.get(FullPath, {
         headers: {
@@ -44,6 +45,7 @@ const ApiFeature: ApiFeatureType = {
       }
       return res?.data;
     } catch (error: any) {
+      context?.dispatch(setRecallApi(true));
       ShowToast(error, error?.response?.data?.message);
       return error;
     }
@@ -55,8 +57,8 @@ const ApiFeature: ApiFeatureType = {
     isMultipart = false,
     toast = false
   ) {
+    const context = ApiFeature.config;
     try {
-      const context = ApiFeature.config;
       const FullPath = id ? `${Base_url}/${path}/${id}` : `${Base_url}/${path}`;
       const res = await axios.post(FullPath, data, {
         headers: {
@@ -67,13 +69,12 @@ const ApiFeature: ApiFeatureType = {
       if (toast && res?.data?.success) {
         ShowToast(success, res?.data?.message);
       } else if (res.data.status === 401) {
-
         context?.dispatch(removeToken());
         context?.router?.push("/login");
       }
       return res?.data;
     } catch (failedError: any) {
-      console.log(failedError);
+      context?.dispatch(setRecallApi(true));
       ShowToast(error, failedError?.response?.data?.message);
       return failedError;
     }
@@ -85,8 +86,8 @@ const ApiFeature: ApiFeatureType = {
     isMultipart = false,
     toast = true
   ) => {
+    const context = ApiFeature.config;
     try {
-      const context = ApiFeature.config;
       const FullPath = id ? `${Base_url}/${path}/${id}` : `${Base_url}/${path}`;
       const res = await axios.put(FullPath, data, {
         headers: {
@@ -103,6 +104,7 @@ const ApiFeature: ApiFeatureType = {
       }
       return res?.data;
     } catch (failedError: any) {
+      context?.dispatch(setRecallApi(true));
       ShowToast(error, failedError?.response?.data?.message);
       return failedError;
     }
@@ -112,8 +114,8 @@ const ApiFeature: ApiFeatureType = {
     id: number | null = null,
     toast = true
   ) => {
+    const context = ApiFeature.config;
     try {
-      const context = ApiFeature.config;
       const FullPath = id ? `${Base_url}/${path}/${id}` : `${Base_url}/${path}`;
       const res = await axios.delete(FullPath, {
         headers: {
@@ -129,6 +131,7 @@ const ApiFeature: ApiFeatureType = {
       }
       return res?.data;
     } catch (failedError: any) {
+      context?.dispatch(setRecallApi(true));
       ShowToast(error, failedError?.response?.data?.message);
       return failedError;
     }

@@ -1,9 +1,9 @@
-import {PAGE_TYPE_ADD} from "@/components/Utils/constants";
+import {PAGE_TYPE_ADD, STATE_OPTION} from "@/components/Utils/constants";
 import MapComponent, {Coordinates} from "@/components/Utils/map";
 import {useState} from "react";
 import {FormError, RadioButton} from "./Utils/Utils";
 import {Form as FormStrap} from "react-bootstrap";
-import {ErrorMessage} from "formik";
+import Select from 'react-select';
 
 
 const propertyForConfig = [
@@ -72,7 +72,7 @@ const propertyTypeConfigSell = [
 ]
 
 const Page1: React.FC<page> = ({type, data, setData, errors}) => {
-    const [coordinates, setCoordinates] = useState<Coordinates>(type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78})
+
     return (
         <div>
             <FormStrap.Label className="form-control-label">
@@ -114,48 +114,81 @@ const Page1: React.FC<page> = ({type, data, setData, errors}) => {
                         onChange={() => {setData((pre: any) => ({...pre, property_type: (type.key || "")}))}} />)}
 
                 </div>
-                <FormError  errorKey="property_type" errors={errors}/>
+                <FormError errorKey="property_type" errors={errors} />
 
             </div>
             <div>
                 <div>
-                    {/* <div>
-                                    <FormStrap.Label className="form-control-label">
-                                        <h6>Select Bedrooms</h6>
-                                    </FormStrap.Label>
-                                    <Field
-                                        as="select"
-                                        name="role"
-                                        id="role"
-                                        className="form-control-alternative form-control"
-                                    >
-                                        <option value="" selected disabled hidden>
-                                            Select Bedrooms
-                                        </option>
+                    <FormStrap.Label className="form-control-label">
+                        <h6>Address</h6>
+                    </FormStrap.Label>
+                    <div className="row">
+                        <div className="col-md-3">
+                            <FormStrap.Label className="form-control-label">
+                                <h6>City</h6>
+                            </FormStrap.Label>
+                            <div>
+                                <input type="text" className="form-control" placeholder="City" value={data.city} onChange={(e) => {
+                                    setData((pre: any) => ({
+                                        ...pre, city: e.target.value
+                                    }))
+                                }} />
+                                <FormError errorKey="city" errors={errors} />
+                            </div>
 
-                                        {new Array(15).fill(0).map(
-                                            (value: string, index: number) => {
-                                                return (
-                                                    <option key={index} value={index + 1}>
-                                                        {index + 1}
-                                                    </option>
-                                                );
-                                            }
-                                        )}
-                                        <option value="1RK">1RK</option>
-                                    </Field>
-                                    <ErrorMessage
-                                        className="text-danger"
-                                        name="bedrooms"
-                                        component="bedrooms"
-                                    />
-                                </div> */}
+                        </div>
+                        <div className="col-md-3">
+                            <FormStrap.Label className="form-control-label">
+                                <h6>State</h6>
+                            </FormStrap.Label>
+                            <Select id="state" placeholder="State" name="state"
+                                options={STATE_OPTION || {value: "", lable: ""}} className="form-control-alternative form-control stateSelect"
+                                defaultValue={{value: data?.state, label: data?.state}}
+                                onChange={(selectedOption) =>
+                                    setData({...data, state: selectedOption ? selectedOption.value : ''})
+                                }
+                            />
+                            <FormError errorKey="state" errors={errors} />
+                        </div>
+                        <div className="col-md-3">
+                            <FormStrap.Label className="form-control-label">
+                                <h6>Zip Code</h6>
+                            </FormStrap.Label>
+                            <div>
+                                <input type="number" className="form-control" placeholder="Zip Code" value={data.zip_code} onChange={(e) => {
+                                    setData((pre: any) => ({
+                                        ...pre, zip_code: e.target.value
+                                    }))
+                                }} />
+                                <FormError errorKey="zip_code" errors={errors} />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <FormStrap.Label className="form-control-label">
+                            <h6>Address</h6>
+                        </FormStrap.Label>
+                        <div>
+                            <textarea className="form-control" name="location" rows={4} value={data.location}
+                                onChange={(e) => {
+                                    setData((pre: any) => ({...pre, location: e.target.value}))
+                                }} placeholder="Address..." ></textarea>
+                            <FormError errorKey="location" errors={errors} />
+                        </div>
+                    </div>
 
                 </div>
             </div>
             <div className="mt-2">
 
-                <MapComponent Coordinates={coordinates} setCoordinates={setCoordinates} />
+                <MapComponent Coordinates={data?.coordinates} setCoordinates={({lat, lng}) => {
+                    setData((pre: any) => ({
+                        ...pre, coordinates: {lat: lat || 0, lng: lng || 0}
+                    }))
+                }} />
             </div>
 
         </div>

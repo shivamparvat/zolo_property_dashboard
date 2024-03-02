@@ -10,9 +10,10 @@ const FullLayout = ({children}: childrenType) => {
 
   return (
     <div>
-      <section className="background-radial-gradient h-100" style={{
+      <section className="background-radial-gradient" style={{
         overflowY: "scroll",
-        overflowX: "hidden"
+        overflowX: "hidden",
+        minHeight: '100vh !important'
       }}>
         {loading ? (
           <div className="global__loader__Container">

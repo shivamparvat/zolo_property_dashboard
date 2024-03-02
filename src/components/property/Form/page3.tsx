@@ -88,7 +88,6 @@ const page3: React.FC<page> = ({type, data, setData, errors}) => {
                                 </div>
                             </div>
                         </div>
-
                         <div className="row">
                             <div className="col-md-3">
                                 <FormStrap.Label className="form-control-label">

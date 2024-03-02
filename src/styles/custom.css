@@ -38,6 +38,9 @@
 } */
 
 /*  side*/
+.stateSelect {
+  margin-top: -1vh !important;
+}
 
 .sidenav::-webkit-scrollbar {
   width: 3px !important;

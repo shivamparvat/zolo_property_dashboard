@@ -3,7 +3,7 @@ import Filter from "../Utils/Filter";
 import react, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
-import CustomTable, {ActionButtons, ActionSwitch} from "../Utils/CustomTable";
+import CustomTable, {ActionButtons, ActionSwitch, EDIT} from "../Utils/CustomTable";
 import {DDMMYYYY} from "../Utils/Formeter";
 import Pagination from "../Utils/Pagination";
 import {setRecallApi} from "@/redux/reducer/RecallApi";
@@ -12,7 +12,7 @@ import {
   PAGE_TYPE_ADD,
   PAGE_TYPE_EDIT,
 } from "../Utils/constants";
-import TableHeader, {FIRST_BUTTON} from "../Utils/CustomTable/TableHeader";
+import TableHeader, {FIRST_BUTTON, SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
 import Image from "next/image";
 import ActionScreen from "./ActionScreen";
 import ImagePreview from "./ImageModule";
@@ -20,6 +20,7 @@ import ActionFeature from "@/Api/ActionFeature";
 import StatusChange from "./StatusChange";
 import {Router} from "next/router";
 import {useRouter} from "next/navigation";
+import {FaEdit, FaTrash} from "react-icons/fa";
 
 // init
 
@@ -145,14 +146,28 @@ const Post = () => {
     {
       value: "Action",
       component: ({data}) => (
-        <ActionButtons
-          data={data}
-          setSelected={setSelected}
-          setEdit={setActionType}
-          id={data.post_id}
-        />
+        <>
+          <>
+            <button
+              onClick={() => {
+                router.push(`/property/edit?id=${data._id}`)
+              }}
+              className="btn btn-warning"
+              data-tooltip="Edit"
+            >
+              <FaEdit size={16} />
+            </button>
+            &nbsp;
+          </><ActionButtons
+            data={data}
+            setSelected={setSelected}
+            setEdit={setActionType}
+            id={data._id}
+            disable={[EDIT]}
+          />
+        </>
       ),
-      className: "d-flex ",
+      className: "d-flex justify-content-center",
     },
   ];
 
@@ -185,12 +200,12 @@ const Post = () => {
           <div className="dataTables_wrapper dt-bootstrap5">
             <TableHeader
               title={`List of ${path}`}
-              onAddClick={() => router.push("/property/edit/10")}
+              onAddClick={() => router.push("/property/edit?id=10")}
               onExportClick={() => {
                 ActionFeature.download();
 
               }}
-              disable={[FIRST_BUTTON]}
+              disable={[FIRST_BUTTON, SECOND_BUTTON]}
             />
             <Filter filter={filter} disable={[]} setFilter={setFilter} />
             <CustomTable

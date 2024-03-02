@@ -16,6 +16,8 @@ import {
 import TableHeader, {FIRST_BUTTON, SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
 import ActionFeature from "@/Api/ActionFeature";
 import ActionScreen from "./ActionScreen";
+import {FaBuildingUser} from "react-icons/fa6";
+import {useRouter} from "next/router";
 
 
 export const UserName: React.FC<any> = ({data}) => (
@@ -45,6 +47,7 @@ const Users = () => {
 
   // hooks
   const dispatch = useDispatch();
+  const router = useRouter()
   const token = useSelector((state: RootState) => state.login.userToken?.token);
   const {recallApi} = useSelector((state: RootState) => state.recallApi);
 
@@ -57,6 +60,7 @@ const Users = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selected, setSelected] = useState<userType>({});
   const [actionType, setActionType] = useState<string>("");
+
 
   // useEffects
   useEffect(() => {
@@ -108,12 +112,25 @@ const Users = () => {
       value: "Action",
       combine: ["user_id"],
       component: ({data}) => (
-        <ActionButtons
-          data={data}
-          setSelected={setSelected}
-          setEdit={setActionType}
-          id={data._id}
-        />
+        <>
+          <>
+            <button
+              onClick={() => {
+                router.push(`property/add/?id=${data._id}&name=${data.first_name + ' ' + data?.last_name}`)
+              }}
+              className="btn btn-success"
+              data-tooltip="Edit"
+            >
+              <FaBuildingUser size={16} />
+            </button>
+            &nbsp;
+          </>
+          <ActionButtons
+            data={data}
+            setSelected={setSelected}
+            setEdit={setActionType}
+            id={data._id}
+          /></>
       ),
       className: "d-flex ",
     },
@@ -147,7 +164,7 @@ const Users = () => {
               }}
               disable={[FIRST_BUTTON]}
             />
-            <Filter filter={filter} setFilter={setFilter} disable={[PROPERTY_TYPE,PROPERTY_FOR]}/>
+            <Filter filter={filter} setFilter={setFilter} disable={[PROPERTY_TYPE, PROPERTY_FOR]} />
 
             <CustomTable
               tableCustomize={TableCustomize}

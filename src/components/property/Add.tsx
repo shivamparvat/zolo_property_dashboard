@@ -6,7 +6,7 @@ import Page3 from "./Form/page3";
 import Page4 from "./Form/page4";
 import Page5 from "./Form/page5";
 import Page6 from "./Form/page6";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {PAGE_TYPE_EDIT} from "../Utils/constants";
 import FileUpload from "./FileUpload";
 import VideoUpload from "./VideoUpload";
@@ -27,7 +27,8 @@ import {removeToken} from "@/redux/reducer/login";
 const Edit = () => {
     const router = useRouter()
     const dispatch = useDispatch()
-    const property_id = router.query.id
+    const user_id = router.query.id
+    const user_name = router.query.name
     const [selectedFile, setSelectedFile] = useState(
         []
     );
@@ -35,34 +36,9 @@ const Edit = () => {
     const [deletedFile, setDeletedFile] = useState<any[]>([]);
     const [video, setVideo] = useState<File | null>(null)
 
-    const [formInitData, setFormInitData] = useState<any>({})
+    const formInitData: any = {
 
-    useEffect(() => {
-        try {
-            if (property_id) {
-
-
-                const getOneProperty = async () => {
-                    const res = await ApiFeature.get("property", property_id, true);
-                    if (res.status == 200) {
-                        if (res.data)
-                        setFormInitData(res.data.property)
-                        dispatch(setLoader(false));
-                        dispatch(setRecallApi(true));
-                    } else if (res.data.status === 401) {
-                        dispatch(removeToken());
-                        router?.push("/login");
-                    }
-                }
-                getOneProperty()
-            }
-        } catch (error) {
-            dispatch(setLoader(false));
-        } finally {
-            dispatch(setLoader(false));
-        }
-    }, [property_id])
-
+    }
 
 
     const submitHandler = async (value: any) => {
@@ -94,6 +70,10 @@ const Edit = () => {
                 formData.append('coordinates[]', value.coordinates.lat)
                 formData.append('coordinates[]', value.coordinates.lng)
             }
+            if (typeof user_id == 'string')
+                formData.append('user', user_id)
+            if (typeof user_name == 'string')
+                formData.append('name', user_name)
 
             if (video) {
                 formData.append('video', video)
@@ -105,7 +85,7 @@ const Edit = () => {
             }
 
 
-            const res = await ApiFeature.post("property/add", formData, 0, true);
+            const res = await ApiFeature.post("property/add", formData, 0, true, true);
             if (res.status == 200) {
                 dispatch(setLoader(false));
                 dispatch(setRecallApi(true));
@@ -128,13 +108,11 @@ const Edit = () => {
             <div className="dataTables_wrapper dt-bootstrap5">
                 <TableHeader
                     title={`Edit Property`}
-                    onAddClick={() => {router.back()}}
-                    AddButtonText="Back"
+                    onAddClick={() => { }}
                     onExportClick={() => {
-
                         // ActionFeature.download();
                     }}
-                    disable={[FIRST_BUTTON]}
+                    disable={[FIRST_BUTTON, SECOND_BUTTON]}
                 />
                 <Formik
                     enableReinitialize={true}

@@ -54,7 +54,6 @@ export const MultipleSection: React.FC<MultipleSection> = ({text, image, checked
 
 
 export const FormError: React.FC<ErrorForm> = ({errors, errorKey, className, text}) => {
-    console.log(errors, errorKey, "djk")
     if (errors[errorKey]) {
         return <div className={`text-danger ${className || ""}`}>{text || errors[errorKey] || "something went wrong"}</div>
     }

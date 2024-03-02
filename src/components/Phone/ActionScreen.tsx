@@ -58,37 +58,12 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     (state: RootState) => state.recallApi.recallApi
   );
 
-  useEffect(() => {
-    dispatch(setLoader(true));
-    async function getCategoryData() {
-      const data: any = await ApiFeature.get("brand/getCategoryWithSubCat");
-      if (data && data.status == 200) {
-        setCategoryData(data.data);
-        dispatch(setLoader(false));
-        dispatch(setRecallApi(false));
-      }
-    }
-    try {
-      getCategoryData();
-    } catch (error) {
-      dispatch(setLoader(false));
-    } finally {
-      dispatch(setLoader(false));
-    }
-    return () => { };
-  }, [token, dispatch, recallApi]);
+ 
 
-  const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSubCategory(
-      brandData.find(
-        (brand: categoryDataType) => brand.category_id == +e.target.value
-      )?.modal || []
-    );
-  };
 
   //   from submit
   const onsubmit = async (value: any) => {
-    dispatch(setLoader(true));
+    // dispatch(setLoader(true));
     let res;
     try {
       const formData = new FormData();
@@ -101,27 +76,20 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       }
 
       if (res.status == 200) {
-        dispatch(setLoader(false));
-        dispatch(setRecallApi(true));
+        // dispatch(setLoader(false));
+        // dispatch(setRecallApi(true));
         onClose("");
       }
     } catch (error) {
-      dispatch(setRecallApi(true));
-      dispatch(setLoader(false));
+      // dispatch(setRecallApi(true));
+      // dispatch(setLoader(false));
     } finally {
-      dispatch(setRecallApi(true));
-      dispatch(setLoader(false));
+      // dispatch(setRecallApi(true));
+      // dispatch(setLoader(false));
     }
   };
 
-  useEffect(() => {
-    setSelectedSubCategory(
-      brandData.find(
-        (category: categoryDataType) =>
-          category.category_id == +data.category_id
-      )?.modal || []
-    );
-  }, [brandData, data]);
+ 
 
   return (
     <Modal

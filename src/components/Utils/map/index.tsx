@@ -20,7 +20,6 @@ const MapComponent: React.FC<MapComponentProps> = ({setCoordinates, Coordinates}
     const lng = event.latLng?.lng();
     setCoordinates({lat: lat || 0, lng: lng || 0});
 
-    console.log(lat, lng);
   };
 
   const {isLoaded} = useJsApiLoader({

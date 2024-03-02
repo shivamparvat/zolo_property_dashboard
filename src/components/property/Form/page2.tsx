@@ -66,6 +66,25 @@ const propertyStatus = [
 ]
 
 
+const RoomDetails = [
+    {
+        key: "Single Bed",
+        value: "Single Bed"
+    },
+    {
+        key: "Double Sharing",
+        value: "Double Sharing"
+    },
+    {
+        key: "Triple Sharing",
+        value: "Triple Sharing"
+    },
+    {
+        key: "Multiple Sharing",
+        value: "Multiple Sharing"
+    },
+]
+
 const Page2: React.FC<page> = ({type, data, setData, errors}) => {
     const [coordinates, setCoordinates] = useState<Coordinates>(type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78})
     return (
@@ -401,8 +420,94 @@ const Page2: React.FC<page> = ({type, data, setData, errors}) => {
                                 }} />
                                 <label htmlFor="negotiable ps-1 d-inline-block">negotiable</label>
 
+                                <FormError errorKey="negotiable" errors={errors} />
                             </div>
-                            <FormError errorKey="negotiable" errors={errors} />
+
+                            {data?.property_type === "Pg" || data?.property_type === "Hostel" && <div className="row">
+                                <div className="col-md-12">
+                                    <FormStrap.Label className="form-control-label">
+                                        <h6>room Details</h6>
+                                    </FormStrap.Label>
+                                    <table className="table">
+                                        <thead>
+                                            <tr><th>Room Type</th>
+                                                <th>Number Of Rooms</th>
+                                                <th>Price for Rooms</th>
+                                                <th>Action</th>
+                                            </tr></thead>
+                                        <tbody id="items_rows_body">
+                                            {(data?.room_data || [{}]).map((item: any, index: number) => <tr key={index} id="primary_row_items">
+                                                <td>
+                                                    <select className="form-control" value={item.room_type}
+                                                        onChange={(e) => {
+                                                            setData((pre: object | any) => {
+                                                                const arr = pre?.room_data || [{}]
+                                                                if (arr[index] != undefined) {
+                                                                    arr[index] = {...arr[index], room_type: e.target.value}
+                                                                }
+                                                                return {
+                                                                    ...pre,
+                                                                    room_data: arr
+                                                                }
+                                                            })
+                                                        }}>
+                                                        <option value="" hidden disabled >Select</option>
+                                                        {RoomDetails.map((roomType: any, index: number) => <option key={index} value={roomType?.key}>{roomType?.value}</option>)}
+                                                    </select>
+                                                </td>
+                                                <td><input type="number" value={item?.no_of_rooms} className="form-control "
+
+                                                    onChange={(e) => {
+                                                        setData((pre: object | any) => {
+                                                            const arr = pre?.room_data || [{}]
+                                                            if (arr[index] != undefined) {
+                                                                arr[index] = {...arr[index], no_of_rooms: e.target.value}
+                                                            }
+                                                            return {
+                                                                ...pre,
+                                                                room_data: arr
+                                                            }
+                                                        })
+                                                    }} /></td>
+                                                <td><input type="number" value={item?.price} className="form-control"
+                                                    onChange={(e) => {
+                                                        setData((pre: object | any) => {
+                                                            const arr = pre?.room_data || [{}]
+                                                            if (arr[index] != undefined) {
+                                                                arr[index] = {...arr[index], price: e.target.value}
+                                                            }
+                                                            return {
+                                                                ...pre,
+                                                                room_data: arr
+                                                            }
+                                                        })
+                                                    }} /></td>
+                                                {index === 0 ? <td><a className="btn btn-outline btn-success" id="item_plus_btn" onClick={() => {
+                                                    setData((pre: any) => ({
+                                                        ...pre,
+                                                        room_data: [...(pre?.room_data || []), {}]
+                                                    }))
+                                                }}>
+                                                    <i className="fa fa-plus"></i></a></td> :
+                                                    <td><a className="btn btn-outline btn-danger" id="item_plus_btn"
+                                                        onClick={() => {
+                                                            setData((pre: any) => {
+                                                                const arr = pre?.room_data || []
+                                                                arr.splice(index, 1)
+                                                                return {
+                                                                    ...pre,
+                                                                    room_data: arr
+                                                                }
+                                                            })
+                                                        }}
+                                                    >
+                                                        <i className="fa fa-minus"></i>
+                                                    </a></td>}
+                                            </tr>)}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>}
                         </div>
                     </Accordion.Body>
                 </Accordion.Item>
@@ -461,7 +566,6 @@ const Page2: React.FC<page> = ({type, data, setData, errors}) => {
                             <FormError errorKey="property_status" errors={errors} />
                         </div>}
 
-
                         {data?.property_type !== "Plot" && data?.property_type !== "Farm" && <div className="row">
                             <div className="col-md-3">
                                 <FormStrap.Label className="form-control-label">
@@ -506,6 +610,7 @@ const Page2: React.FC<page> = ({type, data, setData, errors}) => {
                                 </div>
                             </div>
                         </div>}
+
                         <div>
                             <FormStrap.Label className="form-control-label">
                                 <h6>Description</h6>
@@ -518,6 +623,8 @@ const Page2: React.FC<page> = ({type, data, setData, errors}) => {
                                 <FormError errorKey="description" errors={errors} />
                             </div>
                         </div>
+
+
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
