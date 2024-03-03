@@ -17,6 +17,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/dashboard/Interested"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/dashboard/Chart"],
   "exclude": ["node_modules"]
 }

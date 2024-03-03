@@ -31,7 +31,7 @@ export {
 };
 
 const Index = (props: filter) => {
-  const {filter, setFilter, disable = []} = props;
+  const {filter, setFilter, disable = [], orderBy} = props;
   const [search, setSearch] = useState("");
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
 
@@ -52,6 +52,8 @@ const Index = (props: filter) => {
       setTimeoutId
     )();
   };
+
+  const ORDER_BY = (orderBy || FILTER_OPTION_TYPE_KEY)
 
   return (
     <div className="row mt-2 ms-2 me-2 d-flex justify-content-sm-start">
@@ -225,17 +227,15 @@ const Index = (props: filter) => {
                 }
                 aria-label="Default select example"
               >
-                {FILTER_OPTION_TYPE_KEY.map((value, index) => (
+                {ORDER_BY.map((value, index) => (
                   <option
                     value={
-                      FILTER_OPTION_TYPE_DATA[
-                      value as keyof typeof FILTER_OPTION_TYPE_DATA
-                      ]
+                      ORDER_BY[value as keyof typeof ORDER_BY] as string | number | readonly string[] | undefined
                     }
                     selected={
                       filter.orderBy ===
-                      FILTER_OPTION_TYPE_DATA[
-                      value as keyof typeof FILTER_OPTION_TYPE_DATA
+                      ORDER_BY[
+                      value as keyof typeof ORDER_BY
                       ]
                     }
                     key={index}
@@ -243,6 +243,17 @@ const Index = (props: filter) => {
                     {value}
                   </option>
                 ))}
+                <option
+                  value={
+                    "is_active"
+                  }
+                  selected={
+                    filter.orderBy ===
+                    'is_active'
+                  }
+                >
+                  Active
+                </option>
               </select>
             </label>
           </div>

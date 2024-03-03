@@ -25,7 +25,7 @@ import {COMPANY_NAME_SHOW, LOGO_SRC, company_name} from "@/components/Utils/cons
 import {CiLogout} from "react-icons/ci";
 import {FaHeart, FaImage} from "react-icons/fa";
 
-const navigation = [
+let navigation = [
   {
     id: 0,
     title: "Dashboard",
@@ -33,13 +33,13 @@ const navigation = [
     icon: <CgScreen style={{fontSize: "1.2rem", color: "#ABB6F0"}} />,
   },
   {
-    id: 3,
+    id: 1,
     title: "Ads",
     href: "/ads",
     icon: <BsFillPostcardHeartFill style={{fontSize: "1rem", color: "#11CDEF"}} />,
   },
   {
-    id: 3,
+    id: 2,
     title: "Interested",
     href: "/interested",
     icon: <FaHeart style={{fontSize: "1rem", color: "#f5464e"}} />,
@@ -51,13 +51,13 @@ const navigation = [
     icon: <MdTouchApp style={{fontSize: "1.5rem", color: "#d48869"}} />,
   },
   {
-    id: 2,
+    id: 4,
     title: "Property",
     href: "/property",
     icon: <MdHomeWork style={{fontSize: "1rem", color: "#000100"}} />,
   },
   {
-    id: 1,
+    id: 5,
     title: "Setting",
     href: "/setting/phone",
     icon: <IoSettings style={{fontSize: "1.1rem", color: "#FB6340"}} />,
@@ -68,22 +68,10 @@ const navigation = [
         href: "/setting/phone",
         icon: <IoCall style={{fontSize: "1rem", color: "FF55BB"}} />,
       },
-      // {
-      //   ids: 1,
-      //   title: "Poster",
-      //   href: "/setting/poster",
-      //   icon: <FaImage style={{fontSize: "1rem", color: "5F0F40"}} />,
-      // },
-      // {
-      //   ids: 1,
-      //   title: "EMI",
-      //   href: "/setting/emi",
-      //   icon: <GiPayMoney style={{fontSize: "1rem", color: "#E48F45"}} />,
-      // },
     ],
   },
   {
-    id: 7,
+    id: 6,
     title: "Users",
     href: "/users",
     icon: <FaUserPlus style={{fontSize: "1.1rem", color: "#106FFB"}} />,
@@ -96,6 +84,7 @@ const Sidebar = () => {
   const {open} = useSelector(
     (state: RootState) => state.sidebar
   );
+  const role = useSelector((state: RootState) => state.login.userToken?.role);
 
   const onNavToggle = (open: boolean) => {
     dispatch(sidebarToggle(!open));
@@ -116,6 +105,31 @@ const Sidebar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    console.log(navigation[5]?.id)
+    if (role === 'broker' && navigation[5]?.id == 5) {
+      navigation.splice(5, 1)
+    }
+    if (role !== 'broker' && navigation[5]?.id !== 5) {
+      navigation.splice(5, 0, {
+        id: 5,
+        title: "Setting",
+        href: "/setting/phone",
+        icon: <IoSettings style={{fontSize: "1.1rem", color: "#FB6340"}} />,
+        subMenu: [
+          {
+            ids: 1,
+            title: "Phone Number",
+            href: "/setting/phone",
+            icon: <IoCall style={{fontSize: "1rem", color: "FF55BB"}} />,
+          },
+        ],
+      })
+
+    }
+  }, [role])
+
 
   return (
     <aside className="sidenav bg-glass navbar navbar-vertical navbar-expand-xs border-0 fixed-start overflow-hidden">

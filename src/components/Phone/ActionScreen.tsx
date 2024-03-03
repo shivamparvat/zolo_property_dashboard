@@ -1,21 +1,20 @@
 import ApiFeature from "@/Api/ApiFeature";
 import {setLoader} from "@/redux/reducer/loader";
-import {RootState} from "@/redux/store";
 import {ErrorMessage, Field, Formik, Form} from "formik";
 import {Form as FormStrap} from "react-bootstrap";
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, { useState} from "react";
 import {Modal} from "react-bootstrap";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch,} from "react-redux";
 import * as Yup from "yup";
 import {setRecallApi} from "@/redux/reducer/RecallApi";
-import FileUpload, {fileSizes} from "../property/FileUpload";
-import {MAX_FILE_SIZE_BYTES, PAGE_TYPE_ADD, PAGE_TYPE_EDIT} from "../Utils/constants";
-import ShowToast, {error} from "../Utils/ShowToast";
+import { PAGE_TYPE_ADD} from "../Utils/constants";
 import MapComponent, {Coordinates} from "../Utils/map";
 
 const ActionScreen: React.FC<ActionModalType> = (props) => {
   // props
   const {id, onClose, isActive, data, type, urls, path} = props;
+
+  const dispatch = useDispatch();
   const [coordinates, setCoordinates] = useState<Coordinates>(type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78})
   // validation logic
   const validation = {
@@ -42,32 +41,14 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     coordinates: type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78}
   });
 
-  console.log(formInitData)
-
-  const [brandData, setCategoryData] = useState<any>([]);
-  const [selectedSubCategory, setSelectedSubCategory] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(
-    type === PAGE_TYPE_ADD ? [] : data.product_image
-  );
-  const [Files, setFiles] = useState<File[]>([]);
-  const [deletedFile, setDeletedFile] = useState<any[]>([]);
-  //   Hooks
-  const dispatch = useDispatch();
-  const token = useSelector((state: RootState) => state.login.userToken?.token);
-  const recallApi = useSelector(
-    (state: RootState) => state.recallApi.recallApi
-  );
-
  
 
 
   //   from submit
   const onsubmit = async (value: any) => {
-    // dispatch(setLoader(true));
+    dispatch(setLoader(true));
     let res;
     try {
-      const formData = new FormData();
-
 
       if (type === PAGE_TYPE_ADD) {
         res = await ApiFeature.post(urls, {...value, coordinates: Object.values(coordinates)}, 0, true);
@@ -76,16 +57,16 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       }
 
       if (res.status == 200) {
-        // dispatch(setLoader(false));
-        // dispatch(setRecallApi(true));
+        dispatch(setLoader(false));
+        dispatch(setRecallApi(true));
         onClose("");
       }
     } catch (error) {
-      // dispatch(setRecallApi(true));
-      // dispatch(setLoader(false));
+      dispatch(setRecallApi(true));
+      dispatch(setLoader(false));
     } finally {
-      // dispatch(setRecallApi(true));
-      // dispatch(setLoader(false));
+      dispatch(setRecallApi(true));
+      dispatch(setLoader(false));
     }
   };
 

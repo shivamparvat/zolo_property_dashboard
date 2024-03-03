@@ -33,7 +33,7 @@ interface userTokenType {
   userToken: {
     user_id: number,
     email: staring,
-    role: number,
+    role: string,
     roleText: string,
     image: string
     loggedInWith: string
@@ -81,6 +81,7 @@ interface filter {
   filter: FilterDataType,
   setFilter: React.Dispatch<React.SetStateAction<filter.filter>>
   disable?: string[]
+  orderBy?: string[]
 }
 
 interface userType {

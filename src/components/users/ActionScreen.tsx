@@ -64,14 +64,6 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     state: Yup.string().required('State is required'),
   };
 
-  // if (type == PAGE_TYPE_ADD) {
-  //   validation.password = (Yup.string()
-  //     .min(8, "Password must be at least 8 characters")
-  //     .max(20, "Password can be at most 20 characters")
-  //     .notRequired())
-  // }
-  // states
-
   const [base64File, setBase64File] = useState("");
   const [formDataImg, setFormDataImg] = useState<File | null>();
   const [useInitData] = useState<editUserType>({
@@ -294,25 +286,28 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                       id="role"
                       className="form-control-alternative form-control"
                     >
-                      <option value="" selected disabled hidden>
-                        select role
-                      </option>
 
-                      {USER_ROLE_TYPE_KEY.map(
-                        (value: string, index: number) => {
-                          return (
-                            <option key={index} value={USER_ROLE_TYPE_DATA[
-                              value as unknown as keyof typeof USER_ROLE_TYPE_DATA
-                            ]}>
-                              {
-                                USER_ROLE_TYPE_DATA[
-                                  value as unknown as keyof typeof USER_ROLE_TYPE_DATA
-                                ].toUpperCase()
-                              }
-                            </option>
-                          );
-                        }
-                      )}
+
+                      {role === 'admin' ? <>
+                        <option value="" selected disabled hidden>
+                          select role
+                        </option>{USER_ROLE_TYPE_KEY.map(
+                          (value: string, index: number) => {
+                            return (
+                              <option key={index} value={USER_ROLE_TYPE_DATA[
+                                value as unknown as keyof typeof USER_ROLE_TYPE_DATA
+                              ]}>
+                                {
+                                  USER_ROLE_TYPE_DATA[
+                                    value as unknown as keyof typeof USER_ROLE_TYPE_DATA
+                                  ].toUpperCase()
+                                }
+                              </option>
+                            );
+                          }
+                        )}</> : <option selected value="user">
+                        USER
+                      </option>}
                     </Field>
                     <ErrorMessage
                       className="text-danger"

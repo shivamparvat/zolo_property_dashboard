@@ -171,6 +171,9 @@ const Post = () => {
     },
   ];
 
+  
+  const ORDER_BY = ['name','location']
+
   return (
     <>
       {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
@@ -207,7 +210,7 @@ const Post = () => {
               }}
               disable={[FIRST_BUTTON, SECOND_BUTTON]}
             />
-            <Filter filter={filter} disable={[]} setFilter={setFilter} />
+            <Filter filter={filter} disable={[]} setFilter={setFilter} orderBy={ORDER_BY}/>
             <CustomTable
               tableCustomize={TableCustomize}
               data={fetchData && fetchData?.list}

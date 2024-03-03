@@ -172,7 +172,7 @@ const Edit = () => {
                                 </div>
                                 <div className="mt-5">
                                     <pre>
-                                        {JSON.stringify(values, null, 1)}
+                                        {JSON.stringify(errors, null, 1)}
                                     </pre>
                                 </div>
                             </>

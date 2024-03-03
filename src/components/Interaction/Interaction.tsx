@@ -22,6 +22,10 @@ import {FcLike, FcViewDetails} from "react-icons/fc";
 import {FaEye} from "react-icons/fa"
 import {useRouter} from "next/navigation";
 import {MdCall} from "react-icons/md";
+import ApiFeature from "@/Api/ApiFeature";
+import {setLoader} from "@/redux/reducer/loader";
+import {setRecallApi} from "@/redux/reducer/RecallApi";
+import {removeToken} from "@/redux/reducer/login";
 // // import StatusChange from "./StatusChange";
 
 
@@ -47,7 +51,6 @@ const Interaction = () => {
     pagination: {total: 0},
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [selected, setSelected] = useState({});
   const [actionType, setActionType] = useState<string>("");
 
   //   // useEffects
@@ -58,6 +61,42 @@ const Interaction = () => {
   }, [filter, token, dispatch, currentPage, recallApi]);
 
   //   // custom table components
+
+
+  const InterestedConvert = async (data: any) => {
+    try {
+      const interested = {
+        user: data.user,
+        name: data.name,
+        number: data.number,
+        property: data.property,
+        coordinates: data.coordinates,
+        ads: data.ads,
+        city: data.city,
+        zip_code: data.zip_code,
+        status: "interested"
+      }
+
+      const InterestedtType = data.property ? "property" : "ads"
+      const res = await ApiFeature.post("interested/add", {...interested, type: InterestedtType}, 0, true, true);
+      if (res.status == 200) {
+        dispatch(setLoader(false));
+        dispatch(setRecallApi(true));
+        setTimeout(() => {
+          router.push('/interested')
+        }, 200);
+      } else if (res.data.status === 401) {
+        dispatch(removeToken());
+        router?.push("/login");
+      }
+    } catch (error) {
+      dispatch(setLoader(false));
+    } finally {
+      dispatch(setLoader(false));
+    }
+
+  }
+
 
   const TableCustomize: CustomTable[] = [
     {
@@ -97,6 +136,7 @@ const Interaction = () => {
         <>
           <button
             onClick={() => {
+              InterestedConvert(data)
             }}
             className="btn btn-warning"
             data-tooltip="Interested"
@@ -127,6 +167,14 @@ const Interaction = () => {
 
 
           {((fetchData && fetchData.list) || []).map((item: any, index: number) => {
+            let AccordionData = [...(item.interaction || [])].map((dataItem: any) => {
+              return {
+                ...dataItem,
+                name: item?.name,
+                city: item?.city,
+                number: item?.number
+              }
+            })
             return <>
               <Accordion defaultActiveKey="1" className="mt-3 mx-3 my-5">
                 <Accordion.Item eventKey="0">
@@ -141,7 +189,7 @@ const Interaction = () => {
                   <Accordion.Body>
                     <CustomTable
                       tableCustomize={TableCustomize}
-                      data={(item.interaction) || []}
+                      data={AccordionData}
                       StartIndex={+filter.limit * (+currentPage - 1) + 1 || 1}
                     />
                   </Accordion.Body>

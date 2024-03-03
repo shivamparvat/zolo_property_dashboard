@@ -5,43 +5,61 @@ import {useDispatch, useSelector} from "react-redux";
 import {setLoader} from "@/redux/reducer/loader";
 import ApiFeature from "@/Api/ApiFeature";
 import {setRecallApi} from "@/redux/reducer/RecallApi";
+import {useRouter} from "next/router";
+import axios from "axios";
+import ShowToast, {
+    errorMessage,
+    error,
+    success,
+} from "../../components/Utils/ShowToast";
+import {removeToken} from "@/redux/reducer/login";
 
 
 
 const StatusChange = ({data}: any) => {
     const dispatch = useDispatch();
+    const router = useRouter();
+    const token = useSelector((state: RootState) => state.login.userToken?.token);
+    const Base_url = process.env.NEXT_PUBLIC_BASE_URL || "";
 
-    const [admin_status, setAdmin_status] = useState(data?.admin_status || "")
+    const [admin_status, setAdmin_status] = useState(data?.status || "")
     const recallApi = useSelector(
         (state: RootState) => state.recallApi.recallApi
     );
 
-    useEffect(() => {
-        dispatch(setLoader(true));
-        async function getCategoryData() {
-            if (admin_status != data?.admin_status) {
-
-                const res = await ApiFeature.put("ads/update", {...data, admin_status}, data._id, true);
-            }
-        }
-        try {
-            getCategoryData();
-        } catch (error) {
-            dispatch(setRecallApi(false));
-            dispatch(setLoader(false));
-        } finally {
-            dispatch(setRecallApi(false));
-            dispatch(setLoader(false));
-        }
-        return () => { };
-    }, [admin_status]);
 
 
     return <div className="dataTables_filter mb-1">
 
         <select
             className="form-select "
-            onChange={(e) => {setAdmin_status(e.target.value)}
+            onChange={(e) => {
+                async function getCategoryData() {
+                    if (admin_status != data?.admin_status) {
+                        try {
+                            const FullPath = `${Base_url}/${"interested/update"}/${data._id}`;
+                            const res = await axios.put(FullPath, {...data, status: e.target.value}, {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    Accept: "application/json",
+                                },
+                            });
+                            if (res?.data?.success) {
+                                dispatch(setRecallApi(true))
+                                ShowToast(success, res?.data?.message);
+                            } else if (res.data.status === 401) {
+                                dispatch(removeToken());
+                                router?.push("/login");
+                            }
+                        } catch (failedError: any) {
+                            dispatch(setRecallApi(true));
+                            ShowToast(error, failedError?.response?.data?.message);
+                            return failedError;
+                        }
+                    }
+                }
+                getCategoryData()
+            }
             }
             aria-label="Default select example"
         >

@@ -1,6 +1,6 @@
 import {FaCoins, FaGlobe, FaShoppingCart} from "react-icons/fa";
 import {AiFillHdd} from "react-icons/ai";
-import Interested from "./Interested/Interested";
+import Chart from "./Chart/Chart";
 import Corousel from "./carousel/Carousel";
 import Link from "next/link";
 import {BsFillPostcardHeartFill} from "react-icons/bs";
@@ -145,7 +145,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="row mt-4">
-        <Interested />
+        <Chart />
         <Corousel />
       </div>
     </div>

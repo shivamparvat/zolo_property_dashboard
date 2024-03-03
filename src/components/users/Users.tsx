@@ -86,10 +86,7 @@ const Users = () => {
       key: "contact_number",
       value: "Phone Number",
     },
-    {
-      value: "Created At",
-      component: ({data}) => <>{DDMMYYYY(data.createdAt)}</>,
-    },
+
     {
       value: "Role",
       component: ({data}) => {
@@ -98,6 +95,9 @@ const Users = () => {
             {data.role} </>
         );
       },
+    }, {
+      value: "Created At",
+      component: ({data}) => <>{DDMMYYYY(data.createdAt)}</>,
     },
     {
       value: "Status",
@@ -119,7 +119,7 @@ const Users = () => {
                 router.push(`property/add/?id=${data._id}&name=${data.first_name + ' ' + data?.last_name}`)
               }}
               className="btn btn-success"
-              data-tooltip="Edit"
+              data-tooltip="Add Property"
             >
               <FaBuildingUser size={16} />
             </button>
@@ -135,6 +135,8 @@ const Users = () => {
       className: "d-flex ",
     },
   ];
+
+
 
   return (
     <>
@@ -164,7 +166,7 @@ const Users = () => {
               }}
               disable={[FIRST_BUTTON]}
             />
-            <Filter filter={filter} setFilter={setFilter} disable={[PROPERTY_TYPE, PROPERTY_FOR]} />
+            <Filter filter={filter} setFilter={setFilter} disable={[PROPERTY_TYPE, PROPERTY_FOR]}/>
 
             <CustomTable
               tableCustomize={TableCustomize}

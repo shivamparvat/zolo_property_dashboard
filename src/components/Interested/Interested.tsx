@@ -92,45 +92,18 @@ const Interested = () => {
       value: "type",
     },
 
-    {
-      value: "email_sent",
-      component: ({data}) => (
-        <ActionSwitch
-          data={data}
-          url="called"
-        />
-      ),
-    },
-    {
-      value: "is_fake",
-      component: ({data}) => (
-        <ActionSwitch
-          data={data}
-          url="called"
-        />
-      ),
-    },
-    {
-      value: "called",
-      component: ({data}) => (
-        <ActionSwitch
-          data={data}
-          url="called"
-        />
-      ),
-    },
+
     {
       value: "status",
-      component: StatusChange
-      // key: "admin_status",
+      component: ({data}) => <StatusChange data={data} />
     },
     {
       value: "Action",
       component: ({data}) => (
         <>
-
           <button
             onClick={() => {
+              setSelected(data)
               setActionType(PAGE_TYPE_EDIT)
             }}
             className="btn btn-success"
@@ -144,6 +117,7 @@ const Interested = () => {
     },
 
   ]
+  console.log(selected)
 
   return (
     <>
