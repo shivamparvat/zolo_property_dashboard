@@ -11,7 +11,7 @@ interface ActionFeatureType {
     config: {dispatch: Dispatch<AnyAction>} | null;
     path: string;
     delete: (id: string | number,) => void;
-    toggle: (id: string | number, data: any, url?: string) => void;
+    toggle: (id: string | number, data: any, url?: string, key?: string) => void;
     get: (currentPage: number, filter: FilterDataType, setData: React.Dispatch<any>, data?: object, url?: string) => void
     download: (id?: string | number, path?: string) => void
 }
@@ -53,14 +53,15 @@ const ActionFeature: ActionFeatureType = {
             ],
         });
     },
-    toggle: async (id: string | number, data: any, url = "update") => {
+    toggle: async (id: string | number, data: any, url = "update", key = "is_active") => {
         const context = ActionFeature.config
         try {
             context?.dispatch(setLoader(true));
 
+            console.log(key)
             const res: any = await ApiFeature.put(
                 `${ActionFeature.path}/${url}`,
-                {...data, is_active: data.is_active ? false : true},
+                {...data, [key]: data?.[key] ? false : true},
                 id
             );
             if (res.status === 200) {

@@ -2,7 +2,7 @@ import react, {useEffect, useState} from "react";
 import {RootState} from "@/redux/store";
 import {useDispatch, useSelector} from "react-redux";
 import Filter from "../Utils/Filter";
-import CustomTable, {ActionSwitch} from "../Utils/CustomTable";
+import CustomTable, {ActionButtons, ActionSwitch, EDIT} from "../Utils/CustomTable";
 import Image from "next/image";
 import Pagination from "../Utils/Pagination";
 import React from "react";
@@ -91,11 +91,58 @@ const Interested = () => {
       key: "type",
       value: "type",
     },
-
-
+    {
+      value: "call",
+      component: ({data}) => (
+        <ActionSwitch
+          data={data}
+          url="update"
+          keyData="call"
+        />
+      ),
+    },
+    {
+      value: "Leads",
+      component: ({data}) => (
+        <ActionSwitch
+          data={data}
+          url="update"
+          keyData="leads"
+        />
+      ),
+    },
+    {
+      value: "Is fake",
+      component: ({data}) => (
+        <ActionSwitch
+          data={data}
+          url="update"
+          keyData="is_fake"
+        />
+      ),
+    },
+    {
+      value: "Email Sent",
+      component: ({data}) => (
+        <ActionSwitch
+          data={data}
+          url="update"
+          keyData="email_sent"
+        />
+      ),
+    },
     {
       value: "status",
       component: ({data}) => <StatusChange data={data} />
+    },
+    {
+      value: "Status",
+      combine: ["is_active"],
+      component: ({data}) => (
+        <ActionSwitch
+          data={data}
+        />
+      ),
     },
     {
       value: "Action",
@@ -112,12 +159,18 @@ const Interested = () => {
             <TfiWrite size={20} />
           </button>
           &nbsp;
+          <ActionButtons
+            data={data}
+            setSelected={setSelected}
+            setEdit={setActionType}
+            id={data._id}
+            disable={[EDIT]}
+          />
         </>
       ),
     },
 
   ]
-  console.log(selected)
 
   return (
     <>

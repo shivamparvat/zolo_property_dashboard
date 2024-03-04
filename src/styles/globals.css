@@ -27886,9 +27886,26 @@ pre[class*="language-"] {
 }
 th.table__text,
 td.table__text {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   /* text-align: left !important; */
 }
-
+th.table__text_com,
+td.table__text_com {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* text-align: left !important; */
+}
+h6.text-left {
+  text-align: left !important;
+}
+p.text-left.text-xs.text-secondary.mb-0 {
+  text-align: left !important;
+}
 ::-webkit-scrollbar {
   width: 2px;
   height: 5px;

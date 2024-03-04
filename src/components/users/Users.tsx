@@ -31,9 +31,9 @@ export const UserName: React.FC<any> = ({data}) => (
         className="avatar avatar-sm me-3"
       />
     </div>
-    <div className="d-flex flex-column justify-content-center">
-      <h6>{`${data.first_name || ""} ${data.last_name || ""}`}</h6>
-      <p className="text-xs text-secondary mb-0">{`${data.email}`}</p>
+    <div className="text-left">
+      <h6 className="text-left">{`${data.first_name || ""} ${data.last_name || ""}`}</h6>
+      <p className="text-left text-xs text-secondary mb-0">{`${data.email}`}</p>
     </div>
   </div>
 );

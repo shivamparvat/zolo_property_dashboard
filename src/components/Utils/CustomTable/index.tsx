@@ -70,7 +70,7 @@ const CustomTable: React.FC<TableComponentCustomProps> = ({
                           classNameTd = "table__text";
                         }
                         return (
-                          <td key={idex} className={`${classNameTd} ${Row.className}`}>
+                          <td key={idex} className={`${classNameTd} ${Row.className} table__text_com`}>
                             {Row.component
                               ? Row.component({data: value})
                               : "null"}
@@ -109,17 +109,21 @@ const CustomTable: React.FC<TableComponentCustomProps> = ({
 const ActionSwitch: React.FC<{
   data: any;
   url?: string;
-}> = ({data, url}) => (
-  <Switch
-    onChange={() => ActionFeature.toggle(data?._id || 0, data, url)}
-    checked={data?.is_active || false}
-    uncheckedIcon={false}
-    checkedIcon={false}
-    onColor="#009EFB"
-    offColor="#dcdcdc"
-    className="status-switch"
-  />
-);
+  keyData?: string;
+}> = ({data, url, keyData}) => {
+
+  return (
+    <Switch
+      onChange={() => ActionFeature.toggle(data?._id || 0, data, url, keyData)}
+      checked={data?.[keyData || "is_active"] || false}
+      uncheckedIcon={false}
+      checkedIcon={false}
+      onColor="#009EFB"
+      offColor="#dcdcdc"
+      className="status-switch"
+    />
+  )
+};
 const ActionButtons: React.FC<{
   data: any;
   setSelected: React.Dispatch<any>;

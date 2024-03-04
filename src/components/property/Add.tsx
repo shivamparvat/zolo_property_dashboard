@@ -107,12 +107,14 @@ const Edit = () => {
         <div className="card-datatable">
             <div className="dataTables_wrapper dt-bootstrap5">
                 <TableHeader
-                    title={`Edit Property`}
-                    onAddClick={() => { }}
+                    title={`Add Property`}
+                    onAddClick={() => {router.back()}}
                     onExportClick={() => {
                         // ActionFeature.download();
                     }}
-                    disable={[FIRST_BUTTON, SECOND_BUTTON]}
+                    AddButtonText="Back"
+                    disable={[FIRST_BUTTON,]}
+
                 />
                 <Formik
                     enableReinitialize={true}
