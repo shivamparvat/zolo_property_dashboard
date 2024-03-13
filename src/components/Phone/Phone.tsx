@@ -21,6 +21,8 @@ import ActionFeature from "@/Api/ActionFeature";
 
 // init
 
+const order_by_option = ["name", "contact_number", "city", "zip_code"]
+
 const Phone = () => {
   // init
   const path = "phone";
@@ -63,46 +65,6 @@ const Phone = () => {
       key: "name",
       value: "name",
     },
-    // {
-    //   value: "Image",
-    //   component: ({data}) => {
-    //     return (
-    //       <div
-    //         onClick={() => {
-    //           setSelectedData(data);
-    //           setImageModal(true);
-    //         }}
-    //       >
-    //         {data?.post_image?.length > 0 ? (
-    //           data.post_image.map((img: any, index: number) => {
-    //             if (index < 3) {
-    //               return (
-    //                 <Image
-    //                   key={index}
-    //                   src={img.url || "/img/profile.png"}
-    //                   alt="category_image"
-    //                   width={36}
-    //                   height={36}
-    //                   className="avatar avatar-sm"
-    //                 />
-    //               );
-    //             } else if (index === 4) {
-    //               return <span key={index}>...</span>;
-    //             }
-    //           })
-    //         ) : (
-    //           <Image
-    //             src={"/img/profile.png"}
-    //             alt="category_image"
-    //             width={36}
-    //             height={36}
-    //             className="avatar avatar-sm"
-    //           />
-    //         )}
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       key: "contact_number",
       value: "Number",
@@ -165,7 +127,7 @@ const Phone = () => {
               }}
               disable={[FIRST_BUTTON]}
             />
-            <Filter filter={filter} disable={[FILTER, PROPERTY_FOR, PROPERTY_TYPE]} setFilter={setFilter} />
+            <Filter filter={filter} disable={[PROPERTY_FOR, PROPERTY_TYPE]} setFilter={setFilter} orderBy={order_by_option} />
             <CustomTable
               tableCustomize={TableCustomize}
               data={fetchData && fetchData?.list}

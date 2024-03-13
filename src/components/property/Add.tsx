@@ -32,6 +32,7 @@ const Edit = () => {
     const [selectedFile, setSelectedFile] = useState(
         []
     );
+    const [banner, setBanner] = useState<string | undefined>("")
     const [Files, setFiles] = useState<File[]>([]);
     const [deletedFile, setDeletedFile] = useState<any[]>([]);
     const [video, setVideo] = useState<File | null>(null)
@@ -64,26 +65,31 @@ const Edit = () => {
                     })
                 }
             })
-            formData.delete('coordinates')
+            formData.delete('coordinates[]')
+            formData.delete('banner')
             if (value.coordinates.lat &&
                 value.coordinates.lng) {
                 formData.append('coordinates[]', value.coordinates.lat)
                 formData.append('coordinates[]', value.coordinates.lng)
             }
+            if (banner) formData.append('banner', banner)
+
+
             if (typeof user_id == 'string')
                 formData.append('user', user_id)
             if (typeof user_name == 'string')
                 formData.append('name', user_name)
 
-            if (video) {
-                formData.append('video', video)
-            }
+
             if (Files) {
                 Object.values(Files || {}).map((file: File) => {
                     formData.append('images', file)
                 })
             }
 
+            if (video) {
+                formData.append('video', video)
+            }
 
             const res = await ApiFeature.post("property/add", formData, 0, true, true);
             if (res.status == 200) {
@@ -141,6 +147,8 @@ const Edit = () => {
                                     setSelectedFile={setSelectedFile}
                                     setFiles={setFiles}
                                     setDeletedFile={setDeletedFile}
+                                    banner={banner}
+                                    setBanner={setBanner}
                                 />
                                 <div className="d-flex h-98 justify-content-center">
                                     <button
@@ -152,7 +160,7 @@ const Edit = () => {
                                 </div>
                                 <div className="mt-5">
                                     <pre>
-                                        {JSON.stringify(values, null, 1)}
+                                        {JSON.stringify(errors, null, 1)}
                                     </pre>
                                 </div>
                             </>

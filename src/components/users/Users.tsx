@@ -19,6 +19,8 @@ import ActionScreen from "./ActionScreen";
 import {FaBuildingUser} from "react-icons/fa6";
 import {useRouter} from "next/router";
 
+const order_by_option = ["first_name", "last_name", "email", "role", "zip_code", "state", "city"]
+
 
 export const UserName: React.FC<any> = ({data}) => (
   <div className="d-flex px-2 py-1">
@@ -166,7 +168,7 @@ const Users = () => {
               }}
               disable={[FIRST_BUTTON]}
             />
-            <Filter filter={filter} setFilter={setFilter} disable={[PROPERTY_TYPE, PROPERTY_FOR]}/>
+            <Filter filter={filter} setFilter={setFilter} disable={[PROPERTY_TYPE, PROPERTY_FOR]} orderBy={order_by_option} />
 
             <CustomTable
               tableCustomize={TableCustomize}

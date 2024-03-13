@@ -154,6 +154,7 @@ const Index = (props: filter) => {
                 }
                 aria-label="Default select example"
               >
+                <option value="">select</option>
                 {LIST_PROPERTY_FOR_KEYS.map((value: string, index) => (
                   <option
                     value={
@@ -191,6 +192,7 @@ const Index = (props: filter) => {
                 }
                 aria-label="Default select example"
               >
+                <option value="">select</option>
                 {LIST_PROPERTY_TYPE_KEYS.map((value: string, index) => (
                   <option
                     value={
@@ -226,6 +228,7 @@ const Index = (props: filter) => {
                   }))
                 }
                 aria-label="Default select example"
+                defaultValue={"createdAt"}
               >
                 {ORDER_BY.map((value, index) => (
                   <option
@@ -240,7 +243,7 @@ const Index = (props: filter) => {
                     }
                     key={index}
                   >
-                    {value}
+                    {value?.replace("_", " ")?.toUpperCase()}
                   </option>
                 ))}
                 <option
@@ -252,7 +255,18 @@ const Index = (props: filter) => {
                     'is_active'
                   }
                 >
-                  Active
+                  ACTIVE
+                </option>
+                <option
+                  value={
+                    "createdAt"
+                  }
+                  selected={
+                    filter.orderBy ===
+                    'createdAt'
+                  }
+                >
+                  TIME
                 </option>
               </select>
             </label>

@@ -29,6 +29,7 @@ import {removeToken} from "@/redux/reducer/login";
 // // import StatusChange from "./StatusChange";
 
 
+const order_by_option = ["name", "city", "number", "zip_code", "property", "ads"]
 
 
 const Interaction = () => {
@@ -162,7 +163,7 @@ const Interaction = () => {
             }}
             disable={[SECOND_BUTTON]}
           />
-          <Filter filter={filter} setFilter={setFilter} />
+          <Filter filter={filter} setFilter={setFilter} orderBy={order_by_option}/>
 
 
 

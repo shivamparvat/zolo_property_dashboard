@@ -21,6 +21,7 @@ import StatusChange from "./StatusChange";
 import {Router} from "next/router";
 import {useRouter} from "next/navigation";
 import {FaEdit, FaTrash} from "react-icons/fa";
+import React from "react";
 
 // init
 
@@ -58,6 +59,13 @@ const Post = () => {
   }, [filter, token, dispatch, currentPage, recallApi]);
 
 
+  const PriceShow: React.FC<any> = ({data}) => {
+    return <>
+      {
+        data?.property_for == 'sell' ? data?.expected_price : `${data?.monthly_rent}/M`
+      }
+    </>
+  }
 
 
   // active or deactivate
@@ -71,57 +79,25 @@ const Post = () => {
       value: "user",
       key: "name",
     },
-    // {
-    //   value: "Post Image",
-    //   component: ({data}) => {
-    //     return (
-    //       <div
-    //         onClick={() => {
-    //           setSelectedData(data);
-    //           setImageModal(true);
-    //         }}
-    //       >
-    //         {(data?.images || []).length > 0 ? (
-    //           data.images.map((img: any, index: number) => {
-    //             if (index < 3) {
-    //               return (
-    //                 <Image
-    //                   key={index}
-    //                   src={img.url || "/img/profile.png"}
-    //                   alt="category_image"
-    //                   width={36}
-    //                   height={36}
-    //                   className="avatar avatar-sm"
-    //                 />
-    //               );
-    //             } else if (index === 4) {
-    //               return <span key={index}>...</span>;
-    //             }
-    //           })
-    //         ) : (
-    //           <Image
-    //             src={"/img/profile.png"}
-    //             alt="category_image"
-    //             width={36}
-    //             height={36}
-    //             className="avatar avatar-sm"
-    //           />
-    //         )}
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       value: "Address",
       component: ({data}) => <>{`${data.city || ""} ${data.state || ""} ${data.zip_code || ""}`}</>,
     },
     {
-      value: "property for",
+      value: "For",
       key: "property_for",
     },
     {
-      value: "property type",
+      value: "Type",
       key: "property_type",
+    },
+    {
+      value: "user Type",
+      key: "added_by_type",
+    },
+    {
+      value: "Price",
+      component: PriceShow
     },
     {
       value: "user Type",
@@ -171,8 +147,8 @@ const Post = () => {
     },
   ];
 
-  
-  const ORDER_BY = ['name','location']
+
+  const ORDER_BY = ['name', 'location']
 
   return (
     <>
@@ -210,7 +186,7 @@ const Post = () => {
               }}
               disable={[FIRST_BUTTON, SECOND_BUTTON]}
             />
-            <Filter filter={filter} disable={[]} setFilter={setFilter} orderBy={ORDER_BY}/>
+            <Filter filter={filter} disable={[]} setFilter={setFilter} orderBy={ORDER_BY} />
             <CustomTable
               tableCustomize={TableCustomize}
               data={fetchData && fetchData?.list}

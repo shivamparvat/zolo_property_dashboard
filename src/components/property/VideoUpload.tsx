@@ -1,6 +1,6 @@
 import React, {useRef} from "react";
 
-const VideoUpload: React.FC<VideoUpload> = ({video, setVideo}) => {
+const VideoUpload: React.FC<VideoUpload> = ({video, setVideo, url = ""}) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     return (
         <>
@@ -23,16 +23,16 @@ const VideoUpload: React.FC<VideoUpload> = ({video, setVideo}) => {
                             </span>
                         </div>
                     </div>
-                    {video &&
+                    {(url || video) &&
                         <div className="row">
                             <div className="col-md-4">
                                 <video width="300" controls>
-                                    <source src={video && URL.createObjectURL(video) || ""} type={video && video?.type} />
+                                    <source src={video && URL.createObjectURL(video) || url} type={video && video?.type} />
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
                             <div className="col-md-3 ms-1">
-                                <p className="ml-2">{video && video?.name}</p>
+                                <p className="ml-2">{url?.split('/')?.pop() || video && video?.name}</p>
                                 <p className="file-action-btn" onClick={() => {
                                     setVideo(null)
                                     if (fileInputRef.current) {

@@ -215,8 +215,8 @@ const Page2: React.FC<page> = ({type, data, setData, errors}) => {
                                                     <div>
                                                         <div>
 
-                                                            <select name="" className="form-control" id="" value={data.saleable_area_size_in} onChange={(e) => {
-                                                                setData((pre: any) => ({...pre, saleable_area_size_in: e.target.value}))
+                                                            <select name="" className="form-control" id="" value={data.bathrooms} onChange={(e) => {
+                                                                setData((pre: any) => ({...pre, bathrooms: e.target.value}))
                                                             }}>
                                                                 <option value="" selected disabled hidden>
                                                                     Bathrooms
@@ -233,7 +233,7 @@ const Page2: React.FC<page> = ({type, data, setData, errors}) => {
                                                                 )}
 
                                                             </select>
-                                                            <FormError errorKey="saleable_area_size_in" errors={errors} />
+                                                            <FormError errorKey="bathrooms" errors={errors} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -387,7 +387,7 @@ const Page2: React.FC<page> = ({type, data, setData, errors}) => {
                                         <h6>maintance charge</h6>
                                     </FormStrap.Label>
                                     <div>
-                                        <input type="number" className="form-control" placeholder="security deposit" value={data.maintance_charge} onChange={(e) => {
+                                        <input type="number" className="form-control" placeholder="Maintance Charge" value={data.maintance_charge} onChange={(e) => {
                                             setData((pre: any) => ({
                                                 ...pre, maintance_charge: e.target.value
                                             }))
@@ -573,8 +573,8 @@ const Page2: React.FC<page> = ({type, data, setData, errors}) => {
                                 </FormStrap.Label>
                                 <div>
                                     <div>
-                                        <select className="form-control" name="" id="" value={data.saleable_area_size_in} onChange={(e) => {
-                                            setData((pre: any) => ({...pre, saleable_area_size_in: e.target.value}))
+                                        <select className="form-control" name="" id="" value={data.property_age} onChange={(e) => {
+                                            setData((pre: any) => ({...pre, property_age: e.target.value}))
                                         }}>
                                             <option value="" selected disabled hidden>
                                                 Property Age
@@ -591,7 +591,7 @@ const Page2: React.FC<page> = ({type, data, setData, errors}) => {
                                             )}
 
                                         </select>
-                                        <FormError errorKey="saleable_area_size_in" errors={errors} />
+                                        <FormError errorKey="property_age" errors={errors} />
                                     </div>
                                 </div>
                             </div>

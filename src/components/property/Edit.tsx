@@ -31,6 +31,7 @@ const Edit = () => {
     const [selectedFile, setSelectedFile] = useState(
         []
     );
+    const [banner, setBanner] = useState<string | undefined>("")
     const [Files, setFiles] = useState<File[]>([]);
     const [deletedFile, setDeletedFile] = useState<any[]>([]);
     const [video, setVideo] = useState<File | null>(null)
@@ -44,12 +45,14 @@ const Edit = () => {
 
                 const getOneProperty = async () => {
                     const res = await ApiFeature.get("property", property_id, true);
-                    if (res.status == 200) {
-                        if (res.data)
-                        setFormInitData(res.data.property)
+                    if (res?.status == 200) {
+                        if (res?.data)
+                            setFormInitData(res?.data?.property)
+                        setSelectedFile(res?.data?.property?.imageUrls || [])
+                        setBanner(res?.data?.property?.banner?.split('\\').pop() || "")
                         dispatch(setLoader(false));
                         dispatch(setRecallApi(true));
-                    } else if (res.data.status === 401) {
+                    } else if (res?.data?.status === 401) {
                         dispatch(removeToken());
                         router?.push("/login");
                     }
@@ -67,6 +70,7 @@ const Edit = () => {
 
     const submitHandler = async (value: any) => {
         dispatch(setLoader(true));
+
         try {
             const formData = new FormData();
 
@@ -75,48 +79,54 @@ const Edit = () => {
             (Object.keys(value) || []).map((item: any) => {
                 if (typeof value[item] !== "object") {
                     formData.append(item, value[item])
-                } else {
-                    (Object.keys(value[item]) || []).map((arrValue: any) => {
-                        console.log(value[item][arrValue])
-                        if (typeof value[item][arrValue] === "object") {
-                            (Object.keys(value[item][arrValue]) || []).map((arrayItem: any) => {
-                                formData.append(`${item}[${arrayItem}][]`, value[item][arrValue][arrayItem])
-                            })
-                        } else {
-                            formData.append(`${item}[]`, value[item][arrValue])
-                        }
-                    })
+                }
+                else {
+                    if (typeof value[item] == "object" && value[item] != null) {
+                        (Object.keys(value[item]) || []).map((arrValue: any) => {
+                            console.log(value[item][arrValue])
+                            if (typeof value[item][arrValue] === "object") {
+                                (Object.keys(value[item][arrValue]) || []).map((arrayItem: any) => {
+                                    formData.append(`${item}[${arrayItem}][]`, value[item][arrValue][arrayItem])
+                                })
+                            } else {
+                                formData.append(`${item}[]`, value[item][arrValue])
+                            }
+                        })
+                    }
                 }
             })
-            formData.delete('coordinates')
+            formData.delete('coordinates[]')
+            formData.delete('banner')
             if (value.coordinates.lat &&
                 value.coordinates.lng) {
                 formData.append('coordinates[]', value.coordinates.lat)
                 formData.append('coordinates[]', value.coordinates.lng)
             }
+            if (banner) formData.append('banner', banner)
 
-            if (video) {
-                formData.append('video', video)
-            }
             if (Files) {
                 Object.values(Files || {}).map((file: File) => {
                     formData.append('images', file)
                 })
             }
+            if (video) {
+                formData.append('video', video)
+            }
 
 
-            const res = await ApiFeature.post("property/add", formData, 0, true);
-            if (res.status == 200) {
+            const res = await ApiFeature.put("property/update", formData, property_id, true);
+            if (res?.status == 200) {
                 dispatch(setLoader(false));
                 dispatch(setRecallApi(true));
                 setTimeout(() => {
                     router.back()
                 }, 200);
-            } else if (res.data.status === 401) {
+            } else if (res?.data?.status === 401) {
                 dispatch(removeToken());
                 router?.push("/login");
             }
         } catch (error) {
+            console.log(error)
             dispatch(setLoader(false));
         } finally {
             dispatch(setLoader(false));
@@ -155,24 +165,29 @@ const Edit = () => {
                                     {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page6 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
 
                                 </div>
-                                <VideoUpload video={video} setVideo={setVideo} />
+                                <VideoUpload video={video} setVideo={setVideo} url={values.videoUrl} />
                                 <FileUpload
                                     selectedFile={selectedFile}
                                     setSelectedFile={setSelectedFile}
                                     setFiles={setFiles}
                                     setDeletedFile={setDeletedFile}
+                                    banner={banner}
+                                    setBanner={setBanner}
                                 />
                                 <div className="d-flex h-98 justify-content-center">
                                     <button
                                         type="submit"
                                         className="btn btn-primary mt-5 d-block text-uppercase"
                                     >
-                                        Update  {/* {type === PAGE_TYPE_ADD ? "Add" : "Update"} {path} */}
+                                        Update
                                     </button>
                                 </div>
                                 <div className="mt-5">
                                     <pre>
                                         {JSON.stringify(errors, null, 1)}
+                                    </pre>
+                                    <pre>
+                                        {JSON.stringify(values, null, 1)}
                                     </pre>
                                 </div>
                             </>

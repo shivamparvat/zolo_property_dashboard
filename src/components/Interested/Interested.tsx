@@ -17,6 +17,8 @@ import StatusChange from "./StatusChange";
 import {TfiWrite} from "react-icons/tfi";
 import ActionScreen from "./ActionScreen";
 
+const order_by_option = ["name", "city", "number", "zip_code", "call", "leads", "is_fake", "email_sent", "type", "status"]
+
 
 export const UserName: React.FC<any> = ({data}) => (
   <div className="d-flex px-2 py-1">
@@ -198,7 +200,7 @@ const Interested = () => {
               }}
               disable={[SECOND_BUTTON]}
             />
-            <Filter filter={filter} setFilter={setFilter} />
+            <Filter filter={filter} setFilter={setFilter} orderBy={order_by_option} />
 
             <CustomTable
               tableCustomize={TableCustomize}

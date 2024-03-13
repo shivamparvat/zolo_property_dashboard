@@ -20,6 +20,8 @@ import ActionScreen from "./ActionScreen";
 import ActionFeature from "@/Api/ActionFeature";
 
 // init
+const order_by_option = ["ads_name", "city", "number", "expiry_date", "title", "description", "show_number", "show_map"]
+
 
 const Ads = () => {
   // init
@@ -172,7 +174,7 @@ const Ads = () => {
               }}
               disable={[FIRST_BUTTON]}
             />
-            <Filter filter={filter} disable={[FILTER, PROPERTY_FOR, PROPERTY_TYPE]} setFilter={setFilter} />
+            <Filter filter={filter} disable={[PROPERTY_FOR, PROPERTY_TYPE]} setFilter={setFilter} orderBy={order_by_option} />
             <CustomTable
               tableCustomize={TableCustomize}
               data={fetchData && fetchData?.list}

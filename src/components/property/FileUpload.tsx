@@ -8,6 +8,8 @@ interface MultiFileUploadType {
   setSelectedFile: React.Dispatch<any>;
   setFiles: React.Dispatch<File[] | any>;
   setDeletedFile?: React.Dispatch<any>;
+  setBanner: React.Dispatch<string | undefined>
+  banner: string | undefined
 }
 export const fileSizes = (bytes: number, decimals = 2) => {
   if (bytes === 0) return "0 Bytes";
@@ -23,6 +25,8 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
   setSelectedFile,
   setFiles,
   setDeletedFile,
+  setBanner,
+  banner
 }) => {
   const isOverSize = (bytes: number) => {
     if (bytes < MAX_FILE_SIZE_BYTES) {
@@ -124,7 +128,6 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                 </div>
                 <div className="kb-attach-box mb-3">
                   {selectedFile.map((data: any, index: number) => {
-                    // console.log("file", data);
                     return (
                       <div
                         className={`file-atc-box ${data.overSize ? "alert lightDanger" : ""
@@ -137,7 +140,7 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                           <Image
                             width={150}
                             height={120}
-                            src={data.fileImage ? data.fileImage : data.url}
+                            src={data.fileImage || data}
                             alt="product img"
                             className="object-fit-cover"
                           />
@@ -148,7 +151,7 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                           </div>
                         )} */}
                         <div className="file-detail">
-                          <h6>{data.filename ? data.filename : data.image}</h6>
+                          <h6>{data.filename || data?.split('/').pop()}</h6>
                           <p></p>
                           <p>
                             {data.fileSize && (
@@ -175,8 +178,13 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                               Delete
                             </button>
                             <input
-                              type="checkbox"
+                              type="radio"
+                              name="banner"
+                              defaultValue={banner}
+                              value={data.filename || data?.split('/').pop()}
+                              checked={banner == (data.filename || data?.split('/').pop())}
                               className="file-action-btn ms-3"
+                              onChange={(e) => {setBanner(e?.target?.value || "")}}
                             />Banner
                           </div>
                           <span className="text-danger">
