@@ -62,12 +62,12 @@ let navigation = [
     href: "/setting/phone",
     icon: <IoSettings style={{fontSize: "1.1rem", color: "#FB6340"}} />,
     subMenu: [
-      {
-        ids: 1,
-        title: "Phone Number",
-        href: "/setting/phone",
-        icon: <IoCall style={{fontSize: "1rem", color: "FF55BB"}} />,
-      },
+        {
+          ids: 1,
+          title: "Phone Number",
+          href: "/setting/phone",
+          icon: <IoCall style={{fontSize: "1rem", color: "FF55BB"}} />,
+        },
     ],
   },
   {

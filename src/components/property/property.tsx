@@ -1,5 +1,5 @@
 import ApiFeature from "@/Api/ApiFeature";
-import Filter from "../Utils/Filter";
+import Filter, {PROPERTY_FOR, PROPERTY_TYPE} from "../Utils/Filter";
 import react, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/redux/store";

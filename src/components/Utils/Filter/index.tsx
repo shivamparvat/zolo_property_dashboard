@@ -233,7 +233,7 @@ const Index = (props: filter) => {
                 {ORDER_BY.map((value, index) => (
                   <option
                     value={
-                      ORDER_BY[value as keyof typeof ORDER_BY] as string | number | readonly string[] | undefined
+                      ORDER_BY[value as keyof typeof ORDER_BY] as string | number | readonly string[] | undefined || value
                     }
                     selected={
                       filter.orderBy ===

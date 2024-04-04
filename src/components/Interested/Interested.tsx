@@ -1,7 +1,7 @@
 import react, {useEffect, useState} from "react";
 import {RootState} from "@/redux/store";
 import {useDispatch, useSelector} from "react-redux";
-import Filter from "../Utils/Filter";
+import Filter, {PROPERTY_FOR, PROPERTY_TYPE} from "../Utils/Filter";
 import CustomTable, {ActionButtons, ActionSwitch, EDIT} from "../Utils/CustomTable";
 import Image from "next/image";
 import Pagination from "../Utils/Pagination";
@@ -200,7 +200,7 @@ const Interested = () => {
               }}
               disable={[SECOND_BUTTON]}
             />
-            <Filter filter={filter} setFilter={setFilter} orderBy={order_by_option} />
+            <Filter filter={filter} setFilter={setFilter} orderBy={order_by_option} disable={[PROPERTY_FOR, PROPERTY_TYPE]} />
 
             <CustomTable
               tableCustomize={TableCustomize}

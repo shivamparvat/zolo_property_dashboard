@@ -1,7 +1,7 @@
 import react, {useEffect, useState} from "react";
 import {RootState} from "@/redux/store";
 import {useDispatch, useSelector} from "react-redux";
-import Filter from "../Utils/Filter";
+import Filter, {PROPERTY_FOR, PROPERTY_TYPE} from "../Utils/Filter";
 import {DDMMYYYY} from "../Utils/Formeter";
 import CustomTable, {ActionButtons, ActionSwitch} from "../Utils/CustomTable";
 import Image from "next/image";
@@ -104,7 +104,12 @@ const Interaction = () => {
       value: "S.No",
       index: true,
     },
-
+    {
+      value: "Id",
+      component: ({data}) => <div >
+        {((data?.property ? data?.property : data?.ads || "").slice(-6) || "").toUpperCase()}
+      </div>
+    },
     {
       value: "interaction",
       component: ({data}) => <div >
@@ -123,10 +128,10 @@ const Interaction = () => {
       value: "type",
       component: ({data}) => <>
         <div className="d-inline-block px-2 py-2 rounded-2 pe-none">
-          {data?.type == "like1" ? <FcLike size={23} /> : <FaEye size={23} style={{color: "#FB6340"}} />}
+          {data?.type == "like" ? <FcLike size={23} /> : <FaEye size={23} style={{color: "#FB6340"}} />}
           <span className="ms-1">
             {
-              data?.type == "like" ? "LIKE" : "AD"
+              data?.type == "like" ? "LIKE" : "VIEW"
             }
           </span></div>
       </>
@@ -163,7 +168,7 @@ const Interaction = () => {
             }}
             disable={[SECOND_BUTTON]}
           />
-          <Filter filter={filter} setFilter={setFilter} orderBy={order_by_option}/>
+          <Filter filter={filter} setFilter={setFilter} orderBy={order_by_option} disable={[PROPERTY_FOR, PROPERTY_TYPE]} />
 
 
 
@@ -177,7 +182,7 @@ const Interaction = () => {
               }
             })
             return <>
-              <Accordion defaultActiveKey="1" className="mt-3 mx-3 my-5">
+              <Accordion defaultActiveKey="1" className="mt-3 mx-3 my-2">
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>
                     <div className="row w-100">
