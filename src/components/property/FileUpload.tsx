@@ -2,11 +2,13 @@ import Image from "next/image";
 import React, {useEffect, useState} from "react";
 import {MAX_FILE_SIZE_BYTES} from "../Utils/constants";
 import ShowToast, {error} from "../Utils/ShowToast";
+import path from "path";
 
 interface MultiFileUploadType {
   selectedFile: any[];
   setSelectedFile: React.Dispatch<any>;
   setFiles: React.Dispatch<File[] | any>;
+  Files: File[],
   setDeletedFile?: React.Dispatch<any>;
   setBanner: React.Dispatch<string | undefined>
   banner: string | undefined
@@ -24,6 +26,7 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
   selectedFile = [],
   setSelectedFile,
   setFiles,
+  Files,
   setDeletedFile,
   setBanner,
   banner
@@ -75,14 +78,16 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
     }
   };
 
-  const DeleteSelectFile = (id: string, index: number) => {
+  const DeleteSelectFile = (index: number) => {
     if (window.confirm("Are you sure you want to delete this Image?")) {
       if (setDeletedFile) {
-        const deleteIMG: any[] = selectedFile.filter((data: any) =>
-          data.id ? data.id === id : data.product_image_id === id
-        );
-        if (deleteIMG[0]?.url) {
-          setDeletedFile((pre: any[]) => [...pre, ...deleteIMG]);
+        if (Files.length <= index) {
+          setDeletedFile((file: any) => {
+            const copyFiles = [...selectedFile];
+            const deletedFile = copyFiles.splice(index, 1);
+            var parsedUrl = new URL(deletedFile[0]);
+            return [...file, path.join("public", parsedUrl?.pathname)]
+          });
         }
       }
 
@@ -94,10 +99,13 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
         return copyFiles;
       });
 
-      const result = selectedFile.filter((data: any) => {
-        return data.id ? data.id !== id : data.product_image_id !== id;
+      setSelectedFile((file: any) => {
+        const copyFiles = [...file];
+        if (copyFiles.length > index) {
+          copyFiles.splice(index, 1);
+        }
+        return copyFiles;
       });
-      setSelectedFile(result);
     } else {
       // alert('No');
     }
@@ -170,7 +178,6 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                               className="file-action-btn"
                               onClick={() =>
                                 DeleteSelectFile(
-                                  data.id ? data.id : data.product_image_id,
                                   index
                                 )
                               }

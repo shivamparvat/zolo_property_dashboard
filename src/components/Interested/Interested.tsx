@@ -75,7 +75,7 @@ const Interested = () => {
     {
       key: "Id",
       value: "Id",
-      component: ({data}) => <>{data?._id?.slice(-6)?.toUpperCase()}</>
+      component: ({data}) => <>{(data?.unique_id || "")?.slice(-6)?.toUpperCase()}</>
     },
     {
       key: "name",

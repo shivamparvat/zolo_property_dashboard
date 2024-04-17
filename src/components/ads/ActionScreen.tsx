@@ -13,13 +13,14 @@ import {MAX_FILE_SIZE_BYTES, PAGE_TYPE_ADD, PAGE_TYPE_EDIT} from "../Utils/const
 import ShowToast, {error} from "../Utils/ShowToast";
 import MapComponent, {Coordinates} from "../Utils/map";
 import Switch from "react-switch";
+import path from "path";
 
 const ActionScreen: React.FC<ActionModalType> = (props) => {
   // props
-  const {id, onClose, isActive, data, type, urls, path} = props;
+  const {id, onClose, isActive, data, type, urls, path: adsPath} = props;
   const [coordinates, setCoordinates] = useState<Coordinates>(type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78})
 
-  const [banner, setBanner] = useState("")
+  const [banner, setBanner] = useState<string | undefined>("")
 
 
   // validation logic
@@ -59,7 +60,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
   });
 
   const [selectedFile, setSelectedFile] = useState(
-    type === PAGE_TYPE_ADD ? [] : data.gallery
+    type === PAGE_TYPE_ADD ? [] : data.galleryUrls
   );
   const [Files, setFiles] = useState<File[]>([]);
   const [deletedFile, setDeletedFile] = useState<any[]>([]);
@@ -88,6 +89,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       formData.append("expiry_date", value.expiry_date);
       formData.append("show_number", value.show_number);
       formData.append("show_map", value.show_map);
+      if (banner) formData.append('banner', banner)
       if (coordinates.lat && coordinates.lng) {
         Object.values(coordinates || {}).map((latlng: string) => {
           formData.append("coordinates[]", latlng);
@@ -101,30 +103,33 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
           `coordinates is required`
         );
       }
-      Files.forEach((image: any) => {
-        if (image.size > MAX_FILE_SIZE_BYTES) {
-          ShowToast(
-            error,
-            `${image.name} is ${fileSizes(
-              image.size
-            )} Image size should not exceed 1 MB.`
-          );
-          throw new Error(
-            "please make sure Image size should not exceed 1 MB."
-          );
-        }
-        formData.append("images", image);
-      });
-      deletedFile.forEach((image: any) => {
-        if (type === PAGE_TYPE_EDIT) {
-          formData.append("oldImage", image.image);
-        }
-      });
+
+      if (Files.length) {
+        Object.values(Files || {}).map((file: File) => {
+          formData.append('images', file)
+        })
+      }
+      if (selectedFile?.length) {
+        selectedFile.map((img: string, index: number) => {
+          if (Files?.length <= index) {
+            formData.append('gallery[]', path.join("public", new URL(img).pathname))
+          }
+        })
+      } else {
+        formData.append('gallery[]', "")
+        formData.delete('banner')
+        formData.append('banner', "")
+      }
+
+      if (Files && deletedFile) {
+        deletedFile.map((img: string) => [
+          formData.append('oldImages[]', img)
+        ])
+      }
 
       if (type === PAGE_TYPE_ADD) {
         res = await ApiFeature.post(urls, formData, 0, true);
       } else {
-        console.log("dskghfdkj", id)
         res = await ApiFeature.put(urls, formData, id, true);
       }
 
@@ -134,7 +139,6 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
         onClose("");
       }
     } catch (error) {
-      console.log()
       dispatch(setLoader(false));
     } finally {
       dispatch(setLoader(false));
@@ -153,7 +157,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     >
       <Modal.Header closeButton>
         <Modal.Title>
-          <h3>{type === PAGE_TYPE_ADD ? "Add" : "Edit"} {path}</h3>
+          <h3>{type === PAGE_TYPE_ADD ? "Add" : "Edit"} {adsPath}</h3>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -351,9 +355,10 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
                 setFiles={setFiles}
+                Files={Files}
                 setDeletedFile={setDeletedFile}
-                setBanner={setBanner}
                 banner={banner}
+                setBanner={setBanner}
               />
               {/* submit */}
               <div className="w-100 d-flex justify-content-center">
@@ -361,7 +366,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                   type="submit"
                   className="btn btn-primary mt-5 d-block text-uppercase"
                 >
-                  {type === PAGE_TYPE_ADD ? "Add" : "Update"} {path}
+                  {type === PAGE_TYPE_ADD ? "Add" : "Update"} {adsPath}
                 </button>
               </div>
             </Form>

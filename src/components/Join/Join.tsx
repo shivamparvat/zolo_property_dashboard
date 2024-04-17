@@ -1,9 +1,10 @@
 import ApiFeature from "@/Api/ApiFeature";
-import Filter, {MAX, MIN, PROPERTY_FOR, PROPERTY_TYPE} from "../Utils/Filter";
+import Filter, {FILTER, PROPERTY_FOR, PROPERTY_TYPE} from "../Utils/Filter";
+import {setLoader} from "@/redux/reducer/loader";
 import react, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
-import CustomTable, {ActionButtons, ActionSwitch, EDIT} from "../Utils/CustomTable";
+import CustomTable, {ActionButtons, ActionSwitch} from "../Utils/CustomTable";
 import {DDMMYYYY} from "../Utils/Formeter";
 import Pagination from "../Utils/Pagination";
 import {setRecallApi} from "@/redux/reducer/RecallApi";
@@ -11,29 +12,25 @@ import {
   INIT_FILTER,
   PAGE_TYPE_ADD,
   PAGE_TYPE_EDIT,
+  TAX_TYPE_DATA,
 } from "../Utils/constants";
 import TableHeader, {FIRST_BUTTON, SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
 import Image from "next/image";
 import ActionScreen from "./ActionScreen";
-import ImagePreview from "./ImageModule";
 import ActionFeature from "@/Api/ActionFeature";
-import StatusChange from "./StatusChange";
-import {Router} from "next/router";
-import {useRouter} from "next/navigation";
-import {FaEdit, FaTrash} from "react-icons/fa";
-import React from "react";
 
 // init
 
-const Post = () => {
+const order_by_option = ["name", "contact_number", "city", "zip_code"]
+
+const Join = () => {
   // init
-  const path = "property";
+  const path = "contact";
 
   // configure
   ActionFeature.path = path;
   // hook
   const dispatch = useDispatch();
-  const router = useRouter()
   const token = useSelector((state: RootState) => state.login.userToken?.token);
   const recallApi = useSelector(
     (state: RootState) => state.recallApi.recallApi
@@ -51,22 +48,11 @@ const Post = () => {
   const [imageModal, setImageModal] = useState(false);
   const [selectedData, setSelectedData] = useState({post_id: 0});
 
-
   // useEffects
   useEffect(() => {
     ActionFeature.get(currentPage, filter, setFetchData);
     return () => { };
   }, [filter, token, dispatch, currentPage, recallApi]);
-
-
-  const PriceShow: React.FC<any> = ({data}) => {
-    return <>
-      {
-        data?.property_for == 'sell' ? data?.expected_price : `${data?.monthly_rent}/M`
-      }
-    </>
-  }
-
 
   // active or deactivate
 
@@ -76,46 +62,22 @@ const Post = () => {
       index: true,
     },
     {
-      value: "Id",
-      component: ({data}) => <div >
-        {(data?.unique_id || "").slice(-6).toUpperCase()}
-      </div>
-    },
-    {
-      value: "user",
       key: "name",
+      value: "name",
     },
     {
-      value: "Address",
-      component: ({data}) => <>{`${data.city || ""} ${data.state || ""} ${data.zip_code || ""}`}</>,
+      key: "contact_number",
+      value: "Number",
     },
     {
-      value: "For",
-      key: "property_for",
+      key: "city",
+      value: "city",
     },
     {
-      value: "Type",
-      key: "property_type",
+      key: "zip_code",
+      value: "Zip",
     },
     {
-      value: "user Type",
-      key: "added_by_type",
-    },
-    {
-      value: "Price",
-      component: PriceShow
-    },
-    {
-      value: "user Type",
-      key: "added_by_type",
-    },
-    {
-      value: "status",
-      component: StatusChange
-      // key: "admin_status",
-    },
-    {
-      key: "created_at",
       value: "Created At",
       component: ({data}) => <>{DDMMYYYY(data.createdAt)}</>,
     },
@@ -128,39 +90,22 @@ const Post = () => {
     {
       value: "Action",
       component: ({data}) => (
-        <>
-          <>
-            <button
-              onClick={() => {
-                router.push(`/property/edit?id=${data._id}`)
-              }}
-              className="btn btn-warning"
-              data-tooltip="Edit"
-            >
-              <FaEdit size={16} />
-            </button>
-            &nbsp;
-          </><ActionButtons
-            data={data}
-            setSelected={setSelected}
-            setEdit={setActionType}
-            id={data._id}
-            disable={[EDIT]}
-          />
-        </>
+        <ActionButtons
+          data={data}
+          setSelected={setSelected}
+          setEdit={setActionType}
+          id={data._id}
+        />
       ),
-      className: "d-flex justify-content-center",
+      className: "d-flex ",
     },
   ];
-
-
-  const ORDER_BY = ['name', 'location']
 
   return (
     <>
       {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
         <ActionScreen
-          id={selected.post_id || 0}
+          id={selected._id || 0}
           isActive={
             actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT
           }
@@ -171,28 +116,18 @@ const Post = () => {
           path={path}
         />
       )}
-      {imageModal && (
-        <ImagePreview
-          isActive={imageModal}
-          onClose={setImageModal}
-          selectedID={selectedData.post_id || 0}
-          imageData={selectedData}
-        />
-      )}
-
       <div className="card bg-white">
         <div className="card-datatable">
           <div className="dataTables_wrapper dt-bootstrap5">
             <TableHeader
               title={`List of ${path}`}
-              onAddClick={() => router.push("/property/edit?id=10")}
+              onAddClick={() => setActionType(PAGE_TYPE_ADD)}
               onExportClick={() => {
                 ActionFeature.download();
-
               }}
-              disable={[FIRST_BUTTON, SECOND_BUTTON]}
+              disable={[FIRST_BUTTON,SECOND_BUTTON]}
             />
-            <Filter filter={filter} disable={[]} setFilter={setFilter} orderBy={ORDER_BY} unable={(filter?.property_for == 'rent' || filter?.property_for == 'sell') ? [] : [MAX, MIN]} />
+            <Filter filter={filter} disable={[PROPERTY_FOR, PROPERTY_TYPE]} setFilter={setFilter} orderBy={order_by_option} />
             <CustomTable
               tableCustomize={TableCustomize}
               data={fetchData && fetchData?.list}
@@ -211,4 +146,5 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default Join;
+ 

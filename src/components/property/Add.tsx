@@ -20,6 +20,7 @@ import {setLoader} from "@/redux/reducer/loader";
 import {setRecallApi} from "@/redux/reducer/RecallApi";
 import {useDispatch} from "react-redux";
 import {removeToken} from "@/redux/reducer/login";
+import {object} from "yup";
 
 
 
@@ -146,10 +147,17 @@ const Edit = () => {
                                     selectedFile={selectedFile}
                                     setSelectedFile={setSelectedFile}
                                     setFiles={setFiles}
+                                    Files={Files}
                                     setDeletedFile={setDeletedFile}
                                     banner={banner}
                                     setBanner={setBanner}
                                 />
+                                <div className="mx-2 my-2">
+                                    {Object.keys(errors || {})?.length > 0 &&
+                                        <div className="p-3">
+                                            <div className="p-3 mb-2 bg-danger text-white">Oops! It seems there's an error in the form submission. Please review the information</div>
+                                        </div>}
+                                </div>
                                 <div className="d-flex h-98 justify-content-center">
                                     <button
                                         type="submit"
@@ -157,11 +165,6 @@ const Edit = () => {
                                     >
                                         Update  {/* {type === PAGE_TYPE_ADD ? "Add" : "Update"} {path} */}
                                     </button>
-                                </div>
-                                <div className="mt-5">
-                                    <pre>
-                                        {JSON.stringify(errors, null, 1)}
-                                    </pre>
                                 </div>
                             </>
                         </Form>

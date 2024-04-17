@@ -27,7 +27,7 @@ const VideoUpload: React.FC<VideoUpload> = ({video, setVideo, url = ""}) => {
                         <div className="row">
                             <div className="col-md-4">
                                 <video width="300" controls>
-                                    <source src={video && URL.createObjectURL(video) || url} type={video && video?.type} />
+                                    <source src={video && URL?.createObjectURL(video) || url} type={video && video?.type} />
                                     Your browser does not support the video tag.
                                 </video>
                             </div>

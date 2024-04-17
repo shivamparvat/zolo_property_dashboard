@@ -9,7 +9,10 @@ const FullLayout = ({children}: childrenType) => {
   const loading = useSelector((state: RootState) => state.loader.loading);
 
   return (
-    <div>
+    <div
+      className={`g-sidenav-show bg-gray-100 ${open ? "g-sidenav-pinned" : "g-sidenav-hidden"
+        }`}
+    >
       <section className="background-radial-gradient" style={{
         overflowY: "scroll",
         overflowX: "hidden",
@@ -22,7 +25,7 @@ const FullLayout = ({children}: childrenType) => {
             </div>
           </div>
         ) : null}
-        {open && <Sidebar />}
+        <Sidebar />
         <main className="main-content position-relative border-radius-lg">
           <div className="position-relative">
             <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>

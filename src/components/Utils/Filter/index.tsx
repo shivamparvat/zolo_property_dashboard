@@ -22,17 +22,21 @@ let SHOW_ENTRIES = "SHOW_ENTRIES",
   FILTER = "FILTER",
   SHORT_BY = "SHORT_BY",
   PROPERTY_TYPE = "PROPERTY_TYPE",
-  PROPERTY_FOR = "PROPERTY_FOR";
+  PROPERTY_FOR = "PROPERTY_FOR",
+  MIN = "MIN",
+  MAX = "MAX"
 
 // all des
 export {
   SHOW_ENTRIES, START_DATE, END_DATE, SEARCH, FILTER, SHORT_BY, PROPERTY_TYPE
-  , PROPERTY_FOR
+  , PROPERTY_FOR, MIN, MAX
 };
 
 const Index = (props: filter) => {
-  const {filter, setFilter, disable = [], orderBy} = props;
+  const {filter, setFilter, disable = [], orderBy, unable=[]} = props;
   const [search, setSearch] = useState("");
+  const [min, setMin] = useState<number>()
+  const [max, setMax] = useState<number>()
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
 
   // Handler for the input change event
@@ -45,6 +49,38 @@ const Index = (props: filter) => {
         setFilter((pre: object) => ({
           ...pre,
           search: value,
+        }));
+      },
+      DEBOUNCE_THRESHOLD,
+      timeoutId,
+      setTimeoutId
+    )();
+  };
+  const onMinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {value} = event.target;
+    setMin(+value);
+    // Debounced version of handleInputChange
+    debounce(
+      () => {
+        setFilter((pre: object) => ({
+          ...pre,
+          min_price: +value,
+        }));
+      },
+      DEBOUNCE_THRESHOLD,
+      timeoutId,
+      setTimeoutId
+    )();
+  };
+  const onMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {value} = event.target;
+    setMax(+value);
+    // Debounced version of handleInputChange
+    debounce(
+      () => {
+        setFilter((pre: object) => ({
+          ...pre,
+          max_price: +value,
         }));
       },
       DEBOUNCE_THRESHOLD,
@@ -120,6 +156,36 @@ const Index = (props: filter) => {
                     endDate: e.target.value,
                   }))
                 }
+              />
+            </label>
+          </div>
+        ) : null}
+        {unable.indexOf(MIN) !== -1 ? (
+          <div className="dataTables_filter mb-1 ">
+            <label>
+              <FaSearch style={{marginRight: "5px"}} />
+              Min
+              <input
+                type="number"
+                onChange={onMinChange}
+                value={min}
+                placeholder="Search..."
+                className="form-control"
+              />
+            </label>
+          </div>
+        ) : null}
+        {unable.indexOf(MAX) !== -1 ? (
+          <div className="dataTables_filter mb-1 ">
+            <label>
+              <FaSearch style={{marginRight: "5px"}} />
+              Max
+              <input
+                type="number"
+                onChange={onMaxChange}
+                value={max}
+                placeholder="Search..."
+                className="form-control"
               />
             </label>
           </div>

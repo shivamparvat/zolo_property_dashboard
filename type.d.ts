@@ -32,6 +32,13 @@ interface farmError {
 interface userTokenType {
   userToken: {
     user_id: number,
+    first_name: string,
+    last_name: string,
+    contact_number: number,
+    url: string,
+    city: string,
+    state: string,
+    address: string,
     email: staring,
     role: string,
     roleText: string,
@@ -82,6 +89,7 @@ interface filter {
   setFilter: React.Dispatch<React.SetStateAction<filter.filter>>
   disable?: string[]
   orderBy?: string[]
+  unable?: string[]
 }
 
 interface userType {

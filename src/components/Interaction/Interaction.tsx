@@ -15,10 +15,10 @@ import {
 } from "../Utils/constants";
 import TableHeader, {SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
 import ActionFeature from "@/Api/ActionFeature";
-import {IoCallOutline} from "react-icons/io5";
+import {IoCallOutline, IoHeartDislikeOutline} from "react-icons/io5";
 import {MdPublishedWithChanges} from "react-icons/md";
 import {Accordion} from "react-bootstrap";
-import {FcLike, FcViewDetails} from "react-icons/fc";
+import {FcDislike, FcLike, FcViewDetails} from "react-icons/fc";
 import {FaEye} from "react-icons/fa"
 import {useRouter} from "next/navigation";
 import {MdCall} from "react-icons/md";
@@ -29,7 +29,7 @@ import {removeToken} from "@/redux/reducer/login";
 // // import StatusChange from "./StatusChange";
 
 
-const order_by_option = ["name", "city", "number", "zip_code", "property", "ads"]
+const order_by_option = ["name", "city", "number", "zip_code", "is_converted", "property", "ads"]
 
 
 const Interaction = () => {
@@ -80,6 +80,7 @@ const Interaction = () => {
 
       const InterestedtType = data.property ? "property" : "ads"
       const res = await ApiFeature.post("interested/add", {...interested, type: InterestedtType}, 0, true, true);
+      await ApiFeature.put("interaction/update", {is_converted: true, user: data.user, zip_code: data.zip_code, }, data?.id);
       if (res.status == 200) {
         dispatch(setLoader(false));
         dispatch(setRecallApi(true));
@@ -107,7 +108,7 @@ const Interaction = () => {
     {
       value: "Id",
       component: ({data}) => <div >
-        {((data?.property ? data?.property : data?.ads || "").slice(-6) || "").toUpperCase()}
+        {(data?.unique_id || "").slice(-6).toUpperCase()}
       </div>
     },
     {
@@ -142,9 +143,11 @@ const Interaction = () => {
         <>
           <button
             onClick={() => {
-              InterestedConvert(data)
+              if (!data?.is_converted) {
+                InterestedConvert(data)
+              }
             }}
-            className="btn btn-warning"
+            className={`btn ${!data?.is_converted ? "btn-warning" : ""}`}
             data-tooltip="Interested"
           >
             <MdPublishedWithChanges size={16} />
@@ -187,10 +190,11 @@ const Interaction = () => {
                   <Accordion.Header>
                     <div className="row w-100">
                       <div className="col" style={{maxWidth: "70px"}}>{index + 1}.</div>
-                      <div className="col"><b>{("65d9bd1987809612aca4dda5".slice(-6) || "").toUpperCase()}</b></div>
+                      {/* <div className="col"><b>{("65d9bd1987809612aca4dda5".slice(-6) || "").toUpperCase()}</b></div> */}
                       <div className="col text-capitalize"><b>{item?.name || ""}</b></div>
                       <div className="col text-capitalize">{item?.city || ""}</div>
                       <div className="col text-capitalize"><a href={`tel:+91${item?.number}`}><MdCall size={20} /><span className="ms-1">{item?.number || ""}</span></a></div>
+                      <div className="col text-capitalize">{item?.is_converted ? <FcLike size={20} /> : <FcDislike size={20} />}</div>
                     </div></Accordion.Header>
                   <Accordion.Body>
                     <CustomTable

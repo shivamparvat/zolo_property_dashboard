@@ -2,15 +2,16 @@ import Image from "next/image";
 import React, {useEffect, useState} from "react";
 import {MAX_FILE_SIZE_BYTES} from "../Utils/constants";
 import ShowToast, {error} from "../Utils/ShowToast";
-import path from 'path';
+import path from "path";
 
 interface MultiFileUploadType {
   selectedFile: any[];
   setSelectedFile: React.Dispatch<any>;
   setFiles: React.Dispatch<File[] | any>;
-  setBanner: React.Dispatch<string[] | any>;
+  Files: File[],
   setDeletedFile?: React.Dispatch<any>;
-  banner: string
+  setBanner: React.Dispatch<string | undefined>
+  banner: string | undefined
 }
 export const fileSizes = (bytes: number, decimals = 2) => {
   if (bytes === 0) return "0 Bytes";
@@ -25,9 +26,10 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
   selectedFile = [],
   setSelectedFile,
   setFiles,
+  Files,
   setDeletedFile,
-  banner,
-  setBanner
+  setBanner,
+  banner
 }) => {
   const isOverSize = (bytes: number) => {
     if (bytes < MAX_FILE_SIZE_BYTES) {
@@ -76,14 +78,16 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
     }
   };
 
-  const DeleteSelectFile = (id: string, index: number) => {
+  const DeleteSelectFile = (index: number) => {
     if (window.confirm("Are you sure you want to delete this Image?")) {
       if (setDeletedFile) {
-        const deleteIMG: any[] = selectedFile.filter((data: any) =>
-          data.id ? data.id === id : data.product_image_id === id
-        );
-        if (deleteIMG[0]?.url) {
-          setDeletedFile((pre: any[]) => [...pre, ...deleteIMG]);
+        if (Files.length <= index) {
+          setDeletedFile((file: any) => {
+            const copyFiles = [...selectedFile];
+            const deletedFile = copyFiles.splice(index, 1);
+            var parsedUrl = new URL(deletedFile[0]);
+            return [...file, path.join("public", parsedUrl?.pathname)]
+          });
         }
       }
 
@@ -95,16 +99,18 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
         return copyFiles;
       });
 
-      const result = selectedFile.filter((data: any) => {
-        return data.id ? data.id !== id : data.product_image_id !== id;
+      setSelectedFile((file: any) => {
+        const copyFiles = [...file];
+        if (copyFiles.length > index) {
+          copyFiles.splice(index, 1);
+        }
+        return copyFiles;
       });
-      setSelectedFile(result);
     } else {
       // alert('No');
     }
   };
 
-  console.log("selectedFile", selectedFile)
   return (
     <div className="fileupload-view">
       <div className="row justify-content-center m-0">
@@ -120,10 +126,11 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                       className="file-upload-input"
                       onChange={InputChange}
                       multiple
+                      accept="image/*"
                     />
                     <span>
                       Drag and drop or{" "}
-                      <span className="file-link">Choose your files</span>
+                      <span className="file-link">Choose Property Image</span>
                     </span>
                   </div>
                 </div>
@@ -136,11 +143,12 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                         id={data.overSize ? "removeImg" : ""}
                         key={data.id ? data.id : data.product_image_id}
                       >
+                        {/* {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ? ( */}
                         <div className="file-image">
                           <Image
                             width={150}
                             height={120}
-                            src={data.fileImage ? data.fileImage : data}
+                            src={data.fileImage || data}
                             alt="product img"
                             className="object-fit-cover"
                           />
@@ -151,7 +159,7 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                           </div>
                         )} */}
                         <div className="file-detail">
-                          <h6>{data.filename ? data.filename : path.dirname(data)}</h6>
+                          <h6>{data.filename || data?.split('/').pop()}</h6>
                           <p></p>
                           <p>
                             {data.fileSize && (
@@ -170,7 +178,6 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                               className="file-action-btn"
                               onClick={() =>
                                 DeleteSelectFile(
-                                  data.id ? data.id : data.product_image_id,
                                   index
                                 )
                               }
@@ -178,10 +185,13 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                               Delete
                             </button>
                             <input
-                              type="checkbox"
+                              type="radio"
+                              name="banner"
+                              defaultValue={banner}
+                              value={data.filename || data?.split('/').pop()}
+                              checked={banner == (data.filename || data?.split('/').pop())}
                               className="file-action-btn ms-3"
-                              onChange={(e) => console.log(e.target.checked)}
-                            // checked={ }
+                              onChange={(e) => {setBanner(e?.target?.value || "")}}
                             />Banner
                           </div>
                           <span className="text-danger">

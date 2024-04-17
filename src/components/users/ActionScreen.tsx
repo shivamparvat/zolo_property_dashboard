@@ -186,7 +186,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                         type == PAGE_TYPE_ADD
                           ? base64File || "/assets/img/profile.png"
                           : base64File ||
-                          data.image ||
+                          data.url ||
                           "/assets/img/profile.png"
                       }
                       alt="profile Image"

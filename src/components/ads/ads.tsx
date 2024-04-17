@@ -75,14 +75,14 @@ const Ads = () => {
               setImageModal(true);
             }}
           >
-            {data?.gallery?.length > 0 ? (
-              data.gallery.map((img: any, index: number) => {
+            {data?.galleryUrls?.length > 0 ? (
+              data.galleryUrls.map((img: any, index: number) => {
                 if (index < 3) {
                   return (
                     <Image
                       key={index}
-                      src={img.url || "/img/profile.png"}
-                      alt="category_image"
+                      src={img || "/img/profile.png"}
+                      alt="Ads"
                       width={36}
                       height={36}
                       className="avatar avatar-sm"

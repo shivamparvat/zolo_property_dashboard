@@ -20,6 +20,7 @@ import {setLoader} from "@/redux/reducer/loader";
 import {setRecallApi} from "@/redux/reducer/RecallApi";
 import {useDispatch} from "react-redux";
 import {removeToken} from "@/redux/reducer/login";
+import path from "path";
 
 
 
@@ -38,6 +39,7 @@ const Edit = () => {
 
     const [formInitData, setFormInitData] = useState<any>({})
 
+
     useEffect(() => {
         try {
             if (property_id) {
@@ -49,7 +51,7 @@ const Edit = () => {
                         if (res?.data)
                             setFormInitData(res?.data?.property)
                         setSelectedFile(res?.data?.property?.imageUrls || [])
-                        setBanner(res?.data?.property?.banner?.split('\\').pop() || "")
+                        setBanner(res?.data?.property?.banner?.split('/').pop() || "");
                         dispatch(setLoader(false));
                         dispatch(setRecallApi(true));
                     } else if (res?.data?.status === 401) {
@@ -76,9 +78,14 @@ const Edit = () => {
 
             // delete value.coordinates
 
+            delete value?.imageUrls;
+            delete value?.bannerUrl;
+            delete value?.images;
             (Object.keys(value) || []).map((item: any) => {
                 if (typeof value[item] !== "object") {
-                    formData.append(item, value[item])
+                    if (value[item]) {
+                        formData.append(item, value[item])
+                    }
                 }
                 else {
                     if (typeof value[item] == "object" && value[item] != null) {
@@ -86,10 +93,14 @@ const Edit = () => {
                             console.log(value[item][arrValue])
                             if (typeof value[item][arrValue] === "object") {
                                 (Object.keys(value[item][arrValue]) || []).map((arrayItem: any) => {
-                                    formData.append(`${item}[${arrayItem}][]`, value[item][arrValue][arrayItem])
+                                    if (value[item][arrValue][arrayItem]) {
+                                        formData.append(`${item}[${arrayItem}][]`, value[item][arrValue][arrayItem])
+                                    }
                                 })
                             } else {
-                                formData.append(`${item}[]`, value[item][arrValue])
+                                if (value[item][arrValue]) {
+                                    formData.append(`${item}[]`, value[item][arrValue])
+                                }
                             }
                         })
                     }
@@ -99,15 +110,31 @@ const Edit = () => {
             formData.delete('banner')
             if (value.coordinates.lat &&
                 value.coordinates.lng) {
-                formData.append('coordinates[]', value.coordinates.lat)
-                formData.append('coordinates[]', value.coordinates.lng)
+                formData.append('coordinates[]', value.coordinates?.lat)
+                formData.append('coordinates[]', value.coordinates?.lng)
             }
             if (banner) formData.append('banner', banner)
 
-            if (Files) {
+            if (Files.length) {
                 Object.values(Files || {}).map((file: File) => {
                     formData.append('images', file)
                 })
+            }
+            if (selectedFile?.length) {
+                selectedFile.map((img: string, index: number) => {
+                    if (Files?.length <= index) {
+                        formData.append('images[]', path.join("public", new URL(img).pathname))
+                    }
+                })
+            } else {
+                formData.append('images[]', "")
+                formData.delete('banner')
+                formData.append('banner', "")
+            }
+            if (Files && deletedFile) {
+                deletedFile.map((img: string) => [
+                    formData.append('oldImages[]', img)
+                ])
             }
             if (video) {
                 formData.append('video', video)
@@ -170,10 +197,17 @@ const Edit = () => {
                                     selectedFile={selectedFile}
                                     setSelectedFile={setSelectedFile}
                                     setFiles={setFiles}
+                                    Files={Files}
                                     setDeletedFile={setDeletedFile}
                                     banner={banner}
                                     setBanner={setBanner}
                                 />
+                                <div className="mx-2 my-2">
+                                    {Object.keys(errors || {})?.length > 0 &&
+                                        <div className="p-3">
+                                            <div className="p-3 mb-2 bg-danger text-white">Oops! It seems there's an error in the form submission. Please review the information</div>
+                                        </div>}
+                                </div>
                                 <div className="d-flex h-98 justify-content-center">
                                     <button
                                         type="submit"
@@ -185,9 +219,6 @@ const Edit = () => {
                                 <div className="mt-5">
                                     <pre>
                                         {JSON.stringify(errors, null, 1)}
-                                    </pre>
-                                    <pre>
-                                        {JSON.stringify(values, null, 1)}
                                     </pre>
                                 </div>
                             </>
