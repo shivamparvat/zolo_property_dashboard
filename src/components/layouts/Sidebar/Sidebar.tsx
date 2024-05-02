@@ -151,9 +151,9 @@ const Sidebar = () => {
         <a className="navbar-brand m-0" target="_blank">
           <Image
             src={LOGO_SRC}
-            alt="github Logo"
-            width={80}
-            height={40}
+            alt="zolo property"
+            width={500}
+            height={500}
             className="object-fit-contain"
           />
           {COMPANY_NAME_SHOW && <span className="ms-1 font-weight-bold text-uppercase">{company_name}</span>}

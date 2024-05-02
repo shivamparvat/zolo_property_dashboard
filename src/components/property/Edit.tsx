@@ -192,7 +192,7 @@ const Edit = () => {
                                     {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page6 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
 
                                 </div>
-                                <VideoUpload video={video} setVideo={setVideo} url={values.videoUrl} />
+                                <VideoUpload video={video} setVideo={setVideo} url={"http://localhost:5000/property/videos/video-1710266151537.mp4"} />
                                 <FileUpload
                                     selectedFile={selectedFile}
                                     setSelectedFile={setSelectedFile}

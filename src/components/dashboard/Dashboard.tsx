@@ -1,7 +1,7 @@
 import {FaCoins, FaGlobe, FaShoppingCart} from "react-icons/fa";
 import {AiFillHdd} from "react-icons/ai";
 import Chart from "./Chart/Chart";
-import Corousel from "./carousel/Carousel";
+import PieCharts from "./PieCharts/PieCharts";
 import Link from "next/link";
 import {BsFillPostcardHeartFill} from "react-icons/bs";
 
@@ -17,12 +17,12 @@ const Dashboard = () => {
                   <Link href="/post" style={{color: "#000"}}>
                     <div className="numbers">
                       <p className="text-sm mb-0 text-uppercase font-weight-bold">
-                        Resent Post
+                        TOTAL User
                       </p>
-                      <h5 className="font-weight-bolder">$53,000</h5>
+                      <h5 className="font-weight-bolder">16</h5>
                       <p className="mb-0">
                         <span className="text-success text-sm font-weight-bolder">
-                          100 Units
+                          16
                         </span>
                         &nbsp;this month In
                       </p>
@@ -53,12 +53,12 @@ const Dashboard = () => {
                     <p className="text-sm mb-0 text-uppercase font-weight-bold">
                       Total Property
                     </p>
-                    <h5 className="font-weight-bolder">2,300</h5>
+                    <h5 className="font-weight-bolder">3</h5>
                     <p className="mb-0">
                       <span className="text-success text-sm font-weight-bolder">
-                        80 Units{' '}
+                        3 {' '}
                       </span>
-                      since last week
+                      this month In
                     </p>
                   </div>
                 </div>
@@ -84,14 +84,14 @@ const Dashboard = () => {
                 <div className="col-8">
                   <div className="numbers">
                     <p className="text-sm mb-0 text-uppercase font-weight-bold">
-                      About to Expire
+                      Interested
                     </p>
-                    <h5 className="font-weight-bolder">+3,462</h5>
+                    <h5 className="font-weight-bolder">60</h5>
                     <p className="mb-0">
-                      <span className="text-danger text-sm font-weight-bolder">
-                        10 Units{' '}
+                      <span className="text-success text-sm font-weight-bolder">
+                        60 {' '}
                       </span>
-                      since last quarter
+                      this month In
                     </p>
                   </div>
                 </div>
@@ -117,12 +117,12 @@ const Dashboard = () => {
                 <div className="col-8">
                   <div className="numbers">
                     <p className="text-sm mb-0 text-uppercase font-weight-bold">
-                      Low Stock Levels{" "}
+                      total leads{" "}
                     </p>
-                    <h5 className="font-weight-bolder">$103,430</h5>
+                    <h5 className="font-weight-bolder">10</h5>
                     <p className="mb-0">
                       <span className="text-success text-sm font-weight-bolder">
-                        20 Units
+                        10 
                       </span>{" "}
                       than last month
                     </p>
@@ -146,7 +146,7 @@ const Dashboard = () => {
       </div>
       <div className="row mt-4">
         <Chart />
-        <Corousel />
+        <PieCharts init={50} progress={10} Completed={20} />
       </div>
     </div>
   );
