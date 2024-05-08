@@ -20,7 +20,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
   const {id, onClose, isActive, data, type, urls, path: adsPath} = props;
   const [coordinates, setCoordinates] = useState<Coordinates>(type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78})
 
-  const [banner, setBanner] = useState<string | undefined>("")
+  const [banner, setBanner] = useState<string | undefined>(data?.banner)
 
 
   // validation logic

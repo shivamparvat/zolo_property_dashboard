@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     // unoptimized: true,
-    domains: ["localhost","gpropertypay.com","192.168.1.5","undefined"],
+    domains: ["localhost","gpropertypay.com","192.168.1.7","undefined"],
   },
 };
 

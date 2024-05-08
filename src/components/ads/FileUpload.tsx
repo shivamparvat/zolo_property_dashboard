@@ -184,6 +184,13 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
                             >
                               Delete
                             </button>
+                            {
+                              <>
+                              {
+                                console.log(banner,"banner")
+    
+                              }</>
+                            }
                             <input
                               type="radio"
                               name="banner"

@@ -369,9 +369,7 @@ const UserProfile = () => {
                                             >
                                                 Update Profile
                                             </button>
-                                            <pre>
-                                                {JSON.stringify(errors, null, 1)}
-                                            </pre>
+                                    
                                         </div>
                                     </Form>
                                 )}

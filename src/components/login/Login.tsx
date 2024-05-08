@@ -124,7 +124,7 @@ const Login = () => {
                             <Image
                               src={LOGO_SRC}
                               width={250}
-                              height={30}
+                              height={150}
                               alt={"logo"}
                               className="object-fit-contain"
                             />
@@ -189,9 +189,9 @@ const Login = () => {
                           className="mt-4  d-flex flex-row-reverse"
 
                         >
-                          <span className="sign__in__checkbox__text" onClick={() => setActionType(FORGOT_PASSWORD_PAGE)}>
+                          {/* <span className="sign__in__checkbox__text" onClick={() => setActionType(FORGOT_PASSWORD_PAGE)}>
                             Forgot password
-                          </span>
+                          </span> */}
                         </label>
                         <div className="d-flex justify-content-center">
                           <button type="submit" className="btn btn-primary btn-block mb-4">
@@ -201,14 +201,14 @@ const Login = () => {
 
 
                         <div className="d-flex justify-content-center">
-                          <GoogleLogin
+                          {/* <GoogleLogin
                             onSuccess={(credentialResponse) => {
                               getGoogleData(credentialResponse.credential);
                             }}
                             onError={() => {
                               console.log("Login Failed");
                             }}
-                          />
+                          /> */}
 
                         </div>
                       </Form>)}

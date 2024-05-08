@@ -15,6 +15,10 @@ const propertyForConfig = [
         key: "rent",
         value: "Rent"
     },
+    {
+        key: "sold",
+        value: "sold"
+    },
 
 ]
 const propertyTypeConfig = [

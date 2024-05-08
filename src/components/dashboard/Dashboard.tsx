@@ -4,8 +4,35 @@ import Chart from "./Chart/Chart";
 import PieCharts from "./PieCharts/PieCharts";
 import Link from "next/link";
 import {BsFillPostcardHeartFill} from "react-icons/bs";
+import ActionFeature from "@/Api/ActionFeature";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@/redux/store";
+import {useRouter} from "next/router";
+import {INIT_FILTER} from "../Utils/constants";
 
 const Dashboard = () => {
+
+
+  const path = "dashboard";
+
+  //   // configure
+  ActionFeature.path = path;
+
+  const dispatch = useDispatch();
+  const router = useRouter()
+  const token = useSelector((state: RootState) => state.login.userToken?.token);
+  const {recallApi} = useSelector((state: RootState) => state.recallApi);
+
+  // status
+  const [filter, setFilter] = useState(INIT_FILTER);
+  const [fetchData, setFetchData] = useState<any>({
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    ActionFeature.get(currentPage, filter, setFetchData);
+  }, [filter, token, dispatch, currentPage, recallApi]);
   return (
     <div className="container-fluid py-4">
       <div className="row">
@@ -14,15 +41,15 @@ const Dashboard = () => {
             <div className="card-body p-3">
               <div className="row">
                 <div className="col-8">
-                  <Link href="/post" style={{color: "#000"}}>
+                  <Link href="/users" style={{color: "#000"}}>
                     <div className="numbers">
                       <p className="text-sm mb-0 text-uppercase font-weight-bold">
                         TOTAL User
                       </p>
-                      <h5 className="font-weight-bolder">16</h5>
+                      <h5 className="font-weight-bolder">{fetchData?.totalUsers || 0}</h5>
                       <p className="mb-0">
                         <span className="text-success text-sm font-weight-bolder">
-                          16
+                          {fetchData?.totalUsersThisMonth || 0}
                         </span>
                         &nbsp;this month In
                       </p>
@@ -53,10 +80,10 @@ const Dashboard = () => {
                     <p className="text-sm mb-0 text-uppercase font-weight-bold">
                       Total Property
                     </p>
-                    <h5 className="font-weight-bolder">3</h5>
+                    <h5 className="font-weight-bolder">{fetchData?.totalProperties || 0}</h5>
                     <p className="mb-0">
                       <span className="text-success text-sm font-weight-bolder">
-                        3 {' '}
+                      {fetchData?.totalPropertiesThisMonth || 0} {' '}
                       </span>
                       this month In
                     </p>
@@ -86,10 +113,10 @@ const Dashboard = () => {
                     <p className="text-sm mb-0 text-uppercase font-weight-bold">
                       Interested
                     </p>
-                    <h5 className="font-weight-bolder">60</h5>
+                    <h5 className="font-weight-bolder">{fetchData?.totalInterested || 0}</h5>
                     <p className="mb-0">
                       <span className="text-success text-sm font-weight-bolder">
-                        60 {' '}
+                      {fetchData?.totalInterestedPeopleThisMonth || 0} {' '}
                       </span>
                       this month In
                     </p>
@@ -117,12 +144,12 @@ const Dashboard = () => {
                 <div className="col-8">
                   <div className="numbers">
                     <p className="text-sm mb-0 text-uppercase font-weight-bold">
-                      total leads{" "}
+                      total sold{" "}
                     </p>
-                    <h5 className="font-weight-bolder">10</h5>
+                    <h5 className="font-weight-bolder">{fetchData?.soldProperties || 0}</h5>
                     <p className="mb-0">
                       <span className="text-success text-sm font-weight-bolder">
-                        10 
+                      {fetchData?.soldPropertiesThisMonth || 0}
                       </span>{" "}
                       than last month
                     </p>
@@ -145,8 +172,8 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="row mt-4">
-        <Chart />
-        <PieCharts init={50} progress={10} Completed={20} />
+        <Chart data={fetchData?.dailyData}/>
+        <PieCharts like={fetchData?.totalLikeThisMonth || 0} view={fetchData?.totalViewThisMonth || 0} leads={fetchData?.totalLeadThisMonth || 0} />
       </div>
     </div>
   );

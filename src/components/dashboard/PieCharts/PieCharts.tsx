@@ -1,18 +1,17 @@
-import React, { use, useEffect, useState } from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
+import React, {use, useEffect, useState} from "react";
+import {Chart as ChartJS, ArcElement, Tooltip, Legend} from "chart.js";
+import {Pie} from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieCharts:React.FC<any> = ({ init, progress, Completed }) => {
-  const [pieData, setPieData] = useState([init, progress, Completed]);
-  console.log(pieData);
+const PieCharts: React.FC<any> = ({like, view, leads}) => {
+  const [pieData, setPieData] = useState([like, view, leads]);
   useEffect(() => {
-    setPieData([init, progress, Completed]);
-  }, [init, progress, Completed]);
+    setPieData([like, view, leads]);
+  }, [like, view, leads]);
 
   const data = {
-    labels: ["View", "Like", "interested"],
+    labels: ["Like", "View", "Leads"],
     datasets: [
       {
         label: "interaction",
@@ -50,7 +49,7 @@ const PieCharts:React.FC<any> = ({ init, progress, Completed }) => {
         >
           <div
             className="carousel-inner border-radius-lg h-100"
-            style={{ maxHeight: "425px !important" }}
+            style={{maxHeight: "425px !important"}}
           >
             <Pie
               style={{
