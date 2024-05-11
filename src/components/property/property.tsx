@@ -14,7 +14,7 @@ import {
 } from "../Utils/constants";
 import TableHeader, {FIRST_BUTTON, SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
 import Image from "next/image";
-import ActionScreen from "./ActionScreen";
+// import ActionScreen from "./ActionScreen";
 import ImagePreview from "./ImageModule";
 import ActionFeature from "@/Api/ActionFeature";
 import StatusChange from "./StatusChange";
@@ -158,7 +158,7 @@ const Post = () => {
 
   return (
     <>
-      {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
+      {/* {(actionType === PAGE_TYPE_ADD || actionType === PAGE_TYPE_EDIT) && (
         <ActionScreen
           id={selected.post_id || 0}
           isActive={
@@ -178,7 +178,7 @@ const Post = () => {
           selectedID={selectedData.post_id || 0}
           imageData={selectedData}
         />
-      )}
+      )} */}
 
       <div className="card bg-white">
         <div className="card-datatable">

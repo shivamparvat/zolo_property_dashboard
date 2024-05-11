@@ -112,7 +112,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       if (selectedFile?.length) {
         selectedFile.map((img: string, index: number) => {
           if (Files?.length <= index) {
-            formData.append('gallery[]', path.join("public", new URL(img).pathname))
+            formData.append('gallery[]', img)
           }
         })
       } else {

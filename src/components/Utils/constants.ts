@@ -61,7 +61,7 @@ export const FILTER_OPTION_TYPE_KEY = Object.keys(FILTER_OPTION_TYPE_DATA)
 
 
 // initial filter data
-export const INIT_FILTER = {
+export const INIT_FILTER:any = {
     limit: 5,
     startDate: "",
     endDate: "",

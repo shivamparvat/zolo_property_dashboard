@@ -20,7 +20,6 @@ import {setLoader} from "@/redux/reducer/loader";
 import {setRecallApi} from "@/redux/reducer/RecallApi";
 import {useDispatch} from "react-redux";
 import {removeToken} from "@/redux/reducer/login";
-import path from "path";
 
 
 
@@ -49,9 +48,9 @@ const Edit = () => {
                     const res = await ApiFeature.get("property", property_id, true);
                     if (res?.status == 200) {
                         if (res?.data)
-                            setFormInitData(res?.data?.property)
-                        setSelectedFile(res?.data?.property?.imageUrls || [])
-                        setBanner(res?.data?.property?.banner?.split('/').pop() || "");
+                            setFormInitData((res?.data?.property || [])[0])
+                        setSelectedFile((res?.data?.property || [])[0]?.imageUrls || [])
+                        setBanner((res?.data?.property || [])[0]?.banner?.split('/').pop() || "");
                         dispatch(setLoader(false));
                         dispatch(setRecallApi(true));
                     } else if (res?.data?.status === 401) {
@@ -123,7 +122,7 @@ const Edit = () => {
             if (selectedFile?.length) {
                 selectedFile.map((img: string, index: number) => {
                     if (Files?.length <= index) {
-                        formData.append('images[]', path.join("public", new URL(img).pathname))
+                        formData.append('images[]', img)
                     }
                 })
             } else {
