@@ -2,6 +2,7 @@
 const nextConfig = {
   trailingSlash: true,
   output: "export",
+  distDir:"../zolo_property_dashboard/public/dashboard",
   reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
@@ -13,3 +14,4 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
