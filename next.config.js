@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   trailingSlash: true,
   output: "export",
-  distDir: "../zolo_property_dashboard/public/dashboard",
+  distDir: "../zolo_property_api/public/dashboard",
   reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true
