@@ -1,0 +1,11 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/property": "pages/property.js",
+  "/dashboard": "pages/dashboard.js",
+  "/property/edit": "pages/property/edit.js",
+  "/interaction": "pages/interaction.js",
+  "/interested": "pages/interested.js",
+  "/ads": "pages/ads.js"
+}

@@ -2,16 +2,23 @@
 const nextConfig = {
   trailingSlash: true,
   output: "export",
-  distDir:"../zolo_property_dashboard/public/dashboard",
+  distDir: "../zolo_property_dashboard/public/dashboard",
   reactStrictMode: true,
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true
   },
   images: {
     unoptimized: true,
-    domains: ["localhost","gpropertypay.com","192.168.1.7","zoloproperty.s3.ap-south-1.amazonaws.com","zoloproperty.s3.amazonaws.com"],
-  },
+    domains: [
+      "localhost",
+      "gpropertypay.com",
+      "192.168.1.7",
+      "zoloproperty.s3.ap-south-1.amazonaws.com",
+      "zoloproperty.s3.amazonaws.com",
+      "gprop-demo-server.s3.ap-south-1.amazonaws.com",
+      "gprop-demo-server.s3.amazonaws.com",
+    ]
+  }
 };
 
 module.exports = nextConfig;
-

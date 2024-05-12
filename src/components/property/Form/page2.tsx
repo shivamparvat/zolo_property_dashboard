@@ -13,44 +13,44 @@ export const additional_room = [
     {
         key: "Prayer Room",
         value: "Prayer Room",
-        image: "https://gpropertypay.com/public/assets/prayer_room.png"
+        image: "/assets/prayer_room.png"
     },
     {
         key: "Study Room",
         value: "Study Room"
-        , image: "https://gpropertypay.com/public/assets/study_room.png"
+        , image: "/assets/study_room.png"
     },
     {
         key: "Store Room",
         value: "Store Room"
-        , image: "https://gpropertypay.com/public/assets/store_room.png"
+        , image: "/assets/store_room.png"
     },
     {
         key: "servant Room",
         value: "servant Room"
-        , image: "https://gpropertypay.com/public/assets/servent_room.png"
+        , image: "/assets/servent_room.png"
     },
 ]
 export const additional_facility = [
     {
         key: "PLc",
         value: "PLc",
-        image: "https://gpropertypay.com/public/assets/plc.png"
+        image: "/assets/plc.png"
     },
     {
         key: "Car Parking",
         value: "Car Parking"
-        , image: "https://gpropertypay.com/public/assets/car_parking.png"
+        , image: "/assets/car_parking.png"
     },
     {
         key: "Club Membership",
         value: "Club Membership"
-        , image: "https://gpropertypay.com/public/assets/club_membership.png"
+        , image: "/assets/club_membership.png"
     },
     {
         key: "registration",
         value: "registration"
-        , image: "https://gpropertypay.com/public/assets/registration.png"
+        , image: "/assets/registration.png"
     },
 ]
 

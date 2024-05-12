@@ -23,32 +23,32 @@ const propertyForConfig = [
 ]
 const propertyTypeConfig = [
     {
-        image: 'https://gpropertypay.com/public/assets/apartments.png',
+        image: '/assets/apartments.png',
         key: "Apartments",
         value: "Apartments"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/house.png',
+        image: '/assets/house.png',
         key: "House",
         value: "House"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/shop.png',
+        image: '/assets/shop.png',
         key: "Shop",
         value: "Shop"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/office.png',
+        image: '/assets/office.png',
         key: "Office",
         value: "Office"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/villa.png',
+        image: '/assets/villa.png',
         key: "Villa",
         value: "Villa"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/plot.png',
+        image: '/assets/plot.png',
         key: "Plot",
         value: "Plot"
     },
@@ -57,19 +57,19 @@ const propertyTypeConfig = [
 
 const propertyTypeConfigRent = [
     {
-        image: 'https://gpropertypay.com/public/assets/hostel.png',
+        image: '/assets/hostel.png',
         key: "Hostel",
         value: "Hostel"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/pg.png',
+        image: '/assets/pg.png',
         key: "Pg",
         value: "Pg"
     }
 ]
 const propertyTypeConfigSell = [
     {
-        image: 'https://gpropertypay.com/public/assets/farm.png',
+        image: '/assets/farm.png',
         key: "Farm",
         value: "Farm"
     }

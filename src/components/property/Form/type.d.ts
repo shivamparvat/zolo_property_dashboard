@@ -5,7 +5,7 @@ interface page {
     errors: any
 }
 interface VideoUpload {
-    video: File | null,
+    video: File | string | null,
     setVideo: React.Dispatch<React.SetStateAction<File | null>>,
     url?:string
 }

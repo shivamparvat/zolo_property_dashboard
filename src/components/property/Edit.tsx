@@ -51,6 +51,7 @@ const Edit = () => {
                             setFormInitData((res?.data?.property || [])[0])
                         setSelectedFile((res?.data?.property || [])[0]?.imageUrls || [])
                         setBanner((res?.data?.property || [])[0]?.banner?.split('/').pop() || "");
+                        setVideo((res?.data?.property || [])[0]?.videoUrl)
                         dispatch(setLoader(false));
                         dispatch(setRecallApi(true));
                     } else if (res?.data?.status === 401) {
@@ -80,6 +81,7 @@ const Edit = () => {
             delete value?.imageUrls;
             delete value?.bannerUrl;
             delete value?.images;
+            delete value?.user;
             (Object.keys(value) || []).map((item: any) => {
                 if (typeof value[item] !== "object") {
                     if (value[item]) {
@@ -159,6 +161,7 @@ const Edit = () => {
         }
     }
 
+
     return <div className="card bg-white">
         <div className="card-datatable">
             <div className="dataTables_wrapper dt-bootstrap5">
@@ -191,7 +194,8 @@ const Edit = () => {
                                     {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page6 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
 
                                 </div>
-                                <VideoUpload video={video} setVideo={setVideo} url={"http://localhost:5000/property/videos/video-1710266151537.mp4"} />
+
+                                <VideoUpload video={video} setVideo={setVideo} />
                                 <FileUpload
                                     selectedFile={selectedFile}
                                     setSelectedFile={setSelectedFile}

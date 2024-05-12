@@ -5,22 +5,22 @@ import {Accordion, Form as FormStrap} from "react-bootstrap";
 
 const overlooking = [
     {
-        image: 'https://gpropertypay.com/public/assets/garden.png',
+        image: '/assets/garden.png',
         key: "Garden/park",
         value: "Garden/park"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/swiming_pool.png',
+        image: '/assets/swiming_pool.png',
         key: "Pool",
         value: "Pool"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/road.png',
+        image: '/assets/road.png',
         key: "Road",
         value: "Road"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/cornor_property.png',
+        image: '/assets/cornor_property.png',
         key: "Cornor Property",
         value: "Cornor Property"
     },

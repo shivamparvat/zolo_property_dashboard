@@ -20,43 +20,43 @@ const furnishingStatus = [
 ]
 const additional_furnishing = [
     {
-        image: 'https://gpropertypay.com/public/assets/sofa.png',
+        image: '/assets/sofa.png',
         key: "Sofa",
         value: "Sofa"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/refrigerator.png',
+        image: '/assets/refrigerator.png',
         key: "Refrigerator",
         value: "Refrigerator"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/dining_table.png',
+        image: '/assets/dining_table.png',
         key: "Dining Table",
         value: "Dining Table"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/gas_connection.png',
+        image: '/assets/gas_connection.png',
         key: "Gas Connection",
         value: "Gas Connection"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/water_connection.png',
+        image: '/assets/water_connection.png',
         key: "Water Connection",
         value: "Water Connection"
 
     },
     {
-        image: 'https://gpropertypay.com/public/assets/washing_machine.png',
+        image: '/assets/washing_machine.png',
         key: "Washing Machine",
         value: "Washing Machine"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/wifi_connection.png',
+        image: '/assets/wifi_connection.png',
         key: "Wifi Connection",
         value: "Wifi Connection"
     },
     {
-        image: 'https://gpropertypay.com/public/assets/microwave.png',
+        image: '/assets/microwave.png',
         key: "Microwave",
         value: "Microwave"
     }
