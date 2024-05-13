@@ -180,6 +180,10 @@ const UserProfile = () => {
                                 {({values, setValues, errors, handleSubmit}) => (
                                     <Form onSubmit={handleSubmit}>
                                         <div className="d-flex gap-column justify-content-between ">
+                                            {
+                                                <>
+                                                    {console.log(errors)}</>
+                                            }
                                             {/* image */}
                                             <div className="avatar-upload mb-3 ">
                                                 <div className="avatar-edit">
@@ -194,8 +198,8 @@ const UserProfile = () => {
                                                 <div className="position-relative avatar-preview">
                                                     <Image
                                                         src={
-                                                            user?.image ||
-                                                            "/assets/img/profile.png"
+                                                            base64File || user?.image ||
+                                                            "/assets/logo.png"
                                                         }
                                                         alt="profile Image"
                                                         width={200}
@@ -369,7 +373,7 @@ const UserProfile = () => {
                                             >
                                                 Update Profile
                                             </button>
-                                    
+
                                         </div>
                                     </Form>
                                 )}

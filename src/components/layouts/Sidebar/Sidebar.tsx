@@ -63,19 +63,45 @@ let navigation = [
     title: "Phone Number",
     href: "/setting/phone",
     icon: <IoCall style={{fontSize: "1.1rem", color: "#FB6340"}} />,
-    // subMenu: [
-    //   {
-    //     ids: 1,
-    //     title: "Phone Number",
-    //     href: "/setting/phone",
-    //     icon: <IoCall style={{fontSize: "1rem", color: "FF55BB"}} />,
-    //   },
-    // ],
+
   }, {
     id: 4,
     title: "Join",
     href: "/join",
     icon: <MdJoinInner style={{fontSize: "1rem", color: "#FF55BB"}} />,
+  },
+  {
+    id: 6,
+    title: "Users",
+    href: "/users",
+    icon: <FaUserPlus style={{fontSize: "1.1rem", color: "#106FFB"}} />,
+  },
+];
+
+let navigationBroker = [
+  {
+    id: 0,
+    title: "Dashboard",
+    href: "/dashboard",
+    icon: <CgScreen style={{fontSize: "1.2rem", color: "#ABB6F0"}} />,
+  },
+  {
+    id: 2,
+    title: "Interested",
+    href: "/interested",
+    icon: <FaHeart style={{fontSize: "1rem", color: "#f5464e"}} />,
+  },
+  {
+    id: 3,
+    title: "Interaction",
+    href: "/interaction",
+    icon: <MdTouchApp style={{fontSize: "1.5rem", color: "#d48869"}} />,
+  },
+  {
+    id: 4,
+    title: "Property",
+    href: "/property",
+    icon: <MdHomeWork style={{fontSize: "1rem", color: "#000100"}} />,
   },
   {
     id: 6,
@@ -120,21 +146,6 @@ const Sidebar = () => {
   };
 
 
-  useEffect(() => {
-    console.log(navigation[5]?.id)
-    if (role === 'broker' && navigation[5]?.id == 5) {
-      navigation.splice(5, 1)
-    }
-    if (role !== 'broker' && navigation[5]?.id !== 5) {
-      navigation.splice(5, 0, {
-        id: 5,
-        title: "Phone Number",
-        href: "/setting/phone",
-        icon: <IoCall style={{fontSize: "1.1rem", color: "#FB6340"}} />,
-      })
-
-    }
-  }, [role])
 
 
   return (
@@ -161,7 +172,7 @@ const Sidebar = () => {
       </div>
       <hr className="horizontal dark mt-0" />
       <ul className="navbar-nav side  side_Nav_container">
-        {navigation.map((nav: any, index) => {
+        {(role === 'broker' ? navigationBroker : navigation).map((nav: any, index) => {
           if (nav.label)
             return (
               <li className="nav-item mt-3" key={index + "k"}>

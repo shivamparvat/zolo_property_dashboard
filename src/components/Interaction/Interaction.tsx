@@ -13,7 +13,7 @@ import {
   PAGE_TYPE_ADD,
   PAGE_TYPE_EDIT,
 } from "../Utils/constants";
-import TableHeader, {SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
+import TableHeader, {FIRST_BUTTON, SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
 import ActionFeature from "@/Api/ActionFeature";
 import {IoCallOutline, IoHeartDislikeOutline} from "react-icons/io5";
 import {MdPublishedWithChanges} from "react-icons/md";
@@ -43,6 +43,7 @@ const Interaction = () => {
   const dispatch = useDispatch();
   const router = useRouter()
   const token = useSelector((state: RootState) => state.login.userToken?.token);
+  const role = useSelector((state: RootState) => state.login.userToken?.role);
   const {recallApi} = useSelector((state: RootState) => state.recallApi);
 
   // status
@@ -169,7 +170,7 @@ const Interaction = () => {
             onExportClick={() => {
               ActionFeature.download();
             }}
-            disable={[SECOND_BUTTON]}
+            disable={[SECOND_BUTTON, role === 'broker' ? FIRST_BUTTON : FIRST_BUTTON]}
           />
           <Filter filter={filter} setFilter={setFilter} orderBy={order_by_option} disable={[PROPERTY_FOR, PROPERTY_TYPE]} />
 

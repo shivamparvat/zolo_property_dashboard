@@ -11,7 +11,7 @@ import {
   PAGE_TYPE_ADD,
   PAGE_TYPE_EDIT,
 } from "../Utils/constants";
-import TableHeader, {SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
+import TableHeader, {FIRST_BUTTON, SECOND_BUTTON} from "../Utils/CustomTable/TableHeader";
 import ActionFeature from "@/Api/ActionFeature";
 import StatusChange from "./StatusChange";
 import {TfiWrite} from "react-icons/tfi";
@@ -48,6 +48,7 @@ const Interested = () => {
   // hooks
   const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.login.userToken?.token);
+  const role = useSelector((state: RootState) => state.login.userToken?.role);
   const {recallApi} = useSelector((state: RootState) => state.recallApi);
 
   // status
@@ -198,7 +199,7 @@ const Interested = () => {
               onExportClick={() => {
                 ActionFeature.download();
               }}
-              disable={[SECOND_BUTTON]}
+              disable={[SECOND_BUTTON,role === 'broker' ? FIRST_BUTTON : FIRST_BUTTON]}
             />
             <Filter filter={filter} setFilter={setFilter} orderBy={order_by_option} disable={[PROPERTY_FOR, PROPERTY_TYPE]} />
 
