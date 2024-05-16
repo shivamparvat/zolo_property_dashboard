@@ -54,7 +54,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
       const next30Days = new Date(currentDate);
       next30Days.setDate(currentDate.getDate() + 30);
       return next30Days;
-    })() : data.expiry_date,
+    })() : data.expiry_date ? (new Date(data.expiry_date)?.toISOString()?.split('T') || [])[0] : new Date()?.toISOString()?.split('T')[0],
     coordinates: type == PAGE_TYPE_ADD ? {lat: 22, lng: 78} : {lat: (data?.coordinates || [])[0] || 22, lng: (data?.coordinates || [])[1] || 78}
 
   });

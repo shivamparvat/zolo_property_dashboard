@@ -48,7 +48,7 @@ const Edit = () => {
                     const res = await ApiFeature.get("property", property_id, true);
                     if (res?.status == 200) {
                         if (res?.data)
-                            setFormInitData((res?.data?.property || [])[0])
+                            setFormInitData((res?.data?.property || [])[0] || {})
                         setSelectedFile((res?.data?.property || [])[0]?.imageUrls || [])
                         setBanner((res?.data?.property || [])[0]?.banner?.split('/').pop() || "");
                         setVideo((res?.data?.property || [])[0]?.videoUrl)
@@ -175,59 +175,60 @@ const Edit = () => {
                     }}
                     disable={[FIRST_BUTTON]}
                 />
-                <Formik
-                    enableReinitialize={true}
-                    onSubmit={submitHandler}
-                    initialValues={formInitData}
-                    validationSchema={validationSchema}
-                >
-                    {({values, setValues, errors}) => (
-                        <Form>
-                            <>
-                                <div className="px-5 py-5">
+                {Object.keys(formInitData).length != 0 ?
+                    <Formik
+                        enableReinitialize={true}
+                        onSubmit={submitHandler}
+                        initialValues={formInitData}
+                        validationSchema={validationSchema}
+                    >
+                        {({values, setValues, errors}) => (
+                            <Form>
+                                <>
+                                    <div className="px-5 py-5">
 
-                                    <Page1 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />
-                                    <Page2 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />
-                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page3 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
-                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page4 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
-                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page5 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
-                                    {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page6 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
+                                        <Page1 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />
+                                        <Page2 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />
+                                        {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page3 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
+                                        {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page4 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
+                                        {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page5 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
+                                        {values?.property_type !== "Plot" && values?.property_type !== "Farm" && <Page6 type={PAGE_TYPE_EDIT} setData={setValues} data={values} errors={errors} />}
 
-                                </div>
+                                    </div>
 
-                                <VideoUpload video={video} setVideo={setVideo} />
-                                <FileUpload
-                                    selectedFile={selectedFile}
-                                    setSelectedFile={setSelectedFile}
-                                    setFiles={setFiles}
-                                    Files={Files}
-                                    setDeletedFile={setDeletedFile}
-                                    banner={banner}
-                                    setBanner={setBanner}
-                                />
-                                <div className="mx-2 my-2">
-                                    {Object.keys(errors || {})?.length > 0 &&
-                                        <div className="p-3">
-                                            <div className="p-3 mb-2 bg-danger text-white">Oops! It seems there's an error in the form submission. Please review the information</div>
-                                        </div>}
-                                </div>
-                                <div className="d-flex h-98 justify-content-center">
-                                    <button
-                                        type="submit"
-                                        className="btn btn-primary mt-5 d-block text-uppercase"
-                                    >
-                                        Update
-                                    </button>
-                                </div>
-                                <div className="mt-5">
-                                    <pre>
-                                        {JSON.stringify(errors, null, 1)}
-                                    </pre>
-                                </div>
-                            </>
-                        </Form>
-                    )}
-                </Formik>
+                                    <VideoUpload video={video} setVideo={setVideo} />
+                                    <FileUpload
+                                        selectedFile={selectedFile}
+                                        setSelectedFile={setSelectedFile}
+                                        setFiles={setFiles}
+                                        Files={Files}
+                                        setDeletedFile={setDeletedFile}
+                                        banner={banner}
+                                        setBanner={setBanner}
+                                    />
+                                    <div className="mx-2 my-2">
+                                        {Object.keys(errors || {})?.length > 0 &&
+                                            <div className="p-3">
+                                                <div className="p-3 mb-2 bg-danger text-white">Oops! It seems there's an error in the form submission. Please review the information</div>
+                                            </div>}
+                                    </div>
+                                    <div className="d-flex h-98 justify-content-center">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary mt-5 d-block text-uppercase"
+                                        >
+                                            Update
+                                        </button>
+                                    </div>
+                                    <div className="mt-5">
+                                        <pre>
+                                            {JSON.stringify(errors, null, 1)}
+                                        </pre>
+                                    </div>
+                                </>
+                            </Form>
+                        )}
+                    </Formik> : <div className="d-flex justify-content-center align-items-center" style={{height:"50vh"}}><h1 >data Not Found</h1></div>}
 
             </div>
         </div>

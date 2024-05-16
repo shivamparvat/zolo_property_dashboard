@@ -72,7 +72,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
     email: type == PAGE_TYPE_ADD ? "" : data.email,
     role: type == PAGE_TYPE_ADD ? "" : data.role,
     contact_number: type == PAGE_TYPE_ADD ? "" : data.contact_number,
-    password: type == PAGE_TYPE_ADD ? "" : data.password,
+    password: type == PAGE_TYPE_ADD ? "" : "",
     zip_code: type == PAGE_TYPE_ADD ? 480001 : data.zip_code,
     local_area: type == PAGE_TYPE_ADD ? [] : data.local_area,
     city: type == PAGE_TYPE_ADD ? "" : data.city,
@@ -345,7 +345,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                 </div>
                 <div className="w-50">
                   {/* password */}
-                  {type == PAGE_TYPE_ADD && <div className="">
+                  <div className="">
                     <FormStrap.Label className="form-control-label">
                       <h6>Password</h6>
                     </FormStrap.Label>
@@ -361,7 +361,7 @@ const ActionScreen: React.FC<ActionModalType> = (props) => {
                       name="password"
                       component="div"
                     />
-                  </div>}
+                  </div>
 
                   <div className="">
 

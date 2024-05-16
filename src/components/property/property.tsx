@@ -86,6 +86,10 @@ const Post = () => {
       key: "name",
     },
     {
+      value: "Number",
+      component: ({data}) => <div style={{width: "135px"}}><a href={`tel:+91${data?.user?.contact_number}`}>{data?.user?.contact_number}</a></div>,
+    },
+    {
       value: "Address",
       component: ({data}) => <>{`${data.city || ""} ${data.state || ""} ${data.zip_code || ""}`}</>,
     },
@@ -192,7 +196,7 @@ const Post = () => {
               }}
               disable={[FIRST_BUTTON, SECOND_BUTTON]}
             />
-            <Filter filter={filter} disable={[]} setFilter={setFilter} orderBy={ORDER_BY} unable={(filter?.property_for == 'rent' || filter?.property_for == 'sell') ? [] : [MAX, MIN]} />
+            <Filter filter={filter} disable={[]} setFilter={setFilter} orderBy={ORDER_BY} unable={(filter?.property_for == 'rent' || filter?.property_for == 'sell') ? [MAX, MIN] : []} />
             <CustomTable
               tableCustomize={TableCustomize}
               data={fetchData && fetchData?.list}

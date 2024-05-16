@@ -18,6 +18,7 @@ import TableHeader, {FIRST_BUTTON, SECOND_BUTTON} from "../Utils/CustomTable/Tab
 import Image from "next/image";
 import ActionScreen from "./ActionScreen";
 import ActionFeature from "@/Api/ActionFeature";
+import StatusChange from "./StatusChange";
 
 // init
 
@@ -70,35 +71,35 @@ const Join = () => {
       value: "Number",
     },
     {
-      key: "city",
-      value: "city",
-    },
-    {
-      key: "zip_code",
-      value: "Zip",
+      key: "address",
+      value: "address",
     },
     {
       value: "Created At",
       component: ({data}) => <>{DDMMYYYY(data.createdAt)}</>,
     },
     {
-      value: "Status",
-      component: ({data}) => (
-        <ActionSwitch data={data} />
-      ),
+      value: "status",
+      component: ({data}) => <StatusChange data={data} />
     },
-    {
-      value: "Action",
-      component: ({data}) => (
-        <ActionButtons
-          data={data}
-          setSelected={setSelected}
-          setEdit={setActionType}
-          id={data._id}
-        />
-      ),
-      className: "d-flex ",
-    },
+    // {
+    //   value: "Status",
+    //   component: ({data}) => (
+    //     <ActionSwitch data={data} />
+    //   ),
+    // },
+    // {
+    //   value: "Action",
+    //   component: ({data}) => (
+    //     <ActionButtons
+    //       data={data}
+    //       setSelected={setSelected}
+    //       setEdit={setActionType}
+    //       id={data._id}
+    //     />
+    //   ),
+    //   className: "d-flex ",
+    // },
   ];
 
   return (
