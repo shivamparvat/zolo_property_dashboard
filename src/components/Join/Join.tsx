@@ -4,7 +4,7 @@ import {setLoader} from "@/redux/reducer/loader";
 import react, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
-import CustomTable, {ActionButtons, ActionSwitch} from "../Utils/CustomTable";
+import CustomTable, {ActionButtons, ActionSwitch, EDIT} from "../Utils/CustomTable";
 import {DDMMYYYY} from "../Utils/Formeter";
 import Pagination from "../Utils/Pagination";
 import {setRecallApi} from "@/redux/reducer/RecallApi";
@@ -88,18 +88,19 @@ const Join = () => {
     //     <ActionSwitch data={data} />
     //   ),
     // },
-    // {
-    //   value: "Action",
-    //   component: ({data}) => (
-    //     <ActionButtons
-    //       data={data}
-    //       setSelected={setSelected}
-    //       setEdit={setActionType}
-    //       id={data._id}
-    //     />
-    //   ),
-    //   className: "d-flex ",
-    // },
+    {
+      value: "Action",
+      component: ({data}) => (
+        <ActionButtons
+          data={data}
+          setSelected={setSelected}
+          setEdit={setActionType}
+          disable={[EDIT]}
+          id={data._id}
+        />
+      ),
+      className: "d-flex ",
+    },
   ];
 
   return (

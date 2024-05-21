@@ -16,6 +16,8 @@ import ActionFeature from "@/Api/ActionFeature";
 import StatusChange from "./StatusChange";
 import {TfiWrite} from "react-icons/tfi";
 import ActionScreen from "./ActionScreen";
+import {FcViewDetails} from "react-icons/fc";
+import {useRouter} from "next/router";
 
 const order_by_option = ["name", "city", "number", "zip_code", "call", "leads", "is_fake", "email_sent", "type", "status"]
 
@@ -47,6 +49,7 @@ const Interested = () => {
 
   // hooks
   const dispatch = useDispatch();
+  const router = useRouter()
   const token = useSelector((state: RootState) => state.login.userToken?.token);
   const role = useSelector((state: RootState) => state.login.userToken?.role);
   const {recallApi} = useSelector((state: RootState) => state.recallApi);
@@ -91,8 +94,18 @@ const Interested = () => {
       value: "city",
     },
     {
-      key: "type",
       value: "type",
+      component: ({data}) => <div >
+        <div className="btn bg-primary bg-opacity-10 pe-none pe-auto" onClick={() => {
+          console.log(data)
+          data?.property ? router.push(`/property/edit?id=${data.property}`) : router.push(`/ads/edit?id=${data.ads}`)
+        }}>
+          <FcViewDetails size={25} /><span className="ms-1">
+            {
+              data?.property ? "PROPERTY" : "AD"
+            }
+          </span></div>
+      </div>
     },
     {
       value: "call",

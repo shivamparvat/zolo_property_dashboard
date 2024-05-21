@@ -4,14 +4,14 @@ import {Pie} from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieCharts: React.FC<any> = ({like, view, leads}) => {
+const PieCharts: React.FC<any> = ({like, view, leads,sold}) => {
   const [pieData, setPieData] = useState([like, view, leads]);
   useEffect(() => {
-    setPieData([like, view, leads]);
-  }, [like, view, leads]);
+    setPieData([like, view, leads,sold]);
+  }, [like, view, leads,sold]);
 
   const data = {
-    labels: ["Like", "View", "Leads"],
+    labels: ["Like", "View", "Leads","Sold"],
     datasets: [
       {
         label: "interaction",

@@ -173,7 +173,7 @@ const Dashboard = () => {
       </div>
       <div className="row mt-4">
         <Chart data={fetchData?.dailyData}/>
-        <PieCharts like={fetchData?.totalLikeThisMonth || 0} view={fetchData?.totalViewThisMonth || 0} leads={fetchData?.totalLeadThisMonth || 0} />
+        <PieCharts like={fetchData?.totalLikeThisMonth || 0} view={fetchData?.totalViewThisMonth || 0} leads={fetchData?.totalLeadThisMonth || 0} sold={fetchData?.soldProperties || 0}/>
       </div>
     </div>
   );

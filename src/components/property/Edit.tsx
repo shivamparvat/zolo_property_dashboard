@@ -42,8 +42,6 @@ const Edit = () => {
     useEffect(() => {
         try {
             if (property_id) {
-
-
                 const getOneProperty = async () => {
                     const res = await ApiFeature.get("property", property_id, true);
                     if (res?.status == 200) {
@@ -91,7 +89,6 @@ const Edit = () => {
                 else {
                     if (typeof value[item] == "object" && value[item] != null) {
                         (Object.keys(value[item]) || []).map((arrValue: any) => {
-                            console.log(value[item][arrValue])
                             if (typeof value[item][arrValue] === "object") {
                                 (Object.keys(value[item][arrValue]) || []).map((arrayItem: any) => {
                                     if (value[item][arrValue][arrayItem]) {
@@ -154,7 +151,6 @@ const Edit = () => {
                 router?.push("/login");
             }
         } catch (error) {
-            console.log(error)
             dispatch(setLoader(false));
         } finally {
             dispatch(setLoader(false));

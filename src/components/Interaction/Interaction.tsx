@@ -57,8 +57,6 @@ const Interaction = () => {
 
   //   // useEffects
   useEffect(() => {
-
-
     ActionFeature.get(currentPage, filter, setFetchData);
   }, [filter, token, dispatch, currentPage, recallApi]);
 

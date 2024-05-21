@@ -6,7 +6,6 @@ import {Line} from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement)
 
 const Chart: React.FC<any> = ({data}) => {
-  console.log(data)
   return (
     <div className="col-lg-7 mb-lg-0 mb-4">
       <div className="card z-index-2 h-100 bg-glass">

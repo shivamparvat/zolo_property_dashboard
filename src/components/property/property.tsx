@@ -158,7 +158,7 @@ const Post = () => {
   ];
 
 
-  const ORDER_BY = ['name', 'location']
+  const ORDER_BY = ['name', 'location', 'admin_status', "added_by_type", "property_type", "property_for", "monthly_rent","expected_price","contact_number", "name"]
 
   return (
     <>
