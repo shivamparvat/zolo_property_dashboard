@@ -139,7 +139,7 @@ const Ads = () => {
           data={data}
           setSelected={setSelected}
           setEdit={setActionType}
-          id={data.post_id}
+          id={data._id}
         />
       ),
       className: "d-flex ",
