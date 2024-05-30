@@ -15,7 +15,7 @@ const nextConfig = {
       "localhost",
       "gpropertypay.com",
       "192.168.1.7",
-      "https://demo.gpropertypay.com",
+      "portal.zoloproperty.in",
       "zoloproperty.s3.ap-south-1.amazonaws.com",
       "zoloproperty.s3.amazonaws.com",
       "gprop-demo-server.s3.ap-south-1.amazonaws.com",
