@@ -57,7 +57,7 @@ const Interaction = () => {
 
   //   // useEffects
   useEffect(() => {
-    ActionFeature.get(currentPage, filter, setFetchData);
+    ActionFeature.get(currentPage, {...filter, limit: +filter?.limit}, setFetchData);
   }, [filter, token, dispatch, currentPage, recallApi]);
 
   //   // custom table components
@@ -188,7 +188,7 @@ const Interaction = () => {
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>
                     <div className="row w-100">
-                      <div className="col" style={{maxWidth: "70px"}}>{index + 1}.</div>
+                      <div className="col" style={{maxWidth: "70px"}}>{index + (+filter.limit * (+currentPage - 1) + 1 || 1)}.</div>
                       {/* <div className="col"><b>{("65d9bd1987809612aca4dda5".slice(-6) || "").toUpperCase()}</b></div> */}
                       <div className="col text-capitalize"><b>{item?.name || ""}</b></div>
                       <div className="col text-capitalize">{item?.city || ""}</div>
@@ -199,7 +199,6 @@ const Interaction = () => {
                     <CustomTable
                       tableCustomize={TableCustomize}
                       data={AccordionData}
-                      StartIndex={+filter.limit * (+currentPage - 1) + 1 || 1}
                     />
                   </Accordion.Body>
                 </Accordion.Item>

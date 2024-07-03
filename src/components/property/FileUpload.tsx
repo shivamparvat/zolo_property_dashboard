@@ -85,8 +85,11 @@ const FileUpload: React.FC<MultiFileUploadType> = ({
           setDeletedFile((file: any) => {
             const copyFiles = [...selectedFile];
             const deletedFile = copyFiles.splice(index, 1);
-            var parsedUrl = new URL(deletedFile[0]);
-            return [...file, path.join("public", parsedUrl?.pathname)]
+            if (deletedFile[0] !== '[object Object]' && typeof deletedFile[0] === 'string') {
+              var parsedUrl = new URL(deletedFile[0]);
+              return [...file, path.join("public", parsedUrl?.pathname)]
+            }
+            return file
           });
         }
       }
