@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
 import {useRouter} from "next/router";
 import {INIT_FILTER} from "../Utils/constants";
+import MonthYearSelector from "./utiles/MonthYearSelector";
 
 const Dashboard = () => {
 
@@ -29,12 +30,16 @@ const Dashboard = () => {
   const [fetchData, setFetchData] = useState<any>({
   });
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [monthYearSelector, setMonthYearSelector] = useState<any>()
+  console.log({...filter, ...monthYearSelector})
   useEffect(() => {
-    ActionFeature.get(currentPage, filter, setFetchData);
-  }, [filter, token, dispatch, currentPage, recallApi]);
+    ActionFeature.get(currentPage, {...filter, ...monthYearSelector}, setFetchData);
+  }, [filter, token, dispatch, currentPage, recallApi,monthYearSelector]);
   return (
     <div className="container-fluid py-4">
+      <div className="d-flex d-flex justify-content-end">
+        <MonthYearSelector onChange={(value: any) => setMonthYearSelector(value)} />
+      </div>
       <div className="row">
         <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
           <div className="card bg-glass">
@@ -83,7 +88,7 @@ const Dashboard = () => {
                     <h5 className="font-weight-bolder">{fetchData?.totalProperties || 0}</h5>
                     <p className="mb-0">
                       <span className="text-success text-sm font-weight-bolder">
-                      {fetchData?.totalPropertiesThisMonth || 0} {' '}
+                        {fetchData?.totalPropertiesThisMonth || 0} {' '}
                       </span>
                       this month In
                     </p>
@@ -116,7 +121,7 @@ const Dashboard = () => {
                     <h5 className="font-weight-bolder">{fetchData?.totalInterested || 0}</h5>
                     <p className="mb-0">
                       <span className="text-success text-sm font-weight-bolder">
-                      {fetchData?.totalInterestedPeopleThisMonth || 0} {' '}
+                        {fetchData?.totalInterestedPeopleThisMonth || 0} {' '}
                       </span>
                       this month In
                     </p>
@@ -149,7 +154,7 @@ const Dashboard = () => {
                     <h5 className="font-weight-bolder">{fetchData?.soldProperties || 0}</h5>
                     <p className="mb-0">
                       <span className="text-success text-sm font-weight-bolder">
-                      {fetchData?.soldPropertiesThisMonth || 0}
+                        {fetchData?.soldPropertiesThisMonth || 0}
                       </span>{" "}
                       than last month
                     </p>
@@ -172,8 +177,8 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="row mt-4">
-        <Chart data={fetchData?.dailyData}/>
-        <PieCharts like={fetchData?.totalLikeThisMonth || 0} view={fetchData?.totalViewThisMonth || 0} leads={fetchData?.totalLeadThisMonth || 0} sold={fetchData?.soldProperties || 0}/>
+        <Chart data={fetchData?.dailyData} />
+        <PieCharts like={fetchData?.totalLikeThisMonth || 0} view={fetchData?.totalViewThisMonth || 0} leads={fetchData?.totalLeadThisMonth || 0} sold={fetchData?.soldProperties || 0} />
       </div>
     </div>
   );
